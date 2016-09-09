@@ -8,42 +8,49 @@
 
 namespace OpenCounter\Http;
 
-
-use Interop\Container\ContainerInterface;
-
 use OpenCounter\Domain\Model\Counter\Counter;
 use OpenCounter\Domain\Model\Counter\CounterName;
 use OpenCounter\Domain\Model\Counter\CounterValue;
 
+use OpenCounter\Domain\Repository\CounterRepositoryInterface;
 use OpenCounter\Infrastructure\Persistence\Sql\Repository\Counter\SqlPersistentCounterRepository;
 use OpenCounter\Infrastructure\Persistence\Sql\SqlManager;
-use Slim\Exception\SlimException;
+use OpenCounter\Infrastructure\Persistence\StorageInterface;
+use Psr\Http\Message\RequestInterface;
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
+use Psr\Log\LoggerInterface;
+use spec\OpenCounter\Domain\Exception\Counter\CounterLockedExceptionSpec;
 
 /**
  * Class CounterController
  * @package OpenCounter\Api
  */
-class CounterController implements ContainerInterface
+class CounterController
 {
-    protected $ci;
 
+    private $request;
+    private $response;
     private $logger;
     private $counter_repository;
     private $counterBuildService;
 
-    public function __construct(ContainerInterface $ci)
+    public function __construct(
+        LoggerInterface $logger,
+        CounterBuildService $counterBuildService,
+        StorageInterface $counter_mapper,
+        CounterRepositoryInterface $counter_repository
+    )
     {
-        $this->ci = $ci;
-
-        $this->logger = $this->ci->get('logger');
-        $this->counterBuildService = $this->ci->get('counter_build_service');
-        $this->SqlManager = $this->ci->get('counter_mapper');
-        $this->counter_repository = $this->ci->get('counter_repository');
+        $this->logger = $logger;
+        $this->counterBuildService = $counterBuildService;
+        $this->SqlManager = $counter_mapper;
+        $this->counter_repository = $counter_repository;
 
     }
 
 
-    public function newCounter($request, $response, $args)
+    public function newCounter(RequestInterface $request,ResponseInterface $response, $args)
     {
 
         $this->logger->info('inserting new counter with name ' . $args['name']);
@@ -100,7 +107,7 @@ class CounterController implements ContainerInterface
     }
 
 
-    public function incrementCounter($request, $response, $args)
+    public function incrementCounter(ServerRequestInterface $request, ResponseInterface $response, $args)
     {
 
         $this->logger->info('incrementing (PATCH) counter with name ' . $args['name']);
@@ -139,7 +146,7 @@ class CounterController implements ContainerInterface
 
     }
 
-    public function setCounterStatus($request, $response, $args)
+    public function setCounterStatus(ServerRequestInterface $request, ResponseInterface $response, $args)
     {
         $this->logger->info('updating (PATCH) status of counter with name ' . $args['name']);
         //we assume everything is going to fail
@@ -174,7 +181,7 @@ class CounterController implements ContainerInterface
 
     }
 
-    public function setCounter($request, $response, $args)
+    public function setCounter(ServerRequestInterface $request, ResponseInterface $response, $args)
     {
         $this->logger->info('updating (PUT) counter with name ' . $args['name']);
         //we assume everything is going to fail
@@ -218,7 +225,7 @@ class CounterController implements ContainerInterface
 
     }
 
-    public function getCount($request, $response, $args)
+    public function getCount(ServerRequestInterface $request, ResponseInterface $response, $args)
     {
 
         $this->logger->info('getting value from counter with name: ' . $args['name']);
@@ -237,7 +244,7 @@ class CounterController implements ContainerInterface
         }
     }
 
-    public function getCounter($request, $response, $args)
+    public function getCounter(ServerRequestInterface $request, ResponseInterface $response, $args)
     {
 
         $this->logger->info('getting counter with name: ' . $args['name']);
@@ -279,16 +286,16 @@ class CounterController implements ContainerInterface
     {
         if (!$this->offsetExists($id)) {
             throw new ContainerValueNotFoundException(sprintf('Identifier "%s" is not defined.',
-              $id));
+                $id));
         }
         try {
             return $this->offsetGet($id);
         } catch (\InvalidArgumentException $exception) {
             if ($this->exceptionThrownByContainer($exception)) {
                 throw new SlimContainerException(
-                  sprintf('Container error while retrieving "%s"', $id),
-                  null,
-                  $exception
+                    sprintf('Container error while retrieving "%s"', $id),
+                    null,
+                    $exception
                 );
             } else {
                 throw $exception;
@@ -305,8 +312,9 @@ class CounterController implements ContainerInterface
      * @return bool
      */
     private function exceptionThrownByContainer(
-      \InvalidArgumentException $exception
-    ) {
+        \InvalidArgumentException $exception
+    )
+    {
         $trace = $exception->getTrace()[0];
 
         return $trace['class'] === PimpleContainer::class && $trace['function'] === 'offsetGet';

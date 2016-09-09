@@ -8,43 +8,54 @@
 
 namespace spec\OpenCounter\Http;
 
-use Interop\Container\ContainerInterface;
+use GuzzleHttp\Psr7\Request;
+use GuzzleHttp\Psr7\Response;
 use OpenCounter\Domain\Exception\Counter\CounterNotFoundException;
 use OpenCounter\Domain\Repository\CounterRepositoryInterface;
 use OpenCounter\Domain\Repository\PersistentCounterRepositoryInterface;
 use OpenCounter\Http\CounterBuildService;
 use OpenCounter\Infrastructure\Persistence\Sql\Repository\Counter\SqlCounterRepository;
 use OpenCounter\Infrastructure\Persistence\Sql\Repository\Counter\SqlPersistentCounterRepository;
+
+use OpenCounter\Infrastructure\Persistence\StorageInterface;
 use PhpSpec\ObjectBehavior;
-use Pimple\Container;
 use Prophecy\Argument;
 use Psr\Log\LoggerInterface;
-use Slim\Exception\SlimException;
-use Slim\Http\Response;
 
 /**
  * Class CounterControllerSpec
  * @package spec\OpenCounter\Http
  *
- * A container aware controller to respond to requests.
+ * A controller to respond to requests
+ * that is not getting the container passed to it
+ * but inflects on dependencies to inject.
  */
 class CounterControllerSpec extends ObjectBehavior
 {
-  protected $container;
+    private $logger;
+    private $counter_repository;
+    private $counterBuildService;
 
-  private $logger;
-  private $counter_repository;
-  private $counterBuildService;
+    function let(
+        LoggerInterface $logger,
+        CounterBuildService $counterBuildService,
+        StorageInterface $counter_mapper,
+        CounterRepositoryInterface $counter_repository
+    )
+    {
+        $this->beConstructedWith(
+            $logger,
+            $counterBuildService,
+            $counter_mapper,
+            $counter_repository
+        );
 
-  function let(ContainerInterface $ci) {
-    $this->beConstructedWith($ci);
-
-  }
-  function it_is_initializable(ContainerInterface $container)
-  {
-    $this->shouldHaveType('OpenCounter\Http\CounterController');
-
-  }
+    }
+//  function it_is_initializable(ContainerInterface $container)
+//  {
+//    $this->shouldHaveType('OpenCounter\Http\CounterController');
+//
+//  }
 //  function it_shows_a_single_counter(
 //    ContainerInterface $container,
 //    PersistentCounterRepositoryInterface $repository,
@@ -86,10 +97,15 @@ class CounterControllerSpec extends ObjectBehavior
 //  function it_receives_post_requests_from_counter_route(){
 //    $this->newCounter();
 //  }
-//  function it_receives_get_requests_from_counter_route_asking_for_counter_by_name(){
-//    $counter = $this->getCounter($request, $response, $args);
-//    $counter->shouldBeAnInstanceOf('OpenCounter\Domain\Model\Counter\Counter');
-//  }
+  function it_receives_get_requests_from_counter_route_asking_for_counter_by_name(){
+  //lets say we have this request right?
+    $request = new Request();
+      // and then theres a response object we want to return to
+    $response = new Response();
+
+    $counter = $this->getCounter($request, $response, $args);
+    $counter->shouldBeAnInstanceOf('OpenCounter\Domain\Model\Counter\Counter');
+  }
 //  function it_receives_patch_requests_from_counter_route_to_reset_counter(){}
 //  function it_receives_patch_requests_from_counter_route_to_lock_counter(){}
 //  function it_receives_put_requests_from_counter_route_to_increment_counter(){}
