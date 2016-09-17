@@ -42,3 +42,4 @@ $ gulp
 
 - include phpspec in continuous tests
 - make sure we can xdebug during test runs (also in spec and behat context) and document
+- look into https://github.com/nicolopignatelli/valueobjects/blob/master/src/Identity/UUID.php

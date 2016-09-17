@@ -18,11 +18,11 @@ class CounterFactorySpec extends ObjectBehavior
     }
 
     function it_builds(
-      CounterId $userId,
+      CounterId $counterId,
       CounterName $name,
       CounterValue $value
     ) {
-        $this->build($userId, $name, $value, 'active', 'password')
+        $this->build($counterId, $name, $value, 'active', 'password')
           ->shouldReturnAnInstanceOf('OpenCounter\Domain\Model\Counter\Counter');
     }
 }

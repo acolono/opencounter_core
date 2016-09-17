@@ -1,6 +1,8 @@
 <?php
 
 namespace OpenCounter\Domain\Model\Counter;
+use OpenCounter\Domain\Exception\Counter\InvalidNativeArgumentException;
+
 /**
  * class CounterName
  *
@@ -31,6 +33,9 @@ class CounterName
      */
     public function __construct($name)
     {
+        if (false === \is_string($name)) {
+            throw new InvalidNativeArgumentException($name, array('string'));
+        }
         $this->name = $name;
     }
 

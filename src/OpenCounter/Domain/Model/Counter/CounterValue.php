@@ -1,6 +1,8 @@
 <?php
 
 namespace OpenCounter\Domain\Model\Counter;
+use OpenCounter\Domain\Exception\Counter\InvalidNativeArgumentException;
+
 /**
  * Class CounterValue.
  *
@@ -33,8 +35,13 @@ class CounterValue
     public function __construct($value)
     {
         if (isset($value)) {
+            $value = filter_var($value, FILTER_VALIDATE_INT);
+            if (false === $value) {
+                throw new InvalidNativeArgumentException($value, array('int'));
+            }
             $this->value = $value;
         } else {
+            // if we didnt get  a value passed then initialize default value to 0
             $this->value = 0;
         }
 
@@ -46,7 +53,7 @@ class CounterValue
      */
     public function value()
     {
-        return (int)$this->value;
+        return (int) $this->value;
     }
 
 }
