@@ -11,6 +11,7 @@ use Monolog\Logger;
 
 use OpenCounter\Domain\Repository\CounterRepositoryInterface;
 use OpenCounter\Infrastructure\Factory\Counter\CounterFactory;
+use Psr\Http\Message\RequestInterface;
 
 /**
  * Class CounterBuildService
@@ -32,7 +33,8 @@ class CounterBuildService {
      * @param \OpenCounter\Infrastructure\Factory\Counter\CounterFactory $counter_factory
      * @param \Monolog\Logger $logger
      */
-    public function __construct(CounterRepositoryInterface $counter_repository, CounterFactory $counter_factory, Logger $logger)
+    public function __construct(CounterRepositoryInterface $counter_repository,
+                                CounterFactory $counter_factory, Logger $logger)
     {
         $this->counter_repository = $counter_repository;
         $this->counter_factory = $counter_factory;
@@ -42,13 +44,12 @@ class CounterBuildService {
     /**
      * Execute Buld service.
      *
-     * @param null $request
+     * @param RequestInterface|null $request
      * @param $args
-     *
-     * @return mixed|\OpenCounter\Domain\Model\Counter\Counter
-     * @throws \OpenCounter\Domain\Exception\Counter\CounterAlreadyExistsException
+     * @return mixed|Counter
+     * @throws CounterAlreadyExistsException
      */
-    public function execute($request = null, $args)
+    public function execute(RequestInterface $request = null, $args)
     {
 //    if (!$request instanceof SignInCounterRequest) {
 //      throw new \InvalidArgumentException('The request must be SignInCounterRequest instance');
@@ -80,12 +81,12 @@ class CounterBuildService {
 
         $this->logger->info('testing during creation if counter exists ');
 
-        if ($counter instanceof Counter) {
+        if (isset($counter) && $counter instanceof Counter) {
             throw new CounterAlreadyExistsException();
         }
 
         $counter = $this->counter_factory->build($counterId, $name, $value, 'active', $password);
-        $this->logger->info('BuildService passing newly created counter to controller for saving via repo ' .  \GuzzleHttp\json_encode($counter->toArray()));
+        //$this->logger->info('BuildService passing newly created counter to controller for saving via repo ' .  \GuzzleHttp\json_encode($counter->toArray()));
 
         return $counter;
     }
