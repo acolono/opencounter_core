@@ -16,7 +16,7 @@ var onSuccess = function(message) {
 }
 
 gulp.task('behat', function() {
-    exec('bin/behat', function(error, stdout) {
+    exec('bin/run-tests.sh', function(error, stdout) {
         if(error !== null)
         {
             onError(stdout);
@@ -30,7 +30,7 @@ gulp.task('behat', function() {
 
 
 
-// create a task that ensures the `js` task is complete before
+// create a task that ensures the `behat` task is complete before
 // reloading browsers
 gulp.task('behat-watch', ['behat'], function (done) {
     browserSync.reload();
@@ -41,10 +41,10 @@ gulp.task('behat-watch', ['behat'], function (done) {
 gulp.task('serve', ['behat'], function() {
 
     browserSync.init({
-        server: "./behat/reports/html/behat"
+        server: "./descriptions/behat/reports/html/behat"
     });
 
-    gulp.watch('./src/*.php',  ['behat-watch']);
+    gulp.watch('./src/**/*.php',  ['behat-watch']);
 });
 
 

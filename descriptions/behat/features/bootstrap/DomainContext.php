@@ -17,9 +17,9 @@ use Pavlakis\Slim\Behat\Context\KernelAwareContext;
 /**
  * Defines application features from the specific context.
  */
-class DomainContext implements Context, SnippetAcceptingContext, KernelAwareContext
+class DomainContext implements Context, SnippetAcceptingContext
 {
-    use App;
+
 
     /**
      * @var bool
@@ -85,9 +85,22 @@ class DomainContext implements Context, SnippetAcceptingContext, KernelAwareCont
     }
 
     /**
+     * @Given a counter( with id) :id has been set
+     */
+    public function aCounterWithIdhasBeenSet($id)
+    {
+        $this->counterName = new CounterName('testcounter');
+        $this->counterId = new CounterId($id);
+        $this->counterValue = new CounterValue(0);
+
+        // lets use the factory to create the counter here, but not bother with using the build service
+        $this->counter = $this->counter_factory->build($this->counterId, $this->counterName, $this->counterValue, 'active', 'passwordplaceholder');
+
+    }
+    /**
      * @Given a counter( with name) :name has been set
      */
-    public function aCounterhasBeenSet($name)
+    public function aCounterWitrhNamehasBeenSet($name)
     {
         $this->counterName = new CounterName($name);
         $this->counterId = new CounterId();
@@ -116,7 +129,8 @@ class DomainContext implements Context, SnippetAcceptingContext, KernelAwareCont
      */
     public function theValueReturnedShouldBe($arg1)
     {
-        if (!$arg1 == $this->counter->getValue()) {
+// TODO: move the typecasting somewhere else
+        if (! (int) $arg1 === (int) $this->counter->getValue()) {
             throw new \Exception('value not equal');
         }
     }
@@ -216,24 +230,45 @@ class DomainContext implements Context, SnippetAcceptingContext, KernelAwareCont
     public function iSetACounterWithName($name)
     {
 
-        $uri = \Slim\Http\Uri::createFromString('http://slimapi.opencounter.docker');
-        $headers = new \Slim\Http\Headers();
-        $cookies = [];
-        $serverParams = [];
-        $body = new \Slim\Http\Body(fopen('php://temp', 'r+'));
-        $request = new \Slim\Http\Request('GET', $uri, $headers, $cookies,
-            $serverParams, $body);
+//        $uri = \Slim\Http\Uri::createFromString('http://slimapi.opencounter.docker');
+//        $headers = new \Slim\Http\Headers();
+//        $cookies = [];
+//        $serverParams = [];
+//        $body = new \Slim\Http\Body(fopen('php://temp', 'r+'));
+//        $request = new \Slim\Http\Request('GET', $uri, $headers, $cookies,
+//            $serverParams, $body);
         $args = ['name' => $name, 'value' => 0];
 // now thest the build service just in case
-        $this->counter = $this->counterBuildService->execute($request, $args);
+        // cant test build service without request
+        //$this->counter = $this->counterBuildService->execute($request, $args);
+        // lets use the factory to create the counter here, but not bother with using the build service
+        $this->counterName = new CounterName($name);
+        $this->counterId = new CounterId('test');
+        $this->counterValue = new CounterValue('0');
+        $this->counter = $this->counter_factory->build($this->counterId, $this->counterName, $this->counterValue, 'active', 'passworplaceholder');
+
         // cannot save in memory repository since its not persistent, so not testing this?
-        //$counter_repository->save($counter);
+        $this->counter_repository->add($this->counter);
     }
 
     /**
+     * @Given no counter with id :id has been set
+     */
+    public function noCounterWithIdHasBeenSet($id)
+    {
+$newCounterId = new CounterId($id);
+        try {
+            $this->counter = $this->counter_repository->getCounterById($newCounterId);
+        } catch (Exception $e) {
+            $this->error = true;
+        }
+        return $this->error;
+
+    }
+    /**
      * @Given no counter :name has been set
      */
-    public function noCounterHasBeenSet($name)
+    public function noCounterWithNameHasBeenSet($name)
     {
         $this->counterName = new CounterName($name);
         try {

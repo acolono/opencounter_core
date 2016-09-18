@@ -1,0 +1,23 @@
+# behat.yml
+default:
+  autoload: [ %paths.base%/descriptions/behat/features/bootstrap ]
+  extensions:
+    emuse\BehatHTMLFormatter\BehatHTMLFormatterExtension:
+      name: html
+      renderer: Twig
+      file_name: index
+      print_args: true
+      print_outp: true
+      loop_break: true
+  formatters:
+      pretty: true
+      progress: true
+      html:
+        output_path: %paths.base%/descriptions/behat/reports/html/behat
+#      junit:
+#        output_path: %paths.base%/reports/junit/behat
+  suites:
+    default:
+      paths: [ %paths.base%/descriptions/behat/features/Counters ]
+      contexts: [ DomainContext ]
+

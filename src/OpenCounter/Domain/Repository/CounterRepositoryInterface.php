@@ -2,7 +2,6 @@
 
 namespace OpenCounter\Domain\Repository;
 
-
 use OpenCounter\Domain\Model\Counter\Counter;
 use OpenCounter\Domain\Model\Counter\CounterName;
 use OpenCounter\Domain\Model\Counter\CounterValue;

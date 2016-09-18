@@ -12,16 +12,17 @@ namespace OpenCounter\Domain\Model\Counter;
  * )
  * @package OpenCounter\Domain\Model\Counter
  */
+
 class CounterValue
 {
 
-  /**
-   * The counter value.
-   *
-   * @var int
-   * @SWG\Property(example="+1")
-   */
-private $value;
+    /**
+     * The counter value.
+     *
+     * @var int
+     * @SWG\Property(example="+1")
+     */
+    private $value;
 
     /**
      * Constructor.
@@ -31,12 +32,11 @@ private $value;
      */
     public function __construct($value)
     {
-      if (isset($value)) {
-        $this->value = $value;
-      }
-      else {
-        $this->value = 0;
-      }
+        if (isset($value)) {
+            $this->value = $value;
+        } else {
+            $this->value = 0;
+        }
 
     }
 
@@ -46,7 +46,7 @@ private $value;
      */
     public function value()
     {
-      return (int) $this->value;
+        return (int)$this->value;
     }
 
 }

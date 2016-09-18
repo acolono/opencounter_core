@@ -4,7 +4,6 @@ namespace OpenCounter\Domain\Model\Counter;
 
 use OpenCounter\Domain\Exception\Counter\CounterLockedException;
 
-
 /**
  * Counter entity.
  *
@@ -79,28 +78,27 @@ class Counter
      * )
      */
     public function __construct(
-      CounterId $CounterId,
-      CounterName $CounterName,
-      CounterValue $CounterValue,
-      $aStatus,
-      $aPassword
-    ) {
+        CounterId $CounterId,
+        CounterName $CounterName,
+        CounterValue $CounterValue,
+        $aStatus,
+        $aPassword
+    )
+    {
         $this->id = $CounterId->uuid();
         $this->name = $CounterName->name();
         $this->value = $CounterValue->value();
 
         $this->status = $aStatus;
         $this->password = $aPassword;
-//    $this->changePassword($aPassword);
-        //https://github.com/benatespina/ddd-symfony/issues/1
-//    DomainEventPublisher::instance()->publish(new UserRegistered($this->userId));
     }
 
     /**
      * our equivalent of render, since properties are private we can use this method to render counter as array for display - this for now resembles the output model of a counter
      * @return array
      */
-    public function toArray(){
+    public function toArray()
+    {
         $counterArray = [
             'name' => $this->name,
             'value' => $this->value
@@ -193,7 +191,7 @@ class Counter
             return true;
         } else {
             throw new CounterLockedException("cannot increment locked counter",
-              1, null);
+                1, null);
         }
 
     }

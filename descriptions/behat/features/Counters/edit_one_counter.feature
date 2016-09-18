@@ -10,14 +10,12 @@ Feature: edit one counter
     /counters/1/state
     change state of counter (active, disabled, locked)
 
-  @domain @web
   Scenario: increment the value for a single counter
     Given a counter "onecounter" with a value of "1" has been set
     When I increment the value of the counter with name "onecounter"
     And I get the value of the counter with name "onecounter"
     Then the value returned should be 2
 
-  @domain @web
   Scenario: lock a single counter and try to increment it
     Given a counter "onecounter" with a value of "1" has been set
     When I lock the counter with name "onecounter"

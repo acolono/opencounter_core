@@ -6,7 +6,6 @@ Feature: reset one counter
   PUT /counters/1
   given a Counter, it is possible to replace all its properties, and if that counter doesn’t exist it should be created.
 
-  @domain @web
   Scenario: Resetting the first counter
     Given a counter "onecounter" with a value of "1" has been set
     When I reset the counter with name "onecounter"
