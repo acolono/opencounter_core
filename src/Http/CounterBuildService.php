@@ -12,6 +12,7 @@ use Monolog\Logger;
 use OpenCounter\Domain\Repository\CounterRepositoryInterface;
 use OpenCounter\Infrastructure\Factory\Counter\CounterFactory;
 use Psr\Http\Message\RequestInterface;
+use Psr\Log\LoggerInterface;
 
 /**
  * Class CounterBuildService
@@ -20,21 +21,23 @@ use Psr\Http\Message\RequestInterface;
  *
  * @package OpenCounter\Http
  */
-class CounterBuildService {
+class CounterBuildService
+{
 
     private $counter_repository;
     private $counter_factory;
     private $logger;
 
     /**
-     * Constructor
-     *
-     * @param \OpenCounter\Domain\Repository\CounterRepositoryInterface $counter_repository
-     * @param \OpenCounter\Infrastructure\Factory\Counter\CounterFactory $counter_factory
-     * @param \Monolog\Logger $logger
+     * @param CounterRepositoryInterface $counter_repository
+     * @param CounterFactory $counter_factory
+     * @param LoggerInterface $logger
      */
-    public function __construct(CounterRepositoryInterface $counter_repository,
-                                CounterFactory $counter_factory, Logger $logger)
+    public function __construct(
+        CounterRepositoryInterface $counter_repository,
+        CounterFactory $counter_factory,
+        LoggerInterface $logger
+    )
     {
         $this->counter_repository = $counter_repository;
         $this->counter_factory = $counter_factory;
@@ -72,8 +75,7 @@ class CounterBuildService {
         $password = 'passwordplaceholder';
         try {
             $counter = $this->counter_repository->getCounterByName($name);
-        }
-        catch  (\Exception $e) {
+        } catch (\Exception $e) {
             $return = ['message' => $e->getMessage()];
             $code = 409;
         }

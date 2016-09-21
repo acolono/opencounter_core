@@ -8,8 +8,11 @@
 
 namespace spec\OpenCounter\Http;
 
-use GuzzleHttp\Psr7\Request;
-use GuzzleHttp\Psr7\Response;
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
+use Psr\Log\LoggerInterface;
+
+
 use OpenCounter\Domain\Exception\Counter\CounterNotFoundException;
 use OpenCounter\Domain\Model\Counter\Counter;
 use OpenCounter\Domain\Model\Counter\CounterId;
@@ -18,16 +21,10 @@ use OpenCounter\Domain\Model\Counter\CounterValue;
 use OpenCounter\Domain\Repository\CounterRepositoryInterface;
 use OpenCounter\Domain\Repository\PersistentCounterRepositoryInterface;
 use OpenCounter\Http\CounterBuildService;
-use OpenCounter\Infrastructure\Persistence\Sql\Repository\Counter\SqlCounterRepository;
-use OpenCounter\Infrastructure\Persistence\Sql\Repository\Counter\SqlPersistentCounterRepository;
-
 use OpenCounter\Infrastructure\Persistence\StorageInterface;
+
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
-use Psr\Http\Message\RequestInterface;
-use Psr\Http\Message\ResponseInterface;
-use Psr\Http\Message\ServerRequestInterface;
-use Psr\Log\LoggerInterface;
 
 /**
  * Class CounterControllerSpec
@@ -58,11 +55,11 @@ class CounterControllerSpec extends ObjectBehavior
         );
 
     }
-//  function it_is_initializable(ContainerInterface $container)
-//  {
-//    $this->shouldHaveType('OpenCounter\Http\CounterController');
-//
-//  }
+  function it_is_initializable()
+  {
+    $this->shouldHaveType('OpenCounter\Http\CounterController');
+
+  }
 //  function it_shows_a_single_counter(
 //    ContainerInterface $container,
 //    PersistentCounterRepositoryInterface $repository,
@@ -97,30 +94,39 @@ class CounterControllerSpec extends ObjectBehavior
 //  }
 //
 
-//  function it_receives_post_requests_from_counter_route(){
-//    $this->newCounter();
-//  }
+  function it_receives_post_requests_from_counter_route(ServerRequestInterface $request,ResponseInterface $response, $args){
+    //$this->newCounter($request->getBody()->write('test'), $response, $args);
+  }
     /**
      * it responds with a counter object to get requests if the counter is found
      *
-     * @param RequestInterface $request
+     * @param ServerRequestInterface $request
      * @param ResponseInterface $response
      */
-  function it_receives_get_requests_from_counter_route_asking_for_counter_by_name(ServerRequestInterface $request, ResponseInterface $response){
+  function it_receives_get_requests_asking_for_counter_by_name(ServerRequestInterface $request, ResponseInterface $response){
 
-//      $args = array();
-//      $args['name'] = 'COUNTER';
-//      $args['value'] = 0;
-//      $CounterID = new CounterId('testid');
-//      $CounterName = new CounterName($args['name']);
-//      $CounterValue = new CounterValue($args['value']);
-//      //$request->withParsedBody($args);
-//      $Counter = new Counter($CounterID, $CounterName, $CounterValue, 'active', 'passwordplaceholder');
-//
-////      $this->getCounter($request, $response, $args)->shouldReturn($response->withStatus($Counter->toArray(), 200));
-//      $this->getCounter($request, $response, $args)->shouldReturn($response->withStatus(200));
-//    $counter->shouldBeAnInstanceOf('OpenCounter\Domain\Model\Counter\Counter');
+      $args = array();
+      $args['name'] = 'COUNTER';
+      $args['value'] = 0;
+      $CounterID = new CounterId('testid');
+      $CounterName = new CounterName($args['name']);
+      $CounterValue = new CounterValue($args['value']);
+
+      $uri = new Uri('/api/counters/onecounter');
+      $request = new ServerRequest('GET', $uri);
+      $response = new Response();
+
+      $request->withParsedBody($args);
+
+      $Counter = new Counter($CounterID, $CounterName, $CounterValue, 'active', 'passwordplaceholder');
+//print_r($this->getCounter($request, $response, $args));
+
+      // should return 200 and counter if found
+      $this->getCounter($request, $response, $args)->shouldReturn($response->withStatus(200, 'success'));
+     // $this->getCounter($request, $response, $args)->shouldReturn($response);
+   // $Counter->shouldBeAnInstanceOf('OpenCounter\Domain\Model\Counter\Counter');
   }
+    // function it_returns_404_if_asked_for_counter_it_cant_get(){}
 //  function it_receives_patch_requests_from_counter_route_to_reset_counter(){}
 //  function it_receives_patch_requests_from_counter_route_to_lock_counter(){}
 //  function it_receives_put_requests_from_counter_route_to_increment_counter(){}

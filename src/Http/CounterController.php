@@ -8,6 +8,7 @@
 
 namespace OpenCounter\Http;
 
+use GuzzleHttp\Psr7\LazyOpenStream;
 use OpenCounter\Domain\Model\Counter\Counter;
 use OpenCounter\Domain\Model\Counter\CounterName;
 use OpenCounter\Domain\Model\Counter\CounterValue;
@@ -53,7 +54,7 @@ class CounterController
     public function newCounter(RequestInterface $request,ResponseInterface $response, $args)
     {
 
-        $this->logger->info('inserting new counter with name ' . $args['name']);
+        $this->logger->info('inserting new counter with name ' );
 
         // Now we need to instantiate our Counter using a factory
         // use another service that in turn calls the factory?
@@ -70,8 +71,8 @@ class CounterController
             $this->logger->info('exception ' . $e->getMessage());
         }
 
-
-        return $response->withJson($return, $code);
+        $response->getBody()->write($return);
+        return $response->withStatus($code);
 
     }
 
@@ -246,11 +247,11 @@ class CounterController
 
     public function getCounter(ServerRequestInterface $request, ResponseInterface $response, $args)
     {
-
+print_r($request->getParsedBody());
         $this->logger->info('getting counter with name: ' . $args['name']);
         $counterName = new CounterName($args['name']);
         $counter = $this->counter_repository->getCounterByName($counterName);
-
+print_r($counter);
         $this->logger->info(json_encode($counter));
         if ($counter) {
             $this->logger->info('found');
