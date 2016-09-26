@@ -58,12 +58,7 @@ class CounterBuildService
 //      throw new \InvalidArgumentException('The request must be SignInCounterRequest instance');
 //    }
         $data = $request->getParsedBody();
-        if (!isset($data['name']) && isset($args['name'])) {
-            $data['name'] = $args['name'];
-        }
-        if (!isset($data['value']) && isset($args['value'])) {
-            $data['value'] = $args['value'];
-        }
+
         $this->logger->info(json_encode($data));
 
         // https://leanpub.com/ddd-in-php/read#leanpub-auto-persisting-value-objects

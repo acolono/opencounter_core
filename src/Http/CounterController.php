@@ -54,7 +54,7 @@ class CounterController
     public function newCounter(RequestInterface $request,ResponseInterface $response, $args)
     {
 
-        $this->logger->info('inserting new counter with name ' );
+        $this->logger->info('inserting new counter with name ', $args);
 
         // Now we need to instantiate our Counter using a factory
         // use another service that in turn calls the factory?
@@ -62,16 +62,17 @@ class CounterController
             $counter = $this->counterBuildService->execute($request, $args);
             $this->counter_repository->save($counter);
             $this->logger->info('saved ' . $counter->getName());
-            $return = $counter->toArray();
+            $return = json_encode($counter->toArray());
             $code = 201;
         } catch (\Exception $e) {
 
-            $return = ['message' => $e->getMessage()];
+            $return = $e->getMessage();
             $code = 409;
             $this->logger->info('exception ' . $e->getMessage());
         }
 
-        $response->getBody()->write($return);
+        $body = $response->getBody();
+        $body->write($return);
         return $response->withStatus($code);
 
     }
@@ -111,9 +112,9 @@ class CounterController
     public function incrementCounter(ServerRequestInterface $request, ResponseInterface $response, $args)
     {
 
-        $this->logger->info('incrementing (PATCH) counter with name ' . $args['name']);
+        $this->logger->info('incrementing (PATCH) counter with name ' , $args);
         //we assume everything is going to fail
-        $return = ['message' => 'an error has occurred'];
+        $return = 'an error has occurred';
         $code = 400;
 
         $data = $request->getParsedBody();
@@ -127,35 +128,37 @@ class CounterController
 
             if ($counter) {
                 if ($counter->isLocked()) {
-                    $return['message'] = 'counter with name onecounter is locked';
+                    $return = 'counter with name onecounter is locked';
                     $code = 409;
                 } else {
                     $increment = new CounterValue($data['value']);
                     $update = $counter->increaseCount($increment);
                     if ($update) {
                         $this->counter_repository->update($counter);
-                        $return = $counter->toArray();;
+                        $return = json_encode($counter->toArray());
                         $code = 201;
                     }
                 }
             } else {
-                $return['message'] = 'The counter was not found, possibly due to bad credentials';
+                $return = 'The counter was not found, possibly due to bad credentials';
                 $code = 404;
             }
         }
-        return $response->withJson($return, $code);
+        $body = $response->getBody();
+        $body->write($return);
+        return $response->withStatus($code);
 
     }
 
     public function setCounterStatus(ServerRequestInterface $request, ResponseInterface $response, $args)
     {
-        $this->logger->info('updating (PATCH) status of counter with name ' . $args['name']);
+        $this->logger->info('updating (PATCH) status of counter with name ' , $args);
         //we assume everything is going to fail
-        $return = ['message' => 'an error has occurred'];
+        $return = 'an error has occurred';
         $code = 400;
 
         $data = $request->getParsedBody();
-        $this->logger->info(json_encode($data));
+        $this->logger->info('received request data', $data);
 
         $counterName = new CounterName($args['name']);
         $counterValue = new CounterValue($data['value']);
@@ -164,33 +167,35 @@ class CounterController
             $counter = $this->counter_repository->getCounterByName($counterName);
             if ($counter) {
                 if ($counter->isLocked()) {
-                    $return['message'] = 'The counter is locked already';
+                    $return = 'The counter is locked already';
                     $code = 409;
                 } else {
                     $counter->lock();
                     $this->counter_repository->save($counter);
-                    $this->logger->info('saved locked counter' . $counterName);
-                    $return = $counter->toArray();;
+                    $this->logger->info('saved locked counter', $counterName);
+                    $return = json_encode($counter->toArray());
                     $code = 201;
                 }
             } else {
-                $return['message'] = 'The counter was not found, possibly due to bad credentials';
+                $return = 'The counter was not found, possibly due to bad credentials';
                 $code = 404;
             }
         }
-        return $response->withJson($return, $code);
+        $body = $response->getBody();
+        $body->write($return);
+        return $response->withStatus($code);
 
     }
 
     public function setCounter(ServerRequestInterface $request, ResponseInterface $response, $args)
     {
-        $this->logger->info('updating (PUT) counter with name ' . $args['name']);
+        $this->logger->info('updating (PUT) counter with name ' ,$args);
         //we assume everything is going to fail
         $return = ['message' => 'an error has occurred'];
         $code = 400;
 
         $data = $request->getParsedBody();
-        $this->logger->info(json_encode($data));
+        $this->logger->info('received request body', $data);
 
         $counterName = new CounterName($args['name']);
         $counterValue = new CounterValue($data['value']);
@@ -200,10 +205,10 @@ class CounterController
             $counter = $this->counter_repository->getCounterByName($counterName);
 
             if ($counter) {
-                $this->logger->info('found ' . $counterName);
+                $this->logger->info('found ', $counterName);
 
                 if ($counter->isLocked()) {
-                    $this->logger->info('cannot save locked counter  ' . $counterName);
+                    $this->logger->info('cannot save locked counter  ' , $counterName);
 
                     $return['message'] = 'counter with name ' . $counterName . ' is locked';
                     $code = 409;
@@ -211,18 +216,20 @@ class CounterController
                     $counter->resetValueTo($counterValue);
 
                     $this->counter_repository->save($counter);
-                    $this->logger->info('saved ' . $counterName);
+                    $this->logger->info('saved ', $counterName);
                     $return = $counter->toArray();
                     $code = 201;
                 }
             } else {
-                $this->logger->info('The counter was not found ' . $counterName);
+                $this->logger->info('The counter was not found ' , $counterName);
 
                 $return['message'] = 'The counter was not found, possibly due to bad credentials';
                 $code = 404;
             }
         }
-        return $response->withJson($return, $code);
+        $body = $response->getBody();
+        $body->write($return);
+        return $response;
 
     }
 
@@ -236,8 +243,11 @@ class CounterController
         $this->logger->info(json_encode($counter));
 
         if ($counter) {
-            $this->logger->info('found');
-            return $response->withJson($counter->getValue());
+            $this->logger->info('found', $counter);
+            // return $response->withJson($counter->getValue());
+            $body = $response->getBody();
+            $body->write(json_encode($counter->getValue()));
+            return $response;
         } else {
             $this->logger->info('not found');
             //$response->write('resource not found');
@@ -247,15 +257,16 @@ class CounterController
 
     public function getCounter(ServerRequestInterface $request, ResponseInterface $response, $args)
     {
-print_r($request->getParsedBody());
-        $this->logger->info('getting counter with name: ' . $args['name']);
+        $this->logger->info('getting counter with name: ' , $args);
         $counterName = new CounterName($args['name']);
         $counter = $this->counter_repository->getCounterByName($counterName);
-print_r($counter);
         $this->logger->info(json_encode($counter));
         if ($counter) {
             $this->logger->info('found');
-            return $response->withJson($counter->toArray(), 200);
+//            return $response->withJson($counter->toArray(), 200);
+            $body = $response->getBody();
+            $body->write(json_encode($counter->toArray()));
+            return $response;
         } else {
             $this->logger->info('not found');
             //$response->write('resource not found');
