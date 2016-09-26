@@ -7,9 +7,15 @@ Feature: create a new counter
     Given no counter "onecounter" has been set
     When I set a counter with name "onecounter"
     Then I can get the value of the counter with Name "onecounter"
-    And I can get the value of the counter with Name "onecounter"
     And the value returned should be 0
 
-    # Scenario: creating new counter if name already taken
-    # Scenario: creating new counter with invalid name
+#  Scenario: creating new counter if name already taken
+#    Given a counter "onecounter" has been set
+#    When I set a counter with name "onecounter"
+#    Then I should see an error "A counter by that name already exists"
+#
+#  Scenario: creating new counter with invalid name
+#    When I set a counter with name "1 counter / (this is a bad countername)"
+#    Then I should see an error "Counter name needs to be alphanumeric without whitespace or special chars"
+
     # Scenario: creating default counter
