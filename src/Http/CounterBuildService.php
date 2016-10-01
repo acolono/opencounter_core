@@ -30,33 +30,35 @@ class CounterBuildService
 
     /**
      * @param CounterRepositoryInterface $counter_repository
-     * @param CounterFactory $counter_factory
-     * @param LoggerInterface $logger
+     * @param CounterFactory             $counter_factory
+     * @param LoggerInterface            $logger
      */
     public function __construct(
         CounterRepositoryInterface $counter_repository,
         CounterFactory $counter_factory,
         LoggerInterface $logger
-    )
-    {
+    ) {
+    
         $this->counter_repository = $counter_repository;
         $this->counter_factory = $counter_factory;
         $this->logger = $logger;
     }
 
     /**
-     * Execute Buld service.
+     * Execute Build service.
      *
-     * @param RequestInterface|null $request
-     * @param $args
+     * @uses CounterFactory to create new counter objects
+     *
+     * @param  RequestInterface|null $request
+     * @param  $args
      * @return mixed|Counter
      * @throws CounterAlreadyExistsException
      */
     public function execute(RequestInterface $request = null, $args)
     {
-//    if (!$request instanceof SignInCounterRequest) {
-//      throw new \InvalidArgumentException('The request must be SignInCounterRequest instance');
-//    }
+        //    if (!$request instanceof SignInCounterRequest) {
+        //      throw new \InvalidArgumentException('The request must be SignInCounterRequest instance');
+        //    }
         $data = $request->getParsedBody();
 
         $this->logger->info(json_encode($data));

@@ -12,7 +12,7 @@ use OpenCounter\Domain\Exception\Counter\InvalidNativeArgumentException;
  *     url="https://swagger.io/about"
  *   )
  * )
- * @package OpenCounter\Domain\Model\Counter
+ * @package                    OpenCounter\Domain\Model\Counter
  */
 
 class CounterValue
@@ -21,7 +21,7 @@ class CounterValue
     /**
      * The counter value.
      *
-     * @var int
+     * @var                        int
      * @SWG\Property(example="+1")
      */
     private $value;
@@ -30,6 +30,7 @@ class CounterValue
      * Constructor.
      *
      * Takes an integer and defaults to 0
+     *
      * @param $value
      */
     public function __construct($value)
@@ -49,6 +50,7 @@ class CounterValue
 
     /**
      * Return Value integer property from CounterValue Object
+     *
      * @return int
      */
     public function value()

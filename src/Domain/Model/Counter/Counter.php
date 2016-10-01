@@ -22,7 +22,7 @@ class Counter
     /**
      * The counter entity id
      *
-     * @var string
+     * @var            string
      * @SWG\Property()
      */
 
@@ -30,7 +30,7 @@ class Counter
     /**
      * The counter entity name.
      *
-     * @var string
+     * @var                                string
      * @SWG\Property(example="onecounter")
      */
 
@@ -38,7 +38,7 @@ class Counter
     /**
      * The counter entity password.
      *
-     * @var string
+     * @var                                     string
      * @SWG\Property(example="examplepassword")
      */
 
@@ -46,7 +46,7 @@ class Counter
     /**
      * The counter entity value.
      *
-     * @var integer
+     * @var                          integer
      * @SWG\Property(format="int32")
      */
 
@@ -54,15 +54,15 @@ class Counter
     /**
      * The counter entity status.
      *
-     * @var string
+     * @var                                               string
      * @SWG\Property(enum={"active","locked","disabled"})
      */
 
     private $status;
 
     /**
-     * @param \OpenCounter\Domain\Model\Counter\CounterId $id
-     * @param \OpenCounter\Domain\Model\Counter\CounterName $name
+     * @param \OpenCounter\Domain\Model\Counter\CounterId    $id
+     * @param \OpenCounter\Domain\Model\Counter\CounterName  $name
      * @param \OpenCounter\Domain\Model\Counter\CounterValue $value
      * @param $status
      * @param $password
@@ -83,8 +83,8 @@ class Counter
         CounterValue $CounterValue,
         $aStatus,
         $aPassword
-    )
-    {
+    ) {
+    
         $this->id = $CounterId->uuid();
         $this->name = $CounterName->name();
         $this->value = $CounterValue->value();
@@ -95,6 +95,7 @@ class Counter
 
     /**
      * our equivalent of render, since properties are private we can use this method to render counter as array for display - this for now resembles the output model of a counter
+     *
      * @return array
      */
     public function toArray()
@@ -190,8 +191,10 @@ class Counter
             $this->value = $newValue->value();
             return true;
         } else {
-            throw new CounterLockedException("cannot increment locked counter",
-                1, null);
+            throw new CounterLockedException(
+                "cannot increment locked counter",
+                1, null
+            );
         }
 
     }
@@ -240,6 +243,7 @@ class Counter
 
     /**
      * Check whether Counter can be locked
+     *
      * @return bool
      */
     private function couldBeLocked()

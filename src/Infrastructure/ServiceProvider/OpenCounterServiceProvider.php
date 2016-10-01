@@ -25,8 +25,8 @@ class OpenCounterServiceProvider extends AbstractServiceProvider implements Boot
     public function boot()
     {
         $this->getContainer();
-//          ->inflector('SomeType')
-//          ->invokeMethod('someMethod', ['some_arg']);
+        //          ->inflector('SomeType')
+        //          ->invokeMethod('someMethod', ['some_arg']);
 
     }
 
@@ -38,26 +38,33 @@ class OpenCounterServiceProvider extends AbstractServiceProvider implements Boot
      */
     public function register()
     {
-        $this->getContainer()->add('OpenCounter\Infrastructure\Persistence\StorageInterface', function () {
-            $counter_mapper = new \OpenCounter\Infrastructure\Persistence\Sql\SqlManager($this->getContainer()->get('db'));
-            return $counter_mapper;
-        });
+        $this->getContainer()->add(
+            'OpenCounter\Infrastructure\Persistence\StorageInterface', function () {
+                $counter_mapper = new \OpenCounter\Infrastructure\Persistence\Sql\SqlManager($this->getContainer()->get('db'));
+                return $counter_mapper;
+            }
+        );
 
 
-        $this->getContainer()->add('OpenCounter\Domain\Repository\CounterRepositoryInterface', function () {
-            $counter_mapper = $this->getContainer()->get('OpenCounter\Infrastructure\Persistence\StorageInterface');
-            $counter_repository = new \OpenCounter\Infrastructure\Persistence\Sql\Repository\Counter\SqlPersistentCounterRepository($counter_mapper);
-            return $counter_repository;
-        });
+        $this->getContainer()->add(
+            'OpenCounter\Domain\Repository\CounterRepositoryInterface', function () {
+                $counter_mapper = $this->getContainer()->get('OpenCounter\Infrastructure\Persistence\StorageInterface');
+                $counter_repository = new \OpenCounter\Infrastructure\Persistence\Sql\Repository\Counter\SqlPersistentCounterRepository($counter_mapper);
+                return $counter_repository;
+            }
+        );
 
-        $this->getContainer()->add('counter_build_service', function () {
-            $factory = new \OpenCounter\Infrastructure\Factory\Counter\CounterFactory();
+        $this->getContainer()->add(
+            'counter_build_service', function () {
+                $factory = new \OpenCounter\Infrastructure\Factory\Counter\CounterFactory();
 
-            $counter_build_service = new \OpenCounter\Http\CounterBuildService(
-                $this->getContainer()->get('counter_repository'),
-                $factory,
-                $this->getContainer()->get('Psr\Log\LoggerInterface'));
-            return $counter_build_service;
-        });
+                $counter_build_service = new \OpenCounter\Http\CounterBuildService(
+                    $this->getContainer()->get('counter_repository'),
+                    $factory,
+                    $this->getContainer()->get('Psr\Log\LoggerInterface')
+                );
+                return $counter_build_service;
+            }
+        );
     }
 }

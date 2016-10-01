@@ -21,12 +21,6 @@ $ bin/behat
 $ bin/phpspec
 ```
 
-or you use the handy bash script that runs all those for you
-
-```
-$ ./bin/run-tests.sh
-```
-
 probably you will want to use the continuous testing setup which automatically reruns the handy bash script at ./bin/run-tests.sh on filesave
 with immediate feedback in terminal and browser, for this you will need to run
 

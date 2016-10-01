@@ -11,6 +11,7 @@ use OpenCounter\Infrastructure\Persistence\Sql\SqlManager;
 
 /**
  * Class SqlCounterRepository
+ *
  * @package OpenCounter\Infrastructure\Persistence\Sql\Repository\Counter
  */
 class SqlCounterRepository implements CounterRepositoryInterface
@@ -27,10 +28,10 @@ class SqlCounterRepository implements CounterRepositoryInterface
     {
         $this->manager = $manager;
         $this->removeStmt = $this->manager->prepare(
-          sprintf('DELETE FROM %s WHERE uuid = :uuid', self::TABLE_NAME)
+            sprintf('DELETE FROM %s WHERE uuid = :uuid', self::TABLE_NAME)
         );
         $this->getStmt = $this->manager->prepare(
-          sprintf('SELECT * FROM %s WHERE name = :name', self::TABLE_NAME)
+            sprintf('SELECT * FROM %s WHERE name = :name', self::TABLE_NAME)
         );
 
 
@@ -54,8 +55,10 @@ class SqlCounterRepository implements CounterRepositoryInterface
             throw new \InvalidArgumentException('This argument must be a SQLCounterSpecification');
         }
         return $this->retrieveAll(
-          sprintf('SELECT * FROM %s WHERE %s', self::TABLE_NAME,
-            $specification->toSqlClauses())
+            sprintf(
+                'SELECT * FROM %s WHERE %s', self::TABLE_NAME,
+                $specification->toSqlClauses()
+            )
         );
     }
 
@@ -73,24 +76,26 @@ class SqlCounterRepository implements CounterRepositoryInterface
     public function size()
     {
         return $this->manager
-          ->execute(sprintf('SELECT COUNT(*) FROM %s', self::TABLE_NAME))
-          ->fetchColumn();
+            ->execute(sprintf('SELECT COUNT(*) FROM %s', self::TABLE_NAME))
+            ->fetchColumn();
     }
 
     /**
      * Executes the sql given and returns the result in array of counters.
      *
-     * @param string $sql The sql query
-     * @param array $parameters Array which contains the parameters
+     * @param string $sql        The sql query
+     * @param array  $parameters Array which contains the parameters
      *
      * @return array
      */
     private function retrieveAll($sql, array $parameters = [])
     {
         $statement = $this->manager->execute($sql, $parameters);
-        return array_map(function ($row) {
-            return $this->buildCounter($row);
-        }, $statement->fetchAll(\PDO::FETCH_ASSOC));
+        return array_map(
+            function ($row) {
+                return $this->buildCounter($row);
+            }, $statement->fetchAll(\PDO::FETCH_ASSOC)
+        );
     }
 
     /**
@@ -103,13 +108,13 @@ class SqlCounterRepository implements CounterRepositoryInterface
     private function buildCounter(array $row)
     {
         // debug
-//    print_r($row);
+        //    print_r($row);
         return new Counter(
-          new CounterId($row['uuid']),
-          new CounterName($row['name']),
-          new CounterValue($row['value']),
-          $row['status'],
-          $row['password']
+            new CounterId($row['uuid']),
+            new CounterName($row['name']),
+            new CounterValue($row['value']),
+            $row['status'],
+            $row['password']
         );
     }
 
@@ -143,8 +148,8 @@ class SqlCounterRepository implements CounterRepositoryInterface
     public function getCounterById(CounterId $anId)
     {
         $statement = $this->manager->execute(
-          sprintf('SELECT * FROM %s WHERE uuid = :uuid', self::TABLE_NAME),
-          ['uuid' => $anId->uuid()]
+            sprintf('SELECT * FROM %s WHERE uuid = :uuid', self::TABLE_NAME),
+            ['uuid' => $anId->uuid()]
         );
         if ($row = $statement->fetch(\PDO::FETCH_ASSOC)) {
             return $this->buildCounter($row);
@@ -163,8 +168,8 @@ class SqlCounterRepository implements CounterRepositoryInterface
     {
 
         $statement = $this->manager->execute(
-          sprintf('SELECT * FROM %s WHERE uuid = :uuid', self::TABLE_NAME),
-          ['uuid' => $anId->uuid()]
+            sprintf('SELECT * FROM %s WHERE uuid = :uuid', self::TABLE_NAME),
+            ['uuid' => $anId->uuid()]
         );
         if ($row = $statement->fetch(\PDO::FETCH_ASSOC)) {
             return $this->buildCounter($row);
@@ -183,8 +188,8 @@ class SqlCounterRepository implements CounterRepositoryInterface
     public function getCounterByName(CounterName $aName)
     {
         $statement = $this->manager->execute(
-          sprintf('SELECT * FROM %s WHERE name = :name', self::TABLE_NAME),
-          ['name' => $aName->name()]
+            sprintf('SELECT * FROM %s WHERE name = :name', self::TABLE_NAME),
+            ['name' => $aName->name()]
         );
         if ($row = $statement->fetch(\PDO::FETCH_ASSOC)) {
             return $this->buildCounter($row);
@@ -207,10 +212,10 @@ class SqlCounterRepository implements CounterRepositoryInterface
             where c.name = :name and c.password = :password';
         $stmt = $this->manager->prepare($sql);
         $result = $stmt->execute(
-          [
+            [
             'name' => $name,
             'password' => $password
-          ]
+            ]
         );
 
         if ($result && $data = $stmt->fetch()) {

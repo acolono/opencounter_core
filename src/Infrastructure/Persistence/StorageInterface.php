@@ -16,7 +16,7 @@ namespace OpenCounter\Infrastructure\Persistence;
  */
 interface StorageInterface
 {
-  /**
+    /**
    * Method to persist data
    * Returns new id for just persisted data.
    *
@@ -24,9 +24,9 @@ interface StorageInterface
    *
    * @return int
    */
-  public function persist($data);
+    public function persist($data);
 
-  /**
+    /**
    * Returns data by specified id.
    * If there is no such data null is returned.
    *
@@ -34,9 +34,9 @@ interface StorageInterface
    *
    * @return array|null
    */
-  public function retrieve($id);
+    public function retrieve($id);
 
-  /**
+    /**
    * Delete data specified by id
    * If there is no such data - false returns, if data has been successfully deleted - true returns.
    *
@@ -44,5 +44,5 @@ interface StorageInterface
    *
    * @return bool
    */
-  public function delete($id);
+    public function delete($id);
 }

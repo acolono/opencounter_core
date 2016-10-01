@@ -1,6 +1,8 @@
 <?php
 /**
- * @file
+ * @file CounterFactoryInterface.php
+ *
+ * describes how a counter object is to be created
  */
 namespace OpenCounter\Domain\Factory;
 
@@ -10,20 +12,26 @@ use OpenCounter\Domain\Model\Counter\CounterName;
 
 /**
  * Interface CounterFactoryInterface
+ *
  * @package Domain\Factory\Counter
  */
-
 interface CounterFactoryInterface
 {
     /**
      * Creation method that registers a new counter into domain.
      *
-     * @param CounterId $anId
-     * @param CounterName $aName
-     * @param CounterValue $anValue
-     * @param $status
-     * @param $aPassword
+     * @param  CounterId    $anId
+     * @param  CounterName  $aName
+     * @param  CounterValue $anValue
+     * @param  $status
+     * @param  $aPassword
      * @return mixed
      */
-    public function build(CounterId $anId, CounterName $aName, CounterValue $anValue, $status, $aPassword);
+    public function build(
+        CounterId $anId,
+        CounterName $aName,
+        CounterValue $anValue,
+        $status,
+        $aPassword
+    );
 }

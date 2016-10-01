@@ -6,19 +6,18 @@ use OpenCounter\Domain\Exception\Counter\InvalidNativeArgumentException;
 /**
  * class CounterName
  *
- *
  * @SWG\Definition(
  *   required={"name"}
  * )
  * Class CounterName
- * @package OpenCounter\Domain\Model\Counter
+ * @package         OpenCounter\Domain\Model\Counter
  */
 class CounterName
 {
     /**
      * The counter name.
      *
-     * @var string
+     * @var                                string
      * @SWG\Property(example="onecounter")
      */
 
@@ -41,6 +40,7 @@ class CounterName
 
     /**
      * get name string out of the value object through this public function
+     *
      * @return string
      */
     public function name()

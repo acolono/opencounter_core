@@ -6,6 +6,7 @@ use OpenCounter\Infrastructure\Persistence\StorageInterface;
 
 /**
  * Class SqlManager
+ *
  * @package OpenCounter\Infrastructure\Persistence\Sql
  */
 class SqlManager implements StorageInterface
@@ -49,8 +50,8 @@ class SqlManager implements StorageInterface
     /**
      * Executes the sql given with the parameters given.
      *
-     * @param string $sql The sql in string format
-     * @param array $parameters Array which contains parameters, it can be null
+     * @param string $sql        The sql in string format
+     * @param array  $parameters Array which contains parameters, it can be null
      *
      * @return \PDOStatement
      */

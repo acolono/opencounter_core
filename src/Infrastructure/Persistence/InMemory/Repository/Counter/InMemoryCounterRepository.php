@@ -16,6 +16,7 @@ use OpenCounter\Domain\Repository\CounterRepositoryInterface;
 
 /**
  * Class InMemoryCounterRepository
+ *
  * @package OpenCounter\Infrastructure\Persistence\InMemory\Repository\Counter
  */
 class InMemoryCounterRepository implements CounterRepositoryInterface
@@ -38,7 +39,8 @@ class InMemoryCounterRepository implements CounterRepositoryInterface
 
 
     }
-    public function exists(CounterId $counterId){
+    public function exists(CounterId $counterId)
+    {
         $id = (string) $counterId->uuid();
         return array_key_exists($id, $this->counters);
     }
@@ -131,17 +133,17 @@ class InMemoryCounterRepository implements CounterRepositoryInterface
 
     public function removeCounterByName(CounterName $aName)
     {
-print_r($this->counters);
+        print_r($this->counters);
         unset($this->counters[$aName]);
     }
     public function removeCounterById(CounterId $anId)
     {
-        if ($this->exists($anId)){
-          unset($this->counters[$anId->uuid()]);
+        if ($this->exists($anId)) {
+            unset($this->counters[$anId->uuid()]);
             // we are lazy and returning true because we tried removing,
             // TODO: where do we deal with removal of nonexisting counters
-            return TRUE;
-         }
+            return true;
+        }
     }
 
 }

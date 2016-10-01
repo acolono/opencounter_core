@@ -64,6 +64,7 @@ interface CounterRepositoryInterface
 
     /**
      * Returns the next available id.
+     *
      * @return mixed
      */
     public function nextIdentity();
@@ -75,5 +76,5 @@ interface CounterRepositoryInterface
      */
     public function size();
 
-//  public function find($argument1);
+    //  public function find($argument1);
 }

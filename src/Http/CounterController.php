@@ -25,6 +25,7 @@ use spec\OpenCounter\Domain\Exception\Counter\CounterLockedExceptionSpec;
 
 /**
  * Class CounterController
+ *
  * @package OpenCounter\Api
  */
 class CounterController
@@ -41,8 +42,8 @@ class CounterController
         CounterBuildService $counterBuildService,
         StorageInterface $counter_mapper,
         CounterRepositoryInterface $counter_repository
-    )
-    {
+    ) {
+    
         $this->logger = $logger;
         $this->counterBuildService = $counterBuildService;
         $this->SqlManager = $counter_mapper;
@@ -112,7 +113,7 @@ class CounterController
     public function incrementCounter(ServerRequestInterface $request, ResponseInterface $response, $args)
     {
 
-        $this->logger->info('incrementing (PATCH) counter with name ' , $args);
+        $this->logger->info('incrementing (PATCH) counter with name ', $args);
         //we assume everything is going to fail
         $return = 'an error has occurred';
         $code = 400;
@@ -152,7 +153,7 @@ class CounterController
 
     public function setCounterStatus(ServerRequestInterface $request, ResponseInterface $response, $args)
     {
-        $this->logger->info('updating (PATCH) status of counter with name ' , $args);
+        $this->logger->info('updating (PATCH) status of counter with name ', $args);
         //we assume everything is going to fail
         $return = 'an error has occurred';
         $code = 400;
@@ -189,7 +190,7 @@ class CounterController
 
     public function setCounter(ServerRequestInterface $request, ResponseInterface $response, $args)
     {
-        $this->logger->info('updating (PUT) counter with name ' ,$args);
+        $this->logger->info('updating (PUT) counter with name ', $args);
         //we assume everything is going to fail
         $return = ['message' => 'an error has occurred'];
         $code = 400;
@@ -257,13 +258,13 @@ class CounterController
 
     public function getCounter(ServerRequestInterface $request, ResponseInterface $response, $args)
     {
-        $this->logger->info('getting counter with name: ' , $args);
+        $this->logger->info('getting counter with name: ', $args);
         $counterName = new CounterName($args['name']);
         $counter = $this->counter_repository->getCounterByName($counterName);
         $this->logger->info(json_encode($counter));
         if ($counter) {
             $this->logger->info('found');
-//            return $response->withJson($counter->toArray(), 200);
+            //            return $response->withJson($counter->toArray(), 200);
             $body = $response->getBody();
             $body->write(json_encode($counter->toArray()));
             return $response;
@@ -297,8 +298,12 @@ class CounterController
     public function get($id)
     {
         if (!$this->offsetExists($id)) {
-            throw new ContainerValueNotFoundException(sprintf('Identifier "%s" is not defined.',
-                $id));
+            throw new ContainerValueNotFoundException(
+                sprintf(
+                    'Identifier "%s" is not defined.',
+                    $id
+                )
+            );
         }
         try {
             return $this->offsetGet($id);
@@ -325,8 +330,8 @@ class CounterController
      */
     private function exceptionThrownByContainer(
         \InvalidArgumentException $exception
-    )
-    {
+    ) {
+    
         $trace = $exception->getTrace()[0];
 
         return $trace['class'] === PimpleContainer::class && $trace['function'] === 'offsetGet';
