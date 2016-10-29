@@ -12,7 +12,6 @@
         "behat/web-api-extension": "dev-master",
         "phpspec/phpspec": "3",
         "phpunit/phpunit": "^5.4",
-        "robmorgan/phinx": "^0.6.4",
         "emuse/behat-html-formatter": "0.1.*",
         "behat/mink": "^1.7",
         "behat/mink-goutte-driver": "^1.2",
