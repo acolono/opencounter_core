@@ -2,6 +2,11 @@
 
 contains the OpenCounter classes.
 
+
+<img src="./img/opencounter-logo.png" alt="OpenCounter Logo" width="150">
+<img src="http://acolono.gitlab.net/opencounter_core/project/badges/master/build.svg" alt="OpenCounter master Build status" width="150">
+<img src="http://acolono.gitlab.net/opencounter_core/project/badges/master/coverage.svg" alt="OpenCounter master Coverage" width="150">
+
 # usage
 
 require via composer, then check tests (./behat/features/bootstrap and ./spec) for what classes we bring along and usage examples
