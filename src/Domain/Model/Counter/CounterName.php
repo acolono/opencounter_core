@@ -1,6 +1,7 @@
 <?php
 
 namespace OpenCounter\Domain\Model\Counter;
+
 use OpenCounter\Domain\Exception\Counter\InvalidNativeArgumentException;
 
 /**

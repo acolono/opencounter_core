@@ -33,8 +33,6 @@ class SqlCounterRepository implements CounterRepositoryInterface
         $this->getStmt = $this->manager->prepare(
             sprintf('SELECT * FROM %s WHERE name = :name', self::TABLE_NAME)
         );
-
-
     }
 
     /**
@@ -56,7 +54,8 @@ class SqlCounterRepository implements CounterRepositoryInterface
         }
         return $this->retrieveAll(
             sprintf(
-                'SELECT * FROM %s WHERE %s', self::TABLE_NAME,
+                'SELECT * FROM %s WHERE %s',
+                self::TABLE_NAME,
                 $specification->toSqlClauses()
             )
         );
@@ -94,7 +93,8 @@ class SqlCounterRepository implements CounterRepositoryInterface
         return array_map(
             function ($row) {
                 return $this->buildCounter($row);
-            }, $statement->fetchAll(\PDO::FETCH_ASSOC)
+            },
+            $statement->fetchAll(\PDO::FETCH_ASSOC)
         );
     }
 
@@ -154,7 +154,6 @@ class SqlCounterRepository implements CounterRepositoryInterface
         if ($row = $statement->fetch(\PDO::FETCH_ASSOC)) {
             return $this->buildCounter($row);
         }
-
     }
 
     /**
@@ -174,7 +173,6 @@ class SqlCounterRepository implements CounterRepositoryInterface
         if ($row = $statement->fetch(\PDO::FETCH_ASSOC)) {
             return $this->buildCounter($row);
         }
-
     }
 
     /**

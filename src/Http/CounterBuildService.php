@@ -85,7 +85,6 @@ class CounterBuildService
         }
 
         $counter = $this->counter_factory->build($counterId, $name, $value, 'active', $password);
-        //$this->logger->info('BuildService passing newly created counter to controller for saving via repo ' .  \GuzzleHttp\json_encode($counter->toArray()));
 
         return $counter;
     }

@@ -19,21 +19,21 @@ interface PersistentCounterRepositoryInterface extends CounterRepositoryInterfac
    * @param  \OpenCounter\Domain\Model\Counter\Counter $anCounter
    * @return mixed
    */
-    function save(Counter $anCounter);
+    public function save(Counter $anCounter);
 
     /**
    * @param \OpenCounter\Domain\Model\Counter\Counter $anCounter
    *
    * @return mixed
    */
-    function insert(Counter $anCounter);
+    public function insert(Counter $anCounter);
 
     /**
    * @param \OpenCounter\Domain\Model\Counter\Counter $anCounter
    *
    * @return mixed
    */
-    function update(Counter $anCounter);
+    public function update(Counter $anCounter);
 
     /**
    * @param \OpenCounter\Domain\Model\Counter\CounterName $aName
@@ -41,5 +41,4 @@ interface PersistentCounterRepositoryInterface extends CounterRepositoryInterfac
    * @return mixed
    */
     public function removeCounterByName(CounterName $aName);
-
 }

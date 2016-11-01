@@ -94,7 +94,9 @@ class Counter
     }
 
     /**
-     * our equivalent of render, since properties are private we can use this method to render counter as array for display - this for now resembles the output model of a counter
+     * our equivalent of render,
+     * since properties are private we can use this method to render counter as
+     * array for display - this for now resembles the output model of a counter
      *
      * @return array
      */
@@ -193,10 +195,10 @@ class Counter
         } else {
             throw new CounterLockedException(
                 "cannot increment locked counter",
-                1, null
+                1,
+                null
             );
         }
-
     }
 
     /**
@@ -255,5 +257,4 @@ class Counter
     {
         // TODO: write logic here
     }
-
 }

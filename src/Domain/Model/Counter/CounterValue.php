@@ -1,6 +1,7 @@
 <?php
 
 namespace OpenCounter\Domain\Model\Counter;
+
 use OpenCounter\Domain\Exception\Counter\InvalidNativeArgumentException;
 
 /**
@@ -45,7 +46,6 @@ class CounterValue
             // if we didnt get  a value passed then initialize default value to 0
             $this->value = 0;
         }
-
     }
 
     /**
@@ -57,5 +57,4 @@ class CounterValue
     {
         return (int) $this->value;
     }
-
 }

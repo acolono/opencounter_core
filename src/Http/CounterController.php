@@ -48,11 +48,10 @@ class CounterController
         $this->counterBuildService = $counterBuildService;
         $this->SqlManager = $counter_mapper;
         $this->counter_repository = $counter_repository;
-
     }
 
 
-    public function newCounter(RequestInterface $request,ResponseInterface $response, $args)
+    public function newCounter(RequestInterface $request, ResponseInterface $response, $args)
     {
 
         $this->logger->info('inserting new counter with name ', $args);
@@ -66,7 +65,6 @@ class CounterController
             $return = json_encode($counter->toArray());
             $code = 201;
         } catch (\Exception $e) {
-
             $return = $e->getMessage();
             $code = 409;
             $this->logger->info('exception ' . $e->getMessage());
@@ -75,7 +73,6 @@ class CounterController
         $body = $response->getBody();
         $body->write($return);
         return $response->withStatus($code);
-
     }
 
     /**
@@ -106,7 +103,6 @@ class CounterController
      */
     public function addCounter()
     {
-
     }
 
 
@@ -148,7 +144,6 @@ class CounterController
         $body = $response->getBody();
         $body->write($return);
         return $response->withStatus($code);
-
     }
 
     public function setCounterStatus(ServerRequestInterface $request, ResponseInterface $response, $args)
@@ -185,7 +180,6 @@ class CounterController
         $body = $response->getBody();
         $body->write($return);
         return $response->withStatus($code);
-
     }
 
     public function setCounter(ServerRequestInterface $request, ResponseInterface $response, $args)
@@ -231,7 +225,6 @@ class CounterController
         $body = $response->getBody();
         $body->write($return);
         return $response;
-
     }
 
     public function getCount(ServerRequestInterface $request, ResponseInterface $response, $args)
@@ -354,5 +347,4 @@ class CounterController
     {
         // TODO: write logic here
     }
-
 }

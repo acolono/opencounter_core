@@ -36,8 +36,6 @@ class InMemoryCounterRepository implements CounterRepositoryInterface
         foreach ($counters as $item) {
             $this->add($item);
         }
-
-
     }
     public function exists(CounterId $counterId)
     {
@@ -145,5 +143,4 @@ class InMemoryCounterRepository implements CounterRepositoryInterface
             return true;
         }
     }
-
 }

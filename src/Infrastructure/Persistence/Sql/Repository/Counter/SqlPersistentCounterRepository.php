@@ -48,7 +48,6 @@ class SqlPersistentCounterRepository extends SqlCounterRepository implements Per
                 self::TABLE_NAME
             )
         );
-
     }
 
     /**
@@ -94,9 +93,8 @@ class SqlPersistentCounterRepository extends SqlCounterRepository implements Per
             'password' => 'passwordplaceholder'
             ]
         );
-
     }
-    public function removeCounterByName(CounterName $counterName) 
+    public function removeCounterByName(CounterName $counterName)
     {
         // TODO: allow removing counters from db
     }
@@ -115,7 +113,5 @@ class SqlPersistentCounterRepository extends SqlCounterRepository implements Per
             'password' => 'passwordplaceholder'
             ]
         );
-
     }
-
 }
