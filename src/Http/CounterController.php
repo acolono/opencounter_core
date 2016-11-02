@@ -38,12 +38,12 @@ class CounterController
     private $counterBuildService;
 
     public function __construct(
-        LoggerInterface $logger,
-        CounterBuildService $counterBuildService,
-        StorageInterface $counter_mapper,
-        CounterRepositoryInterface $counter_repository
+      LoggerInterface $logger,
+      CounterBuildService $counterBuildService,
+      StorageInterface $counter_mapper,
+      CounterRepositoryInterface $counter_repository
     ) {
-    
+
         $this->logger = $logger;
         $this->counterBuildService = $counterBuildService;
         $this->SqlManager = $counter_mapper;
@@ -65,7 +65,7 @@ class CounterController
             $return = json_encode($counter->toArray());
             $code = 201;
         } catch (\Exception $e) {
-            $return = $e->getMessage();
+            $return = json_encode($e->getMessage());
             $code = 409;
             $this->logger->info('exception ' . $e->getMessage());
         }
@@ -292,10 +292,10 @@ class CounterController
     {
         if (!$this->offsetExists($id)) {
             throw new ContainerValueNotFoundException(
-                sprintf(
-                    'Identifier "%s" is not defined.',
-                    $id
-                )
+              sprintf(
+                'Identifier "%s" is not defined.',
+                $id
+              )
             );
         }
         try {
@@ -303,9 +303,9 @@ class CounterController
         } catch (\InvalidArgumentException $exception) {
             if ($this->exceptionThrownByContainer($exception)) {
                 throw new SlimContainerException(
-                    sprintf('Container error while retrieving "%s"', $id),
-                    null,
-                    $exception
+                  sprintf('Container error while retrieving "%s"', $id),
+                  null,
+                  $exception
                 );
             } else {
                 throw $exception;
@@ -322,9 +322,9 @@ class CounterController
      * @return bool
      */
     private function exceptionThrownByContainer(
-        \InvalidArgumentException $exception
+      \InvalidArgumentException $exception
     ) {
-    
+
         $trace = $exception->getTrace()[0];
 
         return $trace['class'] === PimpleContainer::class && $trace['function'] === 'offsetGet';

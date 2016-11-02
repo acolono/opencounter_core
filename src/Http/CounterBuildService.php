@@ -34,11 +34,11 @@ class CounterBuildService
      * @param LoggerInterface            $logger
      */
     public function __construct(
-        CounterRepositoryInterface $counter_repository,
-        CounterFactory $counter_factory,
-        LoggerInterface $logger
+      CounterRepositoryInterface $counter_repository,
+      CounterFactory $counter_factory,
+      LoggerInterface $logger
     ) {
-    
+
         $this->counter_repository = $counter_repository;
         $this->counter_factory = $counter_factory;
         $this->logger = $logger;
@@ -66,8 +66,8 @@ class CounterBuildService
         // https://leanpub.com/ddd-in-php/read#leanpub-auto-persisting-value-objects
 
         $counterId = $this->counter_repository->nextIdentity();
-        $name = new CounterName($data['name']);
-        $value = new CounterValue($data['value']);
+        $name = new CounterName($args['name']);
+        $value = new CounterValue((isset($args['value']) ? $args['value'] : 0));
 
         $password = 'passwordplaceholder';
         try {

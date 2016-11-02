@@ -58,7 +58,7 @@ class InMemoryCounterRepository implements CounterRepositoryInterface
     /**
      * @inheritDoc
      */
-    public function add(Counter $counter)
+    public function save(Counter $counter)
     {
         $id = (string) $counter->getId();
         $this->counters[$id] = clone $counter;
@@ -69,7 +69,7 @@ class InMemoryCounterRepository implements CounterRepositoryInterface
      */
     public function remove(Counter $counter)
     {
-        unset($this->counters[$counter->getId()]);
+        //unset($this->counters[$counter->getId()]);
     }
 
     /**
@@ -93,7 +93,7 @@ class InMemoryCounterRepository implements CounterRepositoryInterface
      */
     public function getCounterByUuid(CounterId $anId)
     {
-        unset($this->counters[$anId]);
+        // unset($this->counters[$anId]);
     }
 
     /**
