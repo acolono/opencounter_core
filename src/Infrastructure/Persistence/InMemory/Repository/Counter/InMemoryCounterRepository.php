@@ -34,7 +34,7 @@ class InMemoryCounterRepository implements CounterRepositoryInterface
     public function __construct(array $counters)
     {
         foreach ($counters as $item) {
-            $this->add($item);
+            $this->save($item);
         }
     }
     public function exists(CounterId $counterId)

@@ -248,7 +248,7 @@ class DomainContext implements Context, SnippetAcceptingContext
         $this->counter = $this->counter_factory->build($this->counterId, $this->counterName, $this->counterValue, 'active', 'passworplaceholder');
 
         // cannot save in memory repository since its not persistent, so not testing this?
-        $this->counter_repository->add($this->counter);
+        $this->counter_repository->save($this->counter);
     }
 
     /**
