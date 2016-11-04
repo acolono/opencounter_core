@@ -38,10 +38,10 @@ class CounterController
     private $counterBuildService;
 
     public function __construct(
-      LoggerInterface $logger,
-      CounterBuildService $counterBuildService,
-      StorageInterface $counter_mapper,
-      CounterRepositoryInterface $counter_repository
+        LoggerInterface $logger,
+        CounterBuildService $counterBuildService,
+        StorageInterface $counter_mapper,
+        CounterRepositoryInterface $counter_repository
     ) {
 
         $this->logger = $logger;
@@ -292,10 +292,10 @@ class CounterController
     {
         if (!$this->offsetExists($id)) {
             throw new ContainerValueNotFoundException(
-              sprintf(
-                'Identifier "%s" is not defined.',
-                $id
-              )
+                sprintf(
+                    'Identifier "%s" is not defined.',
+                    $id
+                )
             );
         }
         try {
@@ -303,9 +303,9 @@ class CounterController
         } catch (\InvalidArgumentException $exception) {
             if ($this->exceptionThrownByContainer($exception)) {
                 throw new SlimContainerException(
-                  sprintf('Container error while retrieving "%s"', $id),
-                  null,
-                  $exception
+                    sprintf('Container error while retrieving "%s"', $id),
+                    null,
+                    $exception
                 );
             } else {
                 throw $exception;
@@ -322,7 +322,7 @@ class CounterController
      * @return bool
      */
     private function exceptionThrownByContainer(
-      \InvalidArgumentException $exception
+        \InvalidArgumentException $exception
     ) {
 
         $trace = $exception->getTrace()[0];

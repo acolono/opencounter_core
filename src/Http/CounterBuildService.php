@@ -34,9 +34,9 @@ class CounterBuildService
      * @param LoggerInterface            $logger
      */
     public function __construct(
-      CounterRepositoryInterface $counter_repository,
-      CounterFactory $counter_factory,
-      LoggerInterface $logger
+        CounterRepositoryInterface $counter_repository,
+        CounterFactory $counter_factory,
+        LoggerInterface $logger
     ) {
 
         $this->counter_repository = $counter_repository;
