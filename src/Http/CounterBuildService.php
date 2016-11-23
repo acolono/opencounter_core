@@ -66,8 +66,8 @@ class CounterBuildService
         // https://leanpub.com/ddd-in-php/read#leanpub-auto-persisting-value-objects
 
         $counterId = $this->counter_repository->nextIdentity();
-        $name = new CounterName($args['name']);
-        $value = new CounterValue((isset($args['value']) ? $args['value'] : 0));
+        $name = new CounterName($data['name']);
+        $value = new CounterValue($data['value']);
 
         $password = 'passwordplaceholder';
         try {
