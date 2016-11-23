@@ -203,7 +203,7 @@ class CounterController
                 $this->logger->info('found ', $counterName);
 
                 if ($counter->isLocked()) {
-                    $this->logger->info('cannot save locked counter  ' , $counterName);
+                    $this->logger->info('cannot save locked counter  ', $counterName);
 
                     $return['message'] = 'counter with name ' . $counterName . ' is locked';
                     $code = 409;
@@ -216,7 +216,7 @@ class CounterController
                     $code = 201;
                 }
             } else {
-                $this->logger->info('The counter was not found ' , $counterName);
+                $this->logger->info('The counter was not found ', $counterName);
 
                 $return['message'] = 'The counter was not found, possibly due to bad credentials';
                 $code = 404;
@@ -267,7 +267,50 @@ class CounterController
             return $response->withStatus(404);
         }
     }
+    public function deleteCounter(ServerRequestInterface $request, ResponseInterface $response, $args)
+    {
+        $this->logger->info('deleting counter with name ', $args);
+        //we assume everything is going to fail
+        $return = ['message' => 'an error has occurred'];
+        $code = 400;
 
+        $data = $request->getParsedBody();
+        $this->logger->info('received request body', $data);
+
+        $counterName = new CounterName($args['name']);
+        $counterValue = new CounterValue($data['value']);
+
+        // validate the array
+        if ($data && isset($data['value'])) {
+            $counter = $this->counter_repository->getCounterByName($counterName);
+
+            if ($counter) {
+                $this->logger->info('found ', $data);
+
+                if ($counter->isLocked()) {
+                    $this->logger->info('cannot delete locked counter  ');
+
+                    $return['message'] = 'counter with name ' . $counterName . ' is locked';
+                    $code = 409;
+                } else {
+                    $this->counter_repository->remove($counter);
+                    $this->logger->info('deleted ', $counter->toArray());
+                    $return = $counter->toArray();
+                    $code = 201;
+                }
+            } else {
+                $this->logger->info('The counter was not found ');
+
+                $return['message'] = 'The counter was not found, possibly due to bad credentials';
+                $code = 404;
+            }
+        }
+        $body = $response->getBody();
+        // now how can we allow slim response to write to body like this?
+        //TODO: figure out if we can use this controller with slim Response o
+        $body->write(json_encode($return, JSON_UNESCAPED_SLASHES));
+        return $response;
+    }
     public function allAction()
     {
         $counters = $this->get('counter_repository')->findAll();

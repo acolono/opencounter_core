@@ -93,7 +93,7 @@ class InMemoryCounterRepository implements CounterRepositoryInterface
      */
     public function getCounterByUuid(CounterId $anId)
     {
-        // unset($this->counters[$anId]);
+        // TODO: Implement getCounterByUuid() method. unset($this->counters[$anId]);
     }
 
     /**
@@ -131,7 +131,7 @@ class InMemoryCounterRepository implements CounterRepositoryInterface
 
     public function removeCounterByName(CounterName $aName)
     {
-        print_r($this->counters);
+        //print_r($this->counters);
         unset($this->counters[$aName]);
     }
     public function removeCounterById(CounterId $anId)
