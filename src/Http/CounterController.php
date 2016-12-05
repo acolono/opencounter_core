@@ -168,7 +168,7 @@ class CounterController
                 } else {
                     $counter->lock();
                     $this->counter_repository->save($counter);
-                    $this->logger->info('saved locked counter', $counterName);
+                    $this->logger->info('saved locked counter', $counter->toArray());
                     $return = json_encode($counter->toArray());
                     $code = 201;
                 }
@@ -200,10 +200,10 @@ class CounterController
             $counter = $this->counter_repository->getCounterByName($counterName);
 
             if ($counter) {
-                $this->logger->info('found ', $counterName);
+                $this->logger->info('found ', $counter->toArray());
 
                 if ($counter->isLocked()) {
-                    $this->logger->info('cannot save locked counter  ', $counterName);
+                    $this->logger->info('cannot save locked counter  ', $counter->toArray());
 
                     $return['message'] = 'counter with name ' . $counterName . ' is locked';
                     $code = 409;
@@ -211,19 +211,21 @@ class CounterController
                     $counter->resetValueTo($counterValue);
 
                     $this->counter_repository->save($counter);
-                    $this->logger->info('saved ', $counterName);
+                    $this->logger->info('saved ', $counter->toArray());
                     $return = $counter->toArray();
                     $code = 201;
                 }
             } else {
-                $this->logger->info('The counter was not found ', $counterName);
+                $this->logger->info('The counter was not found ', $data);
 
                 $return['message'] = 'The counter was not found, possibly due to bad credentials';
                 $code = 404;
             }
         }
         $body = $response->getBody();
-        $body->write($return);
+        // now how can we allow slim response to write to body like this?
+        //TODO: figure out if we can use this controller with slim Response o
+        $body->write(json_encode($return, JSON_UNESCAPED_SLASHES));
         return $response;
     }
 
@@ -237,7 +239,7 @@ class CounterController
         $this->logger->info(json_encode($counter));
 
         if ($counter) {
-            $this->logger->info('found', $counter);
+            $this->logger->info('found', $counter->toArray());
             // return $response->withJson($counter->getValue());
             $body = $response->getBody();
             $body->write(json_encode($counter->getValue()));
