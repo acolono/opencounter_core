@@ -1,0 +1,36 @@
+# behat.yml
+default:
+  autoload: [ %paths.base%/features/bootstrap ]
+  extensions:
+    emuse\BehatHTMLFormatter\BehatHTMLFormatterExtension:
+      name: html
+      renderer: Twig,Behat2
+      file_name: index
+      print_args: true
+      print_outp: true
+      loop_break: true
+    Pavlakis\Slim\Behat:
+      config_file: ../../configuration/settings.php
+      dependencies_file: ../../configuration/dependencies.php
+      middleware_file: ../../configuration/middleware.php
+      routes_file: ../../configuration/routes.php
+    Behat\WebApiExtension:
+      base_url: http://localhost:8080
+    Behat\MinkExtension:
+      base_url:  http://localhost:8080
+      sessions:
+        default:
+          goutte: ~
+  formatters:
+      pretty: true
+      progress: true
+      html:
+        output_path: %paths.base%/reports/html/behat
+#      junit:
+#        output_path: %paths.base%/reports/junit/behat
+  suites:
+    default:
+      paths: [ %paths.base%/features/Counters ]
+      contexts: [ DomainContext ]
+      filters:
+        tags: "@domain"
