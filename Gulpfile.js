@@ -6,6 +6,10 @@ var exec    = require('child_process').exec;
 var gutil   = require('gulp-util');
 var plumber = require('gulp-plumber');
 
+'use strict';
+const release = require('gulp-release');
+release.register(gulp, { packages: ['composer.json', 'package.json'] });
+
 var onError = function(err) {
     beep([1000, 1000, 1000]);
     gutil.log(gutil.colors.red(err));
