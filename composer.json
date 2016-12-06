@@ -3,6 +3,11 @@
     "description": "framework agnostic counter business logic",
     "minimum-stability": "dev",
     "version": "0.1.0-dev",
+    "extra": {
+      "branch-alias": {
+        "dev-master": "1.0.x-dev"
+      }
+    },
     "require": {
         "php": ">=5.5.0",
         "monolog/monolog": "^1.17",
