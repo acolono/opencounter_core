@@ -30,7 +30,7 @@ stages:
 occ_build:
   stage: build
   cache:
-    key: "$CI_BUILD_NAME"
+    key: "$CI_BUILD_REF"
     untracked: true
     paths:
       - bin/
@@ -52,7 +52,7 @@ occ_build:
 occ_test:
   stage: test
   cache:
-    key: "$CI_BUILD_NAME"
+    key: "$CI_BUILD_REF"
     untracked: true
     paths:
       - bin/
@@ -67,7 +67,7 @@ occ_test:
     - ~/.composer/vendor/bin/phpcs --standard=psr2 --error-severity=1 --warning-severity=8 src
   # Store resulting behat html report as artifact
   artifacts:
-    name: "$CI_BUILD_NAME-reports"
+    name: "$CI_BUILD_REF-reports"
     untracked: true
     paths:
       - descriptions/behat/reports/html/behat/
@@ -79,7 +79,7 @@ occ_test:php7:
   stage: test
   image: php:7.0
   cache:
-    key: "$CI_BUILD_NAME"
+    key: "$CI_BUILD_REF"
     untracked: true
     paths:
       - bin/
@@ -102,7 +102,7 @@ occ_changelog:
     - master
   image: ruby:2.3
   cache:
-    key: "$CI_BUILD_NAME"
+    key: "$CI_BUILD_REF"
     untracked: true
     paths:
       - CHANGELOG.md
@@ -114,7 +114,7 @@ occ_changelog:
   allow_failure: true
   # Store resulting changelog as artifact
   artifacts:
-    name: "$CI_BUILD_NAME-changelog"
+    name: "$CI_BUILD_REF-changelog"
     untracked: true
     paths:
       - CHANGELOG.md
@@ -126,7 +126,7 @@ occ_phpdoc:
     - master
   image: php:5.6
   cache:
-    key: "$CI_BUILD_NAME"
+    key: "$CI_BUILD_REF"
     untracked: true
     paths:
       - docs/core
@@ -137,7 +137,7 @@ occ_phpdoc:
   allow_failure: true
   # Store resulting changelog as artifact
   artifacts:
-    name: "$CI_BUILD_NAME-phpdoc"
+    name: "$CI_BUILD_REF-phpdoc"
     untracked: true
     paths:
       - docs/core
@@ -155,7 +155,7 @@ pages:
     - tags
   image: php:5.6
   cache:
-    key: "$CI_BUILD_NAME"
+    key: "$CI_BUILD_REF"
     untracked: true
     paths:
       - public/docs/Core
@@ -166,7 +166,7 @@ pages:
   allow_failure: true
   # Store resulting changelog as artifact
   artifacts:
-    name: "$CI_BUILD_NAME-docs"
+    name: "$CI_BUILD_REF-docs"
     untracked: true
     paths:
     - public/docs/Core

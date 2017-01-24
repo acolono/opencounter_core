@@ -2,16 +2,21 @@
     "name": "rosenstrauch/opencounter_api_core",
     "description": "framework agnostic counter business logic",
     "minimum-stability": "dev",
+    "version": "0.1.1-dev",
+    "extra": {
+        "branch-alias": {
+            "dev-master": "1.0.x-dev"
+        }
+    },
     "require": {
         "php": ">=5.5.0",
         "monolog/monolog": "^1.17",
         "ramsey/uuid": "^3.5"
     },
     "require-dev": {
-        "behat/behat": "dev-master",
-        "behat/web-api-extension": "dev-master",
-        "phpspec/phpspec": "3",
-        "phpunit/phpunit": "^5.4",
+        "behat/behat": "^3",
+        "behat/web-api-extension": "^1",
+        "phpspec/phpspec": "^3",
         "emuse/behat-html-formatter": "0.1.*",
         "behat/mink": "^1.7",
         "behat/mink-goutte-driver": "^1.2",
@@ -26,5 +31,6 @@
         "psr-4": {
             "OpenCounter\\": "src/"
         }
-    }
+    },
+    "codename": "Bronze Marklar"
 }

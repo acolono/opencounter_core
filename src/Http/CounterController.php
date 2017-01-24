@@ -203,7 +203,7 @@ class CounterController
                 $this->logger->info('found ', $counterName);
 
                 if ($counter->isLocked()) {
-                    $this->logger->info('cannot save locked counter  ' , $counterName);
+                    $this->logger->info('cannot save locked counter  ', $counterName);
 
                     $return['message'] = 'counter with name ' . $counterName . ' is locked';
                     $code = 409;
@@ -216,7 +216,7 @@ class CounterController
                     $code = 201;
                 }
             } else {
-                $this->logger->info('The counter was not found ' , $counterName);
+                $this->logger->info('The counter was not found ', $counterName);
 
                 $return['message'] = 'The counter was not found, possibly due to bad credentials';
                 $code = 404;
