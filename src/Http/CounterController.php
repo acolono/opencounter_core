@@ -200,10 +200,10 @@ class CounterController
             $counter = $this->counter_repository->getCounterByName($counterName);
 
             if ($counter) {
-                $this->logger->info('found ', $counter->toArray());
+              $this->logger->info('found ', $counter->toArray());
 
                 if ($counter->isLocked()) {
-                    $this->logger->info('cannot save locked counter  ', $counter->toArray());
+                  $this->logger->info('cannot save locked counter  ', $counter->toArray());
 
                     $return['message'] = 'counter with name ' . $counterName . ' is locked';
                     $code = 409;
