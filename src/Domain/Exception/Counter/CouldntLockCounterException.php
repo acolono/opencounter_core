@@ -3,10 +3,10 @@
 namespace OpenCounter\Domain\Exception\Counter;
 
 /**
- * Class CounterLockedException
+ * Class CouldntLockCounterException
  *
  * @package OpenCounter\Domain\Exception\Counter
  */
-class CounterLockedException extends \Exception
+class CouldntLockCounterException extends \Exception
 {
 }

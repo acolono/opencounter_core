@@ -28,14 +28,6 @@ class Counter
 
     protected $id;
     /**
-     * The counter entity name.
-     *
-     * @var                                string
-     * @SWG\Property(example="onecounter")
-     */
-
-    private $name;
-    /**
      * The counter entity password.
      *
      * @var                                     string
@@ -44,11 +36,19 @@ class Counter
 
     protected $password;
     /**
-     * The counter entity value.
+     * The counter entity name.
      *
-     * @var                          integer
-     * @SWG\Property(format="int32")
+     * @var                                string
+     * @SWG\Property(example="onecounter")
      */
+
+    private $name;
+  /**
+   * The counter entity value.
+   *
+   * @var                          integer
+   * @SWG\Property(format="int32")
+   */
 
     private $value;
     /**
@@ -143,28 +143,6 @@ class Counter
     }
 
     /**
-     * Get Counter Value.
-     *
-     * @return int
-     *   the count
-     */
-    public function getValue()
-    {
-        return $this->value;
-    }
-
-    /**
-     * Counter Status.
-     *
-     * @return string
-     *   The counter ID
-     */
-    public function getStatus()
-    {
-        return $this->status;
-    }
-
-    /**
      * Reset Counter.
      *
      * @return string
@@ -194,11 +172,32 @@ class Counter
             return true;
         } else {
             throw new CounterLockedException(
-                "cannot increment locked counter",
+                "counter is locked",
                 1,
                 null
             );
         }
+    }
+
+  /**
+   * Check whether Counter is Locked
+   *
+   * @return bool
+   */
+    public function isLocked()
+    {
+        return ($this->status == 'locked');
+    }
+
+  /**
+   * Get Counter Value.
+   *
+   * @return int
+   *   the count
+   */
+    public function getValue()
+    {
+        return $this->value;
     }
 
     /**
@@ -210,10 +209,31 @@ class Counter
     public function lock()
     {
         if (!$this->couldBeLocked()) {
-            throw new \Exception("Could not set status to locked");
+            throw new CouldntLockCounterException("Could not set status to locked");
         }
         $this->status = 'locked';
         return $this->getStatus();
+    }
+
+  /**
+   * Check whether Counter can be locked
+   *
+   * @return bool
+   */
+    private function couldBeLocked()
+    {
+        return !$this->isLocked();
+    }
+
+  /**
+   * Counter Status.
+   *
+   * @return string
+   *   The counter ID
+   */
+    public function getStatus()
+    {
+        return $this->status;
     }
 
     /**
@@ -231,26 +251,6 @@ class Counter
         }
         $this->status = 'active';
         return $this->getStatus();
-    }
-
-    /**
-     * Check whether Counter is Locked
-     *
-     * @return bool
-     */
-    public function isLocked()
-    {
-        return ($this->status == 'locked');
-    }
-
-    /**
-     * Check whether Counter can be locked
-     *
-     * @return bool
-     */
-    private function couldBeLocked()
-    {
-        return !$this->isLocked();
     }
 
     public function changeNameTo(CounterName $newCounterName)

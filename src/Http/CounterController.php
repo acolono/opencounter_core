@@ -4,6 +4,8 @@
  * User: rosenstrauch
  * Date: 8/6/16
  * Time: 11:46 AM
+ *
+ * Contains Methods that receive requests, try to interact with counter objects and counter repository and return a response. each method writes to log during every step. validation happens in the counter objects where exceptions are thrown and caught here
  */
 
 namespace OpenCounter\Http;
@@ -31,48 +33,57 @@ use spec\OpenCounter\Domain\Exception\Counter\CounterLockedExceptionSpec;
 class CounterController
 {
 
-  private $request;
-  private $response;
-  private $logger;
-  private $counter_repository;
-  private $counterBuildService;
+    private $request;
+    private $response;
+    private $logger;
+    private $counter_repository;
+    private $counterBuildService;
 
-  public function __construct(
-    LoggerInterface $logger,
-    CounterBuildService $counterBuildService,
-    StorageInterface $counter_mapper,
-    CounterRepositoryInterface $counter_repository
-  ) {
+    public function __construct(
+        LoggerInterface $logger,
+        CounterBuildService $counterBuildService,
+        StorageInterface $counter_mapper,
+        CounterRepositoryInterface $counter_repository
+    ) {
 
-    $this->logger = $logger;
-    $this->counterBuildService = $counterBuildService;
-    $this->SqlManager = $counter_mapper;
-    $this->counter_repository = $counter_repository;
-  }
-
-
-  public function newCounter(RequestInterface $request, ResponseInterface $response, $args) {
-
-    $this->logger->info('inserting new counter with name ', $args);
-
-    // Now we need to instantiate our Counter using a factory
-    // use another service that in turn calls the factory?
-    try {
-      $counter = $this->counterBuildService->execute($request, $args);
-      $this->counter_repository->save($counter);
-      $this->logger->info('saved ' . $counter->getName());
-      $return = json_encode($counter->toArray());
-      $code = 201;
-    } catch (\Exception $e) {
-      $return = json_encode($e->getMessage());
-      $code = 409;
-      $this->logger->info('exception ' . $e->getMessage());
+        $this->logger = $logger;
+        $this->counterBuildService = $counterBuildService;
+        $this->SqlManager = $counter_mapper;
+        $this->counter_repository = $counter_repository;
     }
 
-    $body = $response->getBody();
-    $body->write($return);
-    return $response->withStatus($code);
-  }
+
+  /**
+   * New Counter
+   *
+   * @param \Psr\Http\Message\RequestInterface $request
+   * @param \Psr\Http\Message\ResponseInterface $response
+   * @param $args
+   * @return \Psr\Http\Message\ResponseInterface|static
+   */
+    public function newCounter(RequestInterface $request, ResponseInterface $response, $args)
+    {
+
+        $this->logger->info('try to create new counter', $args);
+
+        // Now we need to instantiate our Counter using a factory
+        // use another service that in turn calls the factory?
+        try {
+            $counter = $this->counterBuildService->execute($request, $args);
+            $this->counter_repository->save($counter);
+            $this->logger->info('saved counter', $counter->toArray());
+            $return = json_encode($counter->toArray());
+            $code = 201;
+        } catch (\Exception $e) {
+            $return = json_encode($e->getMessage());
+            $code = 409;
+            $this->logger->info('exception ' . $e->getMessage());
+        }
+
+        $body = $response->getBody();
+        $body->write($return);
+        return $response->withStatus($code);
+    }
 
   /**
    * @SWG\Post(
@@ -100,228 +111,211 @@ class CounterController
    *     )
    * )
    */
-  public function addCounter() {
-  }
+    public function addCounter()
+    {
+    }
 
+  /**
+   * incrementCounter
+   *
+   * try to increment a counter. will fail if counter is locked or not found. if successful returns updated counter object in response
+   *
+   * @param \Psr\Http\Message\ServerRequestInterface $request
+   *   request needs to contain an integer to increment by.
+   * @param \Psr\Http\Message\ResponseInterface $response
+   *   a response object to return
+   * @param $args
+   *   the name of the counter is passed as argument. note that increment value is passed in body though.
+   * @return \Psr\Http\Message\ResponseInterface|static
+   *   Either an exception if counter was locked or wasnt found or the updated counter object.
+   */
+    public function incrementCounter(ServerRequestInterface $request, ResponseInterface $response, $args)
+    {
 
-  public function incrementCounter(ServerRequestInterface $request, ResponseInterface $response, $args) {
+        $this->logger->info('incrementing (PATCH) counter with name ', $args);
+        //we assume everything is going to fail
+        $return = 'an error has occurred';
+        $code = 400;
 
-    $this->logger->info('incrementing (PATCH) counter with name ', $args);
-    //we assume everything is going to fail
-    $return = 'an error has occurred';
-    $code = 400;
-
-    $data = $request->getParsedBody();
-    $this->logger->info(json_encode($data));
-
-    $counterName = new CounterName($args['name']);
-
-    // validate the array
-    if ($data && isset($data['value'])) {
-      $counter = $this->counter_repository->getCounterByName($counterName);
-
-      if ($counter) {
-        if ($counter->isLocked()) {
-          $return = 'counter with name onecounter is locked';
-          $code = 409;
+        try {
+            $data = $request->getParsedBody();
+            $this->logger->info('received request body', $data);
+            $counterName = new CounterName($args['name']);
+            $this->logger->info('check for existing counter ' . $counterName->name());
+            $counter = $this->counter_repository->getCounterByName($counterName);
+            $this->logger->info('attempt to increment counter');
+            $increment = new CounterValue($data['value']);
+            $update = $counter->increaseCount($increment);
+            if ($update) {
+                $this->counter_repository->update($counter);
+                $return = json_encode($counter->toArray());
+                $code = 201;
+                $this->logger->info('updated counter', $counter->toArray());
+            }
+        } catch (\Exception $e) {
+            $return = json_encode($e->getMessage());
+            // TODO: get the return code from the exception?
+      //      $code = 409;
+            $this->logger->info('exception ' . $e->getMessage());
         }
-        else {
-          $increment = new CounterValue($data['value']);
-          $update = $counter->increaseCount($increment);
-          if ($update) {
-            $this->counter_repository->update($counter);
+
+        $body = $response->getBody();
+        $body->write($return);
+        return $response->withStatus($code);
+    }
+
+    public function setCounterStatus(ServerRequestInterface $request, ResponseInterface $response, $args)
+    {
+        $this->logger->info('updating (PATCH) status of counter ', $args);
+
+        try {
+            $data = $request->getParsedBody();
+            $this->logger->info('received request data', $data);
+            $counterName = new CounterName($args['name']);
+            $counterValue = new CounterValue($data['value']);
+            $counter = $this->counter_repository->getCounterByName($counterName);
+            $counter->lock();
+            $this->counter_repository->save($counter);
+            $this->logger->info('saved locked counter', $counter->toArray());
             $return = json_encode($counter->toArray());
             $code = 201;
-          }
+        } catch (\Exception $e) {
+            $return = json_encode($e->getMessage());
+            $code = 409;
+            $this->logger->info('exception ' . $e->getMessage());
         }
-      }
-      else {
-        $return = 'The counter was not found, possibly due to bad credentials';
-        $code = 404;
-      }
+
+        $body = $response->getBody();
+        $body->write($return);
+        return $response->withStatus($code);
     }
-    $body = $response->getBody();
-    $body->write($return);
-    return $response->withStatus($code);
-  }
 
-  public function setCounterStatus(ServerRequestInterface $request, ResponseInterface $response, $args) {
-    $this->logger->info('updating (PATCH) status of counter with name ', $args);
-    //we assume everything is going to fail
-    $return = 'an error has occurred';
-    $code = 400;
+    public function setCounter(ServerRequestInterface $request, ResponseInterface $response, $args)
+    {
+        $this->logger->info('updating (PUT) counter with name ', $args);
+        //we assume everything is going to fail
+        $return = ['message' => 'an error has occurred'];
+        $code = 400;
 
-    $data = $request->getParsedBody();
-    $this->logger->info('received request data', $data);
+        try {
+            $data = $request->getParsedBody();
 
-    $counterName = new CounterName($args['name']);
-    $counterValue = new CounterValue($data['value']);
-    // validate the array
-    if ($data && isset($data['status']) && $data['status'] = 'locked') {
-      $counter = $this->counter_repository->getCounterByName($counterName);
-      if ($counter) {
-        if ($counter->isLocked()) {
-          $return = 'The counter is locked already';
-          $code = 409;
+            $this->logger->info('request', $data);
+            $counterName = new CounterName($args['name']);
+            $counterValue = new CounterValue($data['value']);
+            $this->logger->info('find ' . $counterName->name());
+            $counter = $this->counter_repository->getCounterByName($counterName);
+
+            $this->logger->info('resetting ', $counter->toArray());
+            $counter->resetValueTo($counterValue);
+            $this->logger->info('saving ', $counter->toArray());
+
+            $this->counter_repository->save($counter);
+
+            $this->logger->info('return counter ', $counter->toArray());
+            $return = $counter->toArray();
+            $code = 201;
+        } catch (\Exception $e) {
+            $return = json_encode($e->getMessage());
+      //      $code = 409;
+            $this->logger->info('exception ' . $e->getMessage());
         }
-        else {
-          $counter->lock();
-          $this->counter_repository->save($counter);
-          $this->logger->info('saved locked counter', $counter->toArray());
-          $return = json_encode($counter->toArray());
-          $code = 201;
+
+        $body = $response->getBody();
+        // now how can we allow slim response to write to body like this? and how to handle mimetypes
+
+        $body->write(json_encode($return, JSON_UNESCAPED_SLASHES));
+        return $response;
+    }
+
+    public function getCount(ServerRequestInterface $request, ResponseInterface $response, $args)
+    {
+
+        $this->logger->info('getting value from counter with name: ' . $args['name']);
+
+
+        try {
+            $counterName = new CounterName($args['name']);
+            $counter = $this->counter_repository->getCounterByName($counterName);
+            $this->logger->info('found', $counter->toArray());
+            // write counter to response body
+            $body = $response->getBody();
+            $body->write(json_encode($counter->getValue()));
+        } catch (\Exception $e) {
+            //$return = json_encode($e->getMessage());
+      //      $code = 409;
+            $this->logger->info('exception ' . $e->getMessage());
+            return $response->withStatus(404);
         }
-      }
-      else {
-        $return = 'The counter was not found, possibly due to bad credentials';
-        $code = 404;
-      }
+
+
+    // return $response->withJson(json_encode($counter->getValue());
+        //$response->write('resource not found');
+    //
+        return $response;
     }
-    $body = $response->getBody();
-    $body->write($return);
-    return $response->withStatus($code);
-  }
 
-  public function setCounter(ServerRequestInterface $request, ResponseInterface $response, $args) {
-    $this->logger->info('updating (PUT) counter with name ', $args);
-    //we assume everything is going to fail
-    $return = ['message' => 'an error has occurred'];
-    $code = 400;
+    public function getCounter(ServerRequestInterface $request, ResponseInterface $response, $args)
+    {
+        $this->logger->info('getting counter with name: ', $args);
 
-    $data = $request->getParsedBody();
-    $this->logger->info('received request body', $data);
 
-    $counterName = new CounterName($args['name']);
-    $counterValue = new CounterValue($data['value']);
-
-    // validate the array
-    if ($data && isset($data['value'])) {
-      $counter = $this->counter_repository->getCounterByName($counterName);
-
-      if ($counter) {
-        $this->logger->info('found ', $counter->toArray());
-
-        if ($counter->isLocked()) {
-          $this->logger->info('cannot save locked counter  ', $counter->toArray());
-
-          $return['message'] = 'counter with name ' . $counterName . ' is locked';
-          $code = 409;
+        try {
+            $counterName = new CounterName($args['name']);
+            $counter = $this->counter_repository->getCounterByName($counterName);
+            $this->logger->info(json_encode($counter));
+            $this->logger->info('found');
+            //            return $response->withJson($counter->toArray(), 200);
+            $body = $response->getBody();
+            $body->write(json_encode($counter->toArray()));
+        } catch (\Exception $e) {
+            $return = json_encode($e->getMessage());
+      //      $code = 409;
+            $this->logger->info('exception ' . $e->getMessage());
         }
-        else {
-          $counter->resetValueTo($counterValue);
 
-          $this->counter_repository->save($counter);
-          $this->logger->info('saved ', $counter->toArray());
-          $return = $counter->toArray();
-          $code = 201;
+
+        return $response;
+    }
+
+    public function deleteCounter(ServerRequestInterface $request, ResponseInterface $response, $args)
+    {
+
+        try {
+            $this->logger->info('deleting counter with name ', $args);
+            //we assume everything is going to fail
+            $return = ['message' => 'an error has occurred'];
+            $code = 400;
+
+            $data = $request->getParsedBody();
+            $this->logger->info('received request body');
+
+            $counterName = new CounterName($args['name']);
+            $counterValue = new CounterValue($data['value']);
+            $counter = $this->counter_repository->getCounterByName($counterName);
+            $this->counter_repository->remove($counter);
+            $this->logger->info('deleted ', $counter->toArray());
+            $return = $counter->toArray();
+        } catch (\Exception $e) {
+      //      TODO: catch specific expected exceptionbs and provide helpful user feedback in the response instead of the error message
+            $return = json_encode($e->getMessage());
+      //      $code = 409;
+            $this->logger->info('exception ' . $e->getMessage());
         }
-      }
-      else {
-        $this->logger->info('The counter was not found ', $data);
 
-        $return['message'] = 'The counter was not found, possibly due to bad credentials';
-        $code = 404;
-      }
+        $body = $response->getBody();
+        // now how can we allow slim response to write to body like this?
+        //TODO: figure out if we can use this controller with slim Response o
+        $body->write(json_encode($return, JSON_UNESCAPED_SLASHES));
+        return $response;
     }
-    $body = $response->getBody();
-    // now how can we allow slim response to write to body like this?
-    //TODO: figure out if we can use this controller with slim Response o
-    $body->write(json_encode($return, JSON_UNESCAPED_SLASHES));
-    return $response;
-  }
 
-  public function getCount(ServerRequestInterface $request, ResponseInterface $response, $args) {
+    public function allAction()
+    {
+        $counters = $this->get('counter_repository')->findAll();
 
-    $this->logger->info('getting value from counter with name: ' . $args['name']);
-
-    $counterName = new CounterName($args['name']);
-    $counter = $this->counter_repository->getCounterByName($counterName);
-    $this->logger->info(json_encode($counter));
-
-    if ($counter) {
-      $this->logger->info('found', $counter->toArray());
-      // return $response->withJson($counter->getValue());
-      $body = $response->getBody();
-      $body->write(json_encode($counter->getValue()));
-      return $response;
+        return array('counter' => $counters);
     }
-    else {
-      $this->logger->info('not found');
-      //$response->write('resource not found');
-      return $response->withStatus(404);
-    }
-  }
-
-  public function getCounter(ServerRequestInterface $request, ResponseInterface $response, $args) {
-    $this->logger->info('getting counter with name: ', $args);
-    $counterName = new CounterName($args['name']);
-    $counter = $this->counter_repository->getCounterByName($counterName);
-    $this->logger->info(json_encode($counter));
-    if ($counter) {
-      $this->logger->info('found');
-      //            return $response->withJson($counter->toArray(), 200);
-      $body = $response->getBody();
-      $body->write(json_encode($counter->toArray()));
-      return $response;
-    }
-    else {
-      $this->logger->info('not found');
-      //$response->write('resource not found');
-      return $response->withStatus(404);
-    }
-  }
-
-  public function deleteCounter(ServerRequestInterface $request, ResponseInterface $response, $args) {
-    $this->logger->info('deleting counter with name ', $args);
-    //we assume everything is going to fail
-    $return = ['message' => 'an error has occurred'];
-    $code = 400;
-
-    $data = $request->getParsedBody();
-    $this->logger->info('received request body');
-
-    $counterName = new CounterName($args['name']);
-    $counterValue = new CounterValue($data['value']);
-
-    // validate the array
-    if ($data && isset($data['value'])) {
-      $counter = $this->counter_repository->getCounterByName($counterName);
-
-      if ($counter) {
-        $this->logger->info('found ', $data);
-
-        if ($counter->isLocked()) {
-          $this->logger->info('cannot delete locked counter  ');
-
-          $return['message'] = 'counter with name ' . $counterName . ' is locked';
-          $code = 409;
-        }
-        else {
-          $this->counter_repository->remove($counter);
-          $this->logger->info('deleted ', $counter->toArray());
-          $return = $counter->toArray();
-          $code = 201;
-        }
-      }
-      else {
-        $this->logger->info('The counter was not found ');
-
-        $return['message'] = 'The counter was not found, possibly due to bad credentials';
-        $code = 404;
-      }
-    }
-    $body = $response->getBody();
-    // now how can we allow slim response to write to body like this?
-    //TODO: figure out if we can use this controller with slim Response o
-    $body->write(json_encode($return, JSON_UNESCAPED_SLASHES));
-    return $response;
-  }
-
-  public function allAction() {
-    $counters = $this->get('counter_repository')->findAll();
-
-    return array('counter' => $counters);
-  }
   /********************************************************************************
    * Methods to satisfy Interop\Container\ContainerInterface
    *******************************************************************************/
@@ -336,30 +330,30 @@ class CounterController
    *
    * @return mixed Entry.
    */
-  public function get($id) {
-    if (!$this->offsetExists($id)) {
-      throw new ContainerValueNotFoundException(
-        sprintf(
-          'Identifier "%s" is not defined.',
-          $id
-        )
-      );
+    public function get($id)
+    {
+        if (!$this->offsetExists($id)) {
+            throw new ContainerValueNotFoundException(
+                sprintf(
+                    'Identifier "%s" is not defined.',
+                    $id
+                )
+            );
+        }
+        try {
+            return $this->offsetGet($id);
+        } catch (\InvalidArgumentException $exception) {
+            if ($this->exceptionThrownByContainer($exception)) {
+                throw new SlimContainerException(
+                    sprintf('Container error while retrieving "%s"', $id),
+                    null,
+                    $exception
+                );
+            } else {
+                throw $exception;
+            }
+        }
     }
-    try {
-      return $this->offsetGet($id);
-    } catch (\InvalidArgumentException $exception) {
-      if ($this->exceptionThrownByContainer($exception)) {
-        throw new SlimContainerException(
-          sprintf('Container error while retrieving "%s"', $id),
-          NULL,
-          $exception
-        );
-      }
-      else {
-        throw $exception;
-      }
-    }
-  }
 
   /**
    * Tests whether an exception needs to be recast for compliance with Container-Interop.  This will be if the
@@ -369,14 +363,14 @@ class CounterController
    *
    * @return bool
    */
-  private function exceptionThrownByContainer(
-    \InvalidArgumentException $exception
-  ) {
+    private function exceptionThrownByContainer(
+        \InvalidArgumentException $exception
+    ) {
 
-    $trace = $exception->getTrace()[0];
+        $trace = $exception->getTrace()[0];
 
-    return $trace['class'] === PimpleContainer::class && $trace['function'] === 'offsetGet';
-  }
+        return $trace['class'] === PimpleContainer::class && $trace['function'] === 'offsetGet';
+    }
 
   /**
    * Returns true if the container can return an entry for the given identifier.
@@ -386,11 +380,13 @@ class CounterController
    *
    * @return boolean
    */
-  public function has($id) {
-    return $this->offsetExists($id);
-  }
+    public function has($id)
+    {
+        return $this->offsetExists($id);
+    }
 
-  public function findAction($argument1) {
-    // TODO: write logic here
-  }
+    public function findAction($argument1)
+    {
+        // TODO: write logic here
+    }
 }
