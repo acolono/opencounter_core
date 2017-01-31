@@ -29,12 +29,6 @@ stages:
 # if this job succeeds then we know install works and we have vendor and bin directory created and cached
 occ_build:
   stage: build
-  cache:
-    key: "$CI_BUILD_REF"
-    untracked: true
-    paths:
-      - bin/
-      - vendor/
   script:
     # TODO: get commits to inspect so we can enforce reference to issue and so on
     # install dependencies
@@ -51,13 +45,6 @@ occ_build:
 # run behat tests in php 5.6
 occ_test:
   stage: test
-  cache:
-    key: "$CI_BUILD_REF"
-    untracked: true
-    paths:
-      - bin/
-      - vendor/
-      - descriptions/behat/reports/html/behat/
   script:
   # run behat tests
     - bin/behat
@@ -67,7 +54,7 @@ occ_test:
     - ~/.composer/vendor/bin/phpcs --standard=psr2 --error-severity=1 --warning-severity=8 src
   # Store resulting behat html report as artifact
   artifacts:
-    name: "$CI_BUILD_REF-reports"
+    name: "$CI_BUILD_REF"
     untracked: true
     paths:
       - descriptions/behat/reports/html/behat/
@@ -78,12 +65,6 @@ occ_test:
 occ_test:php7:
   stage: test
   image: php:7.0
-  cache:
-    key: "$CI_BUILD_REF"
-    untracked: true
-    paths:
-      - bin/
-      - vendor/
   script:
     - bin/behat
   allow_failure: true
@@ -101,11 +82,6 @@ occ_changelog:
   only:
     - master
   image: ruby:2.3
-  cache:
-    key: "$CI_BUILD_REF"
-    untracked: true
-    paths:
-      - CHANGELOG.md
   script:
     # make sure we have the gem to generate changelog
     - gem install github_changelog_generator
@@ -114,7 +90,7 @@ occ_changelog:
   allow_failure: true
   # Store resulting changelog as artifact
   artifacts:
-    name: "$CI_BUILD_REF-changelog"
+    name: "$CI_BUILD_REF"
     untracked: true
     paths:
       - CHANGELOG.md
@@ -125,11 +101,6 @@ occ_phpdoc:
   only:
     - master
   image: php:5.6
-  cache:
-    key: "$CI_BUILD_REF"
-    untracked: true
-    paths:
-      - docs/core
   script:
     # phpdocumentor
     - php composer.phar global require "phpdocumentor/phpdocumentor:2.*"
@@ -154,11 +125,6 @@ pages:
   only:
     - tags
   image: php:5.6
-  cache:
-    key: "$CI_BUILD_REF"
-    untracked: true
-    paths:
-      - public/docs/Core
   script:
     # phpdocumentor
     - php composer.phar global require "phpdocumentor/phpdocumentor:2.*"
@@ -166,7 +132,7 @@ pages:
   allow_failure: true
   # Store resulting changelog as artifact
   artifacts:
-    name: "$CI_BUILD_REF-docs"
+    name: "$CI_BUILD_REF"
     untracked: true
     paths:
     - public/docs/Core
