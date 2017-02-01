@@ -33,7 +33,7 @@ occ_build:
   script:
     # TODO: get commits to inspect so we can enforce reference to issue and so on
     # install dependencies
-    - php composer.phar install --no-dev
+    - php composer.phar install
     # find out if there is a new feature described and documented
   artifacts:
     untracked: true
