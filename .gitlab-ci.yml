@@ -8,13 +8,14 @@ image: php:5.6
 # Select what we should cache
 
 
+
 before_script:
 # Install git and zip since the php image doesn't have installed
 - apt-get update -yqq
 - apt-get install git zip -yqq
 # Install composer
 - curl -sS https://getcomposer.org/installer | php
-- php composer.phar global require "squizlabs/php_codesniffer=*"
+
 
 # TODO: setup another job testing if running composer update on existing sites breaks anything
 
@@ -32,7 +33,7 @@ occ_build:
   script:
     # TODO: get commits to inspect so we can enforce reference to issue and so on
     # install dependencies
-    - php composer.phar install
+    - php composer.phar install --no-dev
     # find out if there is a new feature described and documented
   artifacts:
     untracked: true
@@ -43,15 +44,17 @@ occ_build:
 
 
 # run behat tests in php 5.6
-occ_test:
+occ_test:php5:
   stage: test
   script:
-  # run behat tests
-    - bin/behat
     # TODO run phpspec tests
     #- bin/phpspec run
     # run codestyle checks but dont yet autofix anything
+    # get codesniffer in the container
+    - php composer.phar global require "squizlabs/php_codesniffer=*"
     - ~/.composer/vendor/bin/phpcs --standard=psr2 --error-severity=1 --warning-severity=8 src
+    # run behat tests
+    - bin/behat
   # Store resulting behat html report as artifact
   artifacts:
     name: "$CI_BUILD_REF"
@@ -108,16 +111,11 @@ occ_phpdoc:
   allow_failure: true
   # Store resulting changelog as artifact
   artifacts:
-    name: "$CI_BUILD_REF-phpdoc"
+    name: "$CI_BUILD_REF"
     untracked: true
     paths:
       - docs/core
     expire_in: 1 week
-
-# TODO Deploy stage
-# trigger build of slimcounter canary branch
-# deploy documentation to github pages
-# deploy reports to github pages
 
 
 pages:
@@ -136,4 +134,40 @@ pages:
     untracked: true
     paths:
     - public/docs/Core
+    expire_in: 1 week
+
+deploy:docs:
+  stage: deploy
+  before_script:
+  # install ssh-agent
+  - 'which ssh-agent || (apt-get && apt-get install bash rsync)'
+  # run ssh-agent
+  - eval $(ssh-agent -s)
+  - which bash
+  # add ssh key stored in SSH_PRIVATE_KEY variable to the agent store
+  - /bin/bash -c 'ssh-add <(echo "$SSH_PRIVATE_KEY")'
+ # we want to use cache to load swagger.json from pages step
+  # TODO: once swagger docs are generated as expected make sure this only happens on the master branch (for new releases)
+  only:
+    - tags
+  script:
+    # make sure we have phpdocs from releases stage
+    - ls ./docs
+    # phpdocumentor
+    - php composer.phar global require "phpdocumentor/phpdocumentor:2.*"
+    - ~/.composer/vendor/bin/phpdoc -d ./src -t ./docs/core
+    # TODO: should we deploy artifacts differently?
+    - echo "Deploy phpdocs to https://ocdocs.artur.acolono.net/"
+    - rsync -avuz --rsh="ssh -o StrictHostKeyChecking=no -l $DEPLOY_USER" docs/core $DEPLOY_USER@artur.acolono.net:/web
+    # deploy behat report
+    - echo "Deploy behat reports to https://ocdocs.artur.acolono.net/"
+    - rsync -avuz --rsh="ssh -o StrictHostKeyChecking=no -l $DEPLOY_USER" descriptions/behat/reports/html $DEPLOY_USER@artur.acolono.net:/web
+  environment:
+    name: docs
+    url: https://ocdocs.artur.acolono.net/
+  artifacts:
+    name: "$CI_BUILD_REF"
+    untracked: true
+    paths:
+    - docs/core
     expire_in: 1 week
