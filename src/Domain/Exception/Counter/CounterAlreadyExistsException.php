@@ -1,5 +1,9 @@
 <?php
-
+/**
+ * CounterAlreadyExistsException.
+ *
+ * to prevent duplicate counters we throw an exception.
+ */
 namespace OpenCounter\Domain\Exception\Counter;
 
 /**

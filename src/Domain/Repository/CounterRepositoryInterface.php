@@ -1,10 +1,13 @@
 <?php
-
+/**
+ * CounterRepositoryInterface.
+ *
+ * basic storage interface for saving and retrieving counters.
+ */
 namespace OpenCounter\Domain\Repository;
 
 use OpenCounter\Domain\Model\Counter\Counter;
 use OpenCounter\Domain\Model\Counter\CounterName;
-use OpenCounter\Domain\Model\Counter\CounterValue;
 use OpenCounter\Domain\Model\Counter\CounterId;
 
 /**
@@ -27,27 +30,37 @@ interface CounterRepositoryInterface
      * Removes the counter given.
      *
      * @param \OpenCounter\Domain\Model\Counter\Counter $anCounter
+     *   Counter object.
      *
      * @return mixed
      */
     public function remove(Counter $anCounter);
 
     /**
+     * getCounterById
+     *
      * @param \OpenCounter\Domain\Model\Counter\CounterId $anId
+     *   Counter id.
      *
      * @return mixed
      */
     public function getCounterById(CounterId $anId);
 
     /**
+     * getCounterByName
+     *
      * @param \OpenCounter\Domain\Model\Counter\CounterName $aName
+     *   Counter name.
      *
      * @return mixed
      */
     public function getCounterByName(CounterName $aName);
 
     /**
+     * getCounterByUuid
+     *
      * @param \OpenCounter\Domain\Model\Counter\CounterId $anId
+     *   Counter Id.
      *
      * @return mixed
      */
@@ -57,6 +70,7 @@ interface CounterRepositoryInterface
      * Gets the counter/counters that match with the given criteria.
      *
      * @param mixed $specification The specification criteria
+     *   a specification criteria
      *
      * @return mixed
      */

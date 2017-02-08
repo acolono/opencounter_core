@@ -1,5 +1,9 @@
 <?php
-
+/**
+ * Counter Id.
+ *
+ * Generated uuid stored in value object.
+ */
 namespace OpenCounter\Domain\Model\Counter;
 
 use Ramsey\Uuid\Uuid;
@@ -16,7 +20,11 @@ use Ramsey\Uuid\Uuid;
  */
 class CounterId
 {
-
+    /**
+     * uuid Property.
+     *
+     * @var null|string
+     */
     private $uuid;
 
     /**

@@ -1,17 +1,19 @@
 <?php
+/**
+ * Used to create new counter objects.
+ *
+ * Calls build method on counter factory for us.
+ */
 
 namespace OpenCounter\Http;
 
 use OpenCounter\Domain\Model\Counter\CounterValue;
-use OpenCounter\Domain\Model\Counter\CounterId;
 use OpenCounter\Domain\Model\Counter\Counter;
 use OpenCounter\Domain\Model\Counter\CounterName;
 use OpenCounter\Domain\Exception\Counter\CounterAlreadyExistsException;
-use Monolog\Logger;
 
 use OpenCounter\Domain\Repository\CounterRepositoryInterface;
 use OpenCounter\Infrastructure\Factory\Counter\CounterFactory;
-use Psr\Http\Message\RequestInterface;
 use Psr\Log\LoggerInterface;
 
 /**
@@ -23,15 +25,28 @@ use Psr\Log\LoggerInterface;
  */
 class CounterBuildService
 {
-
+    /**
+     * A Counter repository object
+     * @var \OpenCounter\Domain\Repository\CounterRepositoryInterface
+     */
     private $counter_repository;
+    /**
+     * A Counter repository factory
+     * @var \OpenCounter\Infrastructure\Factory\Counter\CounterFactory
+     */
     private $counter_factory;
+    /**
+     * a logger.
+     * @var \Psr\Log\LoggerInterface
+     */
     private $logger;
 
     /**
-     * @param CounterRepositoryInterface $counter_repository
-     * @param CounterFactory             $counter_factory
-     * @param LoggerInterface            $logger
+     * CounterBuildService constructor.
+     *
+     * @param \OpenCounter\Domain\Repository\CounterRepositoryInterface $counter_repository
+     * @param \OpenCounter\Infrastructure\Factory\Counter\CounterFactory $counter_factory
+     * @param \Psr\Log\LoggerInterface $logger
      */
     public function __construct(
         CounterRepositoryInterface $counter_repository,
@@ -56,9 +71,7 @@ class CounterBuildService
      */
     public function execute(RequestInterface $request = null, $args)
     {
-        //    if (!$request instanceof SignInCounterRequest) {
-        //      throw new \InvalidArgumentException('The request must be SignInCounterRequest instance');
-        //    }
+
         $data = $request->getParsedBody();
 
         $this->logger->info(json_encode($data));
@@ -77,14 +90,19 @@ class CounterBuildService
             $code = 409;
         }
 
-
         $this->logger->info('testing during creation if counter exists ');
 
         if (isset($counter) && $counter instanceof Counter) {
             throw new CounterAlreadyExistsException();
         }
 
-        $counter = $this->counter_factory->build($counterId, $name, $value, 'active', $password);
+        $counter = $this->counter_factory->build(
+            $counterId,
+            $name,
+            $value,
+            'active',
+            $password
+        );
 
         return $counter;
     }
