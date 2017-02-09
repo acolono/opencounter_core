@@ -1,4 +1,9 @@
 <?php
+/**
+ * SqlPersistentCounterRepository.
+ *
+ * a repository for counters using sql.
+ */
 namespace OpenCounter\Infrastructure\Persistence\Sql\Repository\Counter;
 
 use OpenCounter\Domain\Model\Counter\Counter;
@@ -18,7 +23,40 @@ class SqlPersistentCounterRepository extends SqlCounterRepository implements Per
      *
      * @var \OpenCounter\Infrastructure\Persistence\Sql\SqlManager
      */
+
     protected $manager;
+
+    /**
+     * insert statement.
+     *
+     * @var \PDOStatement
+     */
+
+    private $insertStmt;
+
+    /**
+     * remove statement.
+     *
+     * @var \PDOStatement
+     */
+
+    private $removeStmt;
+
+    /**
+     * get Statement.
+     *
+     * @var \PDOStatement
+     */
+
+    private $getStmt;
+
+    /**
+     * Update statement.
+     *
+     * @var \PDOStatement
+     */
+
+    private $updateStmt;
 
     /**
      * Constructor.
@@ -50,9 +88,6 @@ class SqlPersistentCounterRepository extends SqlCounterRepository implements Per
         );
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function save(Counter $anCounter)
     {
         $this->exist($anCounter) ? $this->update($anCounter) : $this->insert($anCounter);
@@ -77,11 +112,19 @@ class SqlPersistentCounterRepository extends SqlCounterRepository implements Per
         )->fetchColumn() == 1;
     }
 
-    /**
-     * Inserts the counter given into database.
-     *
-     * @param \OpenCounter\Domain\Model\Counter\Counter $anCounter The counter
-     */
+    public function update(Counter $anCounter)
+    {
+        $update = $this->updateStmt->execute(
+            [
+            'uuid' => $anCounter->getId(),
+            'value' => $anCounter->getValue(),
+            'status' => $anCounter->getStatus(),
+            'password' => 'passwordplaceholder'
+            ]
+        );
+        return $update;
+    }
+
     public function insert(Counter $anCounter)
     {
         $insert = $this->insertStmt->execute(
@@ -93,25 +136,6 @@ class SqlPersistentCounterRepository extends SqlCounterRepository implements Per
             'password' => 'passwordplaceholder'
             ]
         );
-    }
-    public function removeCounterByName(CounterName $counterName)
-    {
-        // TODO: allow removing counters from db
-    }
-    /**
-     * Updates the counter given into database.
-     *
-     * @param \OpenCounter\Domain\Model\Counter\Counter $anCounter The counter
-     */
-    public function update(Counter $anCounter)
-    {
-        $update = $this->updateStmt->execute(
-            [
-            'uuid' => $anCounter->getId(),
-            'value' => $anCounter->getValue(),
-            'status' => $anCounter->getStatus(),
-            'password' => 'passwordplaceholder'
-            ]
-        );
+        return $insert;
     }
 }

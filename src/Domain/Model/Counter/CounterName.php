@@ -1,5 +1,9 @@
 <?php
-
+/**
+ * Counter Name
+ *
+ * a value object for a string that needs to be cleaned up which can be used to identify counters.
+ */
 namespace OpenCounter\Domain\Model\Counter;
 
 use OpenCounter\Domain\Exception\Counter\InvalidNativeArgumentException;
@@ -34,7 +38,7 @@ class CounterName
     public function __construct($name)
     {
         if (false === \is_string($name)) {
-            throw new InvalidNativeArgumentException($name, array('string'));
+            throw new InvalidNativeArgumentException($name, ['string']);
         }
         $this->name = $name;
     }

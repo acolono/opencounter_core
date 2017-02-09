@@ -1,8 +1,8 @@
 <?php
 /**
- * @file CounterFactoryInterface.php
+ * CounterFactoryInterface.
  *
- * describes how a counter object is to be created
+ * Describes how a counter object is to be created.
  */
 namespace OpenCounter\Domain\Factory;
 

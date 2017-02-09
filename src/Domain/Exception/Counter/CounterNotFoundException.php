@@ -1,5 +1,9 @@
 <?php
-
+/**
+ * CounterNotFoundException.
+ *
+ * Thrown when we cant find a counter.
+ */
 namespace OpenCounter\Domain\Exception\Counter;
 
 /**
