@@ -1,7 +1,12 @@
 <?php
-
+/**
+ * Counter object that models our entities
+ *
+ * counter consists of value objects
+ */
 namespace OpenCounter\Domain\Model\Counter;
 
+use OpenCounter\Domain\Exception\Counter\CouldntLockCounterException;
 use OpenCounter\Domain\Exception\Counter\CounterLockedException;
 
 /**
@@ -22,7 +27,7 @@ class Counter
     /**
      * The counter entity id
      *
-     * @var            string
+     * @var string
      * @SWG\Property()
      */
 
@@ -30,7 +35,7 @@ class Counter
     /**
      * The counter entity password.
      *
-     * @var                                     string
+     * @var string
      * @SWG\Property(example="examplepassword")
      */
 
@@ -38,34 +43,36 @@ class Counter
     /**
      * The counter entity name.
      *
-     * @var                                string
+     * @var string
      * @SWG\Property(example="onecounter")
      */
 
     private $name;
-  /**
-   * The counter entity value.
-   *
-   * @var                          integer
-   * @SWG\Property(format="int32")
-   */
+    /**
+     * The counter entity value.
+     *
+     * @var  integer
+     * @SWG\Property(format="int32")
+     */
 
     private $value;
     /**
      * The counter entity status.
      *
-     * @var                                               string
+     * @var string
      * @SWG\Property(enum={"active","locked","disabled"})
      */
 
     private $status;
 
     /**
-     * @param \OpenCounter\Domain\Model\Counter\CounterId    $id
-     * @param \OpenCounter\Domain\Model\Counter\CounterName  $name
-     * @param \OpenCounter\Domain\Model\Counter\CounterValue $value
-     * @param $status
-     * @param $password
+     * Counter constructor.
+     *
+     * @param \OpenCounter\Domain\Model\Counter\CounterId $CounterId
+     * @param \OpenCounter\Domain\Model\Counter\CounterName $CounterName
+     * @param \OpenCounter\Domain\Model\Counter\CounterValue $CounterValue
+     * @param $aStatus
+     * @param $aPassword
      *
      * @SWG\Parameter(
      * parameter="CounterName",
@@ -76,6 +83,7 @@ class Counter
      * type="string",
      * default="onecounter"
      * )
+     *
      */
     public function __construct(
         CounterId $CounterId,
@@ -84,7 +92,7 @@ class Counter
         $aStatus,
         $aPassword
     ) {
-    
+
         $this->id = $CounterId->uuid();
         $this->name = $CounterName->name();
         $this->value = $CounterValue->value();
@@ -103,8 +111,8 @@ class Counter
     public function toArray()
     {
         $counterArray = [
-            'name' => $this->name,
-            'value' => $this->value
+          'name' => $this->name,
+          'value' => $this->value
         ];
         return $counterArray;
     }
@@ -145,8 +153,8 @@ class Counter
     /**
      * Reset Counter.
      *
-     * @return string
-     *   The counter Value
+     * @param \OpenCounter\Domain\Model\Counter\CounterValue $counterValue
+     * @return int
      */
     public function resetValueTo(CounterValue $counterValue)
     {
@@ -179,22 +187,22 @@ class Counter
         }
     }
 
-  /**
-   * Check whether Counter is Locked
-   *
-   * @return bool
-   */
+    /**
+     * Check whether Counter is Locked
+     *
+     * @return bool
+     */
     public function isLocked()
     {
         return ($this->status == 'locked');
     }
 
-  /**
-   * Get Counter Value.
-   *
-   * @return int
-   *   the count
-   */
+    /**
+     * Get Counter Value.
+     *
+     * @return int
+     *   the count
+     */
     public function getValue()
     {
         return $this->value;
@@ -215,22 +223,22 @@ class Counter
         return $this->getStatus();
     }
 
-  /**
-   * Check whether Counter can be locked
-   *
-   * @return bool
-   */
+    /**
+     * Check whether Counter can be locked
+     *
+     * @return bool
+     */
     private function couldBeLocked()
     {
         return !$this->isLocked();
     }
 
-  /**
-   * Counter Status.
-   *
-   * @return string
-   *   The counter ID
-   */
+    /**
+     * Counter Status.
+     *
+     * @return string
+     *   The counter ID
+     */
     public function getStatus()
     {
         return $this->status;
@@ -251,10 +259,5 @@ class Counter
         }
         $this->status = 'active';
         return $this->getStatus();
-    }
-
-    public function changeNameTo(CounterName $newCounterName)
-    {
-        // TODO: write logic here
     }
 }

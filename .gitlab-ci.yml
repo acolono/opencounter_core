@@ -9,13 +9,6 @@ image: php:5.6
 
 
 
-before_script:
-# Install git and zip since the php image doesn't have installed
-- apt-get update -yqq
-- apt-get install git zip -yqq
-# Install composer
-- curl -sS https://getcomposer.org/installer | php
-
 
 # TODO: setup another job testing if running composer update on existing sites breaks anything
 
@@ -30,6 +23,12 @@ stages:
 # if this job succeeds then we know install works and we have vendor and bin directory created and cached
 occ_build:
   stage: build
+  before_script:
+    # Install git and zip since the php image doesn't have installed
+    - apt-get update -yqq
+    - apt-get install git zip -yqq
+    # Install composer
+    - curl -sS https://getcomposer.org/installer | php
   script:
     # TODO: get commits to inspect so we can enforce reference to issue and so on
     # install dependencies
@@ -46,6 +45,12 @@ occ_build:
 # run behat tests in php 5.6
 occ_test:php5:
   stage: test
+  before_script:
+    # Install git and zip since the php image doesn't have installed
+    - apt-get update -yqq
+    - apt-get install git zip -yqq
+    # Install composer
+    - curl -sS https://getcomposer.org/installer | php
   script:
     # TODO run phpspec tests
     #- bin/phpspec run
@@ -103,7 +108,13 @@ occ_phpdoc:
   stage: release
   only:
     - master
-  image: php:5.6
+  image: php:7
+  before_script:
+    # Install git and zip since the php image doesn't have installed
+    - apt-get update -yqq
+    - apt-get install git zip -yqq
+    # Install composer
+    - curl -sS https://getcomposer.org/installer | php
   script:
     # phpdocumentor
     - php composer.phar global require "phpdocumentor/phpdocumentor:2.*"
@@ -117,30 +128,11 @@ occ_phpdoc:
       - docs/core
     expire_in: 1 week
 
-
-pages:
-  stage: deploy
-  only:
-    - tags
-  image: php:5.6
-  script:
-    # phpdocumentor
-    - php composer.phar global require "phpdocumentor/phpdocumentor:2.*"
-    - ~/.composer/vendor/bin/phpdoc -d ./src -t ./public/docs/core
-  allow_failure: true
-  # Store resulting changelog as artifact
-  artifacts:
-    name: "$CI_BUILD_REF"
-    untracked: true
-    paths:
-    - public/docs/Core
-    expire_in: 1 week
-
 deploy:docs:
   stage: deploy
   before_script:
   # install ssh-agent
-  - 'which ssh-agent || (apt-get && apt-get install bash rsync)'
+  - 'which ssh-agent || (apt-get update && apt-get install bash rsync)'
   # run ssh-agent
   - eval $(ssh-agent -s)
   - which bash
@@ -152,10 +144,7 @@ deploy:docs:
     - tags
   script:
     # make sure we have phpdocs from releases stage
-    - ls ./docs
-    # phpdocumentor
-    - php composer.phar global require "phpdocumentor/phpdocumentor:2.*"
-    - ~/.composer/vendor/bin/phpdoc -d ./src -t ./docs/core
+    - ls ./
     # TODO: should we deploy artifacts differently?
     - echo "Deploy phpdocs to https://ocdocs.artur.acolono.net/"
     - rsync -avuz --rsh="ssh -o StrictHostKeyChecking=no -l $DEPLOY_USER" docs/core $DEPLOY_USER@artur.acolono.net:/web

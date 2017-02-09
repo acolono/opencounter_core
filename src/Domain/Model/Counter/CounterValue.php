@@ -1,5 +1,13 @@
 <?php
 
+/**
+ * Contains counter value object.
+ *
+ * this validates itsself and stores a positive integer.
+ *
+ */
+
+
 namespace OpenCounter\Domain\Model\Counter;
 
 use OpenCounter\Domain\Exception\Counter\InvalidNativeArgumentException;
@@ -13,7 +21,7 @@ use OpenCounter\Domain\Exception\Counter\InvalidNativeArgumentException;
  *     url="https://swagger.io/about"
  *   )
  * )
- * @package                    OpenCounter\Domain\Model\Counter
+ * @package OpenCounter\Domain\Model\Counter
  */
 
 class CounterValue
@@ -39,7 +47,7 @@ class CounterValue
         if (isset($value)) {
             $value = filter_var($value, FILTER_VALIDATE_INT);
             if (false === $value) {
-                throw new InvalidNativeArgumentException($value, array('int'));
+                throw new InvalidNativeArgumentException($value, ['int']);
             }
             $this->value = $value;
         } else {
