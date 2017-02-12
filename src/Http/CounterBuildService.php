@@ -14,7 +14,6 @@ use OpenCounter\Domain\Exception\Counter\CounterAlreadyExistsException;
 
 use OpenCounter\Domain\Repository\CounterRepository;
 use OpenCounter\Infrastructure\Factory\Counter\CounterFactory;
-use Psr\Http\Message\ServerRequestInterface;
 use Psr\Log\LoggerInterface;
 
 /**
@@ -50,9 +49,9 @@ class CounterBuildService
      * @param \Psr\Log\LoggerInterface $logger
      */
     public function __construct(
-        CounterRepository $counter_repository,
-        CounterFactory $counter_factory,
-        LoggerInterface $logger
+      CounterRepository $counter_repository,
+      CounterFactory $counter_factory,
+      LoggerInterface $logger
     ) {
 
         $this->counter_repository = $counter_repository;
@@ -65,44 +64,37 @@ class CounterBuildService
      *
      * @uses CounterFactory to create new counter objects
      *
-     * @param  ServerRequestInterface|null $request
      * @param  $args
      * @return mixed|Counter
      * @throws CounterAlreadyExistsException
      */
-    public function execute(ServerRequestInterface $request = null, $args)
+    public function execute($request = null)
     {
-
-        $data = $request->getParsedBody();
-
-        $this->logger->info(json_encode($data));
 
         // https://leanpub.com/ddd-in-php/read#leanpub-auto-persisting-value-objects
 
         $counterId = $this->counter_repository->nextIdentity();
-        $name = new CounterName($data['name']);
-        $value = new CounterValue($data['value']);
 
         $password = 'passwordplaceholder';
         try {
-            $counter = $this->counter_repository->getCounterByName($name);
+            $counter = $this->counter_repository->getCounterByName(New CounterName($request->name()));
         } catch (\Exception $e) {
             $return = ['message' => $e->getMessage()];
             $code = 409;
         }
 
-        $this->logger->info('testing during creation if counter exists ');
-
         if (isset($counter) && $counter instanceof Counter) {
             throw new CounterAlreadyExistsException();
         }
 
+        // Only the build service calls the factory to create counter objects.
+
         $counter = $this->counter_factory->build(
-            $counterId,
-            $name,
-            $value,
-            'active',
-            $password
+          $counterId,
+          $request->name(),
+          $request->value(),
+          'active',
+          $password
         );
 
         return $counter;

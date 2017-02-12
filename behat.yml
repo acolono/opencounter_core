@@ -20,4 +20,7 @@ default:
     default:
       paths: [ %paths.base%/descriptions/behat/features/Counters ]
       contexts: [ DomainContext ]
+    services:
+      paths: [ %paths.base%/descriptions/behat/features/Counters ]
+      contexts: [ ApplicationServicesContext ]
 

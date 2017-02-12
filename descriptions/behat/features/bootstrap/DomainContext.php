@@ -286,9 +286,8 @@ $newCounterId = new CounterId($id);
     public function iRemoveTheCounterWithId($id)
     {
         try {
-            $command = new \OpenCounter\Domain\Service\Counter\CounterRemoveService($this->counter_repository);
-            $command->execute(
-              new \OpenCounter\Domain\Command\Counter\CounterRemoveCommand($id));
+            $CounterId = new CounterId($id);
+            $removed = $this->counter_repository->removeCounterById($CounterId);
         } catch (Exception $e) {
             $this->error = true;
         }
@@ -301,10 +300,7 @@ $newCounterId = new CounterId($id);
     public function iRemoveTheCounterWithName($name)
     {
         try {
-            $command = new \OpenCounter\Domain\Service\Counter\CounterRemoveService($this->counter_repository);
-            $command->execute(
-              new \OpenCounter\Domain\Command\Counter\CounterRemoveCommand($name));
-
+            $removed = $this->counter_repository->removeCounterByName($this->counterName);
         } catch (Exception $e) {
             $this->error = true;
         }

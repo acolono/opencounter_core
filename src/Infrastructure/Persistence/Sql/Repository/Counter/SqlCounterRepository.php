@@ -41,15 +41,38 @@ class SqlCounterRepository implements CounterRepository
         $this->getStmt = $this->manager->prepare(
             sprintf('SELECT * FROM %s WHERE name = :name', self::TABLE_NAME)
         );
+        $this->removeNamedStmt = $this->manager->prepare(
+          sprintf('DELETE FROM %s WHERE name = :name', self::TABLE_NAME)
+        );
+        $this->insertStmt = $this->manager->prepare(
+          sprintf(
+            "INSERT INTO %s (name, uuid, value, status, password) VALUES (:name, :uuid, :value, :status, :password)",
+            self::TABLE_NAME
+          )
+        );
+        $this->updateStmt = $this->manager->prepare(
+          sprintf(
+            'UPDATE %s SET value = :value, status = :status, password = :password WHERE uuid = :uuid',
+            self::TABLE_NAME
+          )
+        );
     }
 
-
+    /**
+     * {@inheritdoc}
+     */
     public function remove(Counter $anCounter)
     {
         $this->removeStmt->execute(['uuid' => $anCounter->getId()]);
     }
 
-
+    /**
+     * {@inheritdoc}
+     */
+    public function removeCounterByName(CounterName $aName)
+    {
+        $this->removeNamedStmt->execute(['name' => $aName->name()]);
+    }
     public function query($specification)
     {
         if (!$specification instanceof SqlCounterSpecification) {
@@ -160,23 +183,7 @@ class SqlCounterRepository implements CounterRepository
         return $this->buildCounter($row);
     }
 
-    /**
-     * * get a specific counter by uuid.
-     * @param \OpenCounter\Domain\Model\Counter\CounterId $anId
-     * @return bool|\OpenCounter\Domain\Model\Counter\Counter
-     */
-    public function getCounterByUuid(CounterId $anId)
-    {
 
-        $statement = $this->manager->execute(
-            sprintf('SELECT * FROM %s WHERE uuid = :uuid', self::TABLE_NAME),
-            ['uuid' => $anId->uuid()]
-        );
-        if (!$row = $statement->fetch(\PDO::FETCH_ASSOC)) {
-            return false;
-        }
-        return $this->buildCounter($row);
-    }
 
     /**
      * Get a specific counter by name.
@@ -199,31 +206,58 @@ class SqlCounterRepository implements CounterRepository
     }
 
     /**
-     * Get single counter by Credentials
-     *
-     * @param $name
-     * @param $password
-     *
-     * @return bool|\OpenCounter\Domain\Model\Counter\Counter
+     * {@inheritdoc}
      */
-
-    public function getCounterByCredentials($name, $password)
+    public function save(Counter $anCounter)
     {
-        $sql = 'SELECT c.uuid, c.name, c.password, c.value
-            from counters c
-            where c.name = :name and c.password = :password';
-        $stmt = $this->manager->prepare($sql);
-        $result = $stmt->execute(
-            [
-            'name' => $name,
-            'password' => $password
-            ]
-        );
-
-        if ($result && $data = $stmt->fetch()) {
-            return new Counter($data);
-        } else {
-            return false;
-        }
+        $this->exist($anCounter) ? $this->update($anCounter) : $this->insert($anCounter);
     }
+
+    /**
+     * Checks that the counter given exists into database.
+     *
+     * @param \OpenCounter\Domain\Model\Counter\Counter $anCounter The counter
+     *
+     * @return bool
+     */
+    public function exist(Counter $anCounter)
+    {
+
+        return $this->manager->execute(
+            sprintf(
+              'SELECT COUNT(*) FROM %s WHERE uuid = :uuid',
+              self::TABLE_NAME
+            ),
+            [':uuid' => $anCounter->getId()]
+          )->fetchColumn() == 1;
+    }
+
+    public function update(Counter $anCounter)
+    {
+        $update = $this->updateStmt->execute(
+          [
+            'uuid' => $anCounter->getId(),
+            'value' => $anCounter->getValue(),
+            'status' => $anCounter->getStatus(),
+            'password' => 'passwordplaceholder'
+          ]
+        );
+        return $update;
+    }
+
+    public function insert(Counter $anCounter)
+    {
+        $insert = $this->insertStmt->execute(
+          [
+            'name' => $anCounter->getName(),
+            'uuid' => $anCounter->getId(),
+            'value' => $anCounter->getValue(),
+            'status' => $anCounter->getStatus(),
+            'password' => 'passwordplaceholder'
+          ]
+        );
+        return $insert;
+    }
+
+
 }

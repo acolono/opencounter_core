@@ -36,6 +36,16 @@ interface CounterRepository
      */
     public function remove(Counter $anCounter);
 
+
+    /**
+     * remove a counter by name.
+     *
+     * @param \OpenCounter\Domain\Model\Counter\CounterName $aName
+     *
+     * @return mixed
+     */
+    public function removeCounterByName(CounterName $aName);
+
     /**
      * getCounterById
      *
@@ -56,15 +66,6 @@ interface CounterRepository
      */
     public function getCounterByName(CounterName $aName);
 
-    /**
-     * getCounterByUuid
-     *
-     * @param \OpenCounter\Domain\Model\Counter\CounterId $anId
-     *   Counter Id.
-     *
-     * @return mixed
-     */
-    public function getCounterByUuid(CounterId $anId);
 
     /**
      * Gets the counter/counters that match with the given criteria.
@@ -82,7 +83,6 @@ interface CounterRepository
      * @return mixed
      */
     public function nextIdentity();
-
     /**
      * Counts the number of counters.
      *
@@ -91,4 +91,14 @@ interface CounterRepository
     public function size();
 
     //  public function find($argument1);
+    /**
+     * Saves the counter given.
+     *
+     * @param  \OpenCounter\Domain\Model\Counter\Counter $anCounter
+     * @return mixed
+     */
+    public function save(Counter $anCounter);
+
+
+
 }
