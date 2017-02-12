@@ -14,6 +14,7 @@ use OpenCounter\Domain\Exception\Counter\CounterAlreadyExistsException;
 
 use OpenCounter\Domain\Repository\CounterRepositoryInterface;
 use OpenCounter\Infrastructure\Factory\Counter\CounterFactory;
+use Psr\Http\Message\ServerRequestInterface;
 use Psr\Log\LoggerInterface;
 
 /**
@@ -64,12 +65,12 @@ class CounterBuildService
      *
      * @uses CounterFactory to create new counter objects
      *
-     * @param  RequestInterface|null $request
+     * @param  ServerRequestInterface|null $request
      * @param  $args
      * @return mixed|Counter
      * @throws CounterAlreadyExistsException
      */
-    public function execute(RequestInterface $request = null, $args)
+    public function execute(ServerRequestInterface $request = null, $args)
     {
 
         $data = $request->getParsedBody();

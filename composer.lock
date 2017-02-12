@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "fa12f41ec43976037964956cf5e440ed",
+    "content-hash": "8ac8c5c6432a11715b5b756913055ee2",
     "packages": [
         {
             "name": "monolog/monolog",
@@ -599,12 +599,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/doctrine/annotations.git",
-                "reference": "1fcf863da06d8f305fc031ee87360f087d854c8d"
+                "reference": "d116e276bc676c7048e3d6b65daa5e713b4f16e6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/doctrine/annotations/zipball/1fcf863da06d8f305fc031ee87360f087d854c8d",
-                "reference": "1fcf863da06d8f305fc031ee87360f087d854c8d",
+                "url": "https://api.github.com/repos/doctrine/annotations/zipball/d116e276bc676c7048e3d6b65daa5e713b4f16e6",
+                "reference": "d116e276bc676c7048e3d6b65daa5e713b4f16e6",
                 "shasum": ""
             },
             "require": {
@@ -659,7 +659,7 @@
                 "docblock",
                 "parser"
             ],
-            "time": "2017-01-09T00:44:36+00:00"
+            "time": "2017-02-10T00:02:43+00:00"
         },
         {
             "name": "doctrine/instantiator",
@@ -1931,6 +1931,56 @@
             "time": "2016-10-13T14:48:10+00:00"
         },
         {
+            "name": "psr/http-message",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/php-fig/http-message.git",
+                "reference": "f6561bf28d520154e4b0ec72be95418abe6d9363"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/php-fig/http-message/zipball/f6561bf28d520154e4b0ec72be95418abe6d9363",
+                "reference": "f6561bf28d520154e4b0ec72be95418abe6d9363",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.0"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.0.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Psr\\Http\\Message\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "PHP-FIG",
+                    "homepage": "http://www.php-fig.org/"
+                }
+            ],
+            "description": "Common interface for HTTP messages",
+            "homepage": "https://github.com/php-fig/http-message",
+            "keywords": [
+                "http",
+                "http-message",
+                "psr",
+                "psr-7",
+                "request",
+                "response"
+            ],
+            "time": "2016-08-06 14:39:51"
+        },
+        {
             "name": "sebastian/comparator",
             "version": "1.2.x-dev",
             "source": {
@@ -2963,12 +3013,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/yaml.git",
-                "reference": "7928849b226f065dae93ec0e8be3b829f73ba67b"
+                "reference": "6095f9750f91c544920eb1344a6f7d2e4e15d8ad"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/yaml/zipball/7928849b226f065dae93ec0e8be3b829f73ba67b",
-                "reference": "7928849b226f065dae93ec0e8be3b829f73ba67b",
+                "url": "https://api.github.com/repos/symfony/yaml/zipball/6095f9750f91c544920eb1344a6f7d2e4e15d8ad",
+                "reference": "6095f9750f91c544920eb1344a6f7d2e4e15d8ad",
                 "shasum": ""
             },
             "require": {
@@ -3010,7 +3060,7 @@
             ],
             "description": "Symfony Yaml Component",
             "homepage": "https://symfony.com",
-            "time": "2017-01-21T17:10:26+00:00"
+            "time": "2017-02-10T14:48:44+00:00"
         },
         {
             "name": "twig/twig",
@@ -3079,12 +3129,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/zendframework/zend-cache.git",
-                "reference": "9de4c23684171cd88953d2a205987c70dbdda399"
+                "reference": "0ca0a29acb1c17b192f94e9c033eab13b8180803"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zendframework/zend-cache/zipball/9de4c23684171cd88953d2a205987c70dbdda399",
-                "reference": "9de4c23684171cd88953d2a205987c70dbdda399",
+                "url": "https://api.github.com/repos/zendframework/zend-cache/zipball/0ca0a29acb1c17b192f94e9c033eab13b8180803",
+                "reference": "0ca0a29acb1c17b192f94e9c033eab13b8180803",
                 "shasum": ""
             },
             "require": {
@@ -3142,7 +3192,7 @@
                 "cache",
                 "zf2"
             ],
-            "time": "2016-12-16T13:16:52+00:00"
+            "time": "2017-02-11T10:35:02+00:00"
         },
         {
             "name": "zendframework/zend-config",

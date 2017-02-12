@@ -3,7 +3,6 @@
 namespace spec\OpenCounter\Http;
 
 use GuzzleHttp\PrepareBodyMiddleware;
-use GuzzleHttp\Psr7\ServerRequest;
 use GuzzleHttp\Psr7\Uri;
 use Monolog\Logger;
 use OpenCounter\Domain\Exception\Counter\CounterAlreadyExistsException;
@@ -25,8 +24,11 @@ class CounterBuildServiceSpec extends ObjectBehavior
 //    {
 //        $this->shouldHaveType(CounterBuildService::class);
 //    }
-    function let(CounterRepositoryInterface $counter_repository,
-                 CounterFactory $counter_factory, Logger $logger)
+    function let(
+      CounterRepositoryInterface $counter_repository,
+
+      CounterFactory $counter_factory,
+      Logger $logger)
     {
 
         $this->beConstructedWith($counter_repository, $counter_factory, $logger);

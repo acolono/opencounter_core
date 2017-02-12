@@ -13,11 +13,13 @@
 
 namespace OpenCounter\Http;
 
+use OpenCounter\Domain\Command\Counter\CounterRemoveCommand;
 use OpenCounter\Domain\Model\Counter\CounterName;
 use OpenCounter\Domain\Model\Counter\CounterValue;
 
 use OpenCounter\Domain\Repository\CounterRepositoryInterface;
 
+use OpenCounter\Domain\Service\Counter\CounterRemoveService;
 use OpenCounter\Infrastructure\Persistence\StorageInterface;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
@@ -357,20 +359,13 @@ class CounterController
     ) {
 
         try {
-            $this->logger->info('deleting counter with name ', $args);
-            //we assume everything is going to fail
-            $return = ['message' => 'an error has occurred'];
-            $code = 400;
+            $command = new \OpenCounter\Domain\Service\Counter\CounterRemoveService($this->counter_repository);
+            $command->execute(
+              new \OpenCounter\Domain\Command\Counter\CounterRemoveCommand($request->getParsedBody()['name']));
 
-            $data = $request->getParsedBody();
-            $this->logger->info('received request body');
 
-            $counterName = new CounterName($args['name']);
-            $counterValue = new CounterValue($data['value']);
-            $counter = $this->counter_repository->getCounterByName($counterName);
-            $this->counter_repository->remove($counter);
-            $this->logger->info('deleted ', $counter->toArray());
-            $return = $counter->toArray();
+
+
         } catch (\Exception $e) {
             // TODO: catch specific expected exceptions and provide helpful user
             // feedback in the response instead of the error message

@@ -78,7 +78,7 @@ class DomainContext implements Context, SnippetAcceptingContext
         $this->counterName = new CounterName($name);
         $this->counterId = new CounterId($id);
         $this->counterValue = new CounterValue($value);
-        // lets use the factory to create the counter here, but not bother with using the build service
+        // lets use the factory to create the counter here, but not bother with using the build Service
         $this->counter = $this->counter_factory->build($this->counterId, $this->counterName, $this->counterValue, 'active', 'passworplaceholder');
 
 
@@ -93,7 +93,7 @@ class DomainContext implements Context, SnippetAcceptingContext
         $this->counterId = new CounterId($id);
         $this->counterValue = new CounterValue(0);
 
-        // lets use the factory to create the counter here, but not bother with using the build service
+        // lets use the factory to create the counter here, but not bother with using the build Service
         $this->counter = $this->counter_factory->build($this->counterId, $this->counterName, $this->counterValue, 'active', 'passwordplaceholder');
 
     }
@@ -106,7 +106,7 @@ class DomainContext implements Context, SnippetAcceptingContext
         $this->counterId = new CounterId();
         $this->counterValue = new CounterValue(0);
 
-        // lets use the factory to create the counter here, but not bother with using the build service
+        // lets use the factory to create the counter here, but not bother with using the build Service
         $this->counter = $this->counter_factory->build($this->counterId, $this->counterName, $this->counterValue, 'active', 'passwordplaceholder');
 
     }
@@ -119,7 +119,7 @@ class DomainContext implements Context, SnippetAcceptingContext
         $this->counterName = new CounterName($name);
         $this->counterId = new CounterId();
         $this->counterValue = new CounterValue($value);
-        // lets use the factory to create the counter here, but not bother with using the build service
+        // lets use the factory to create the counter here, but not bother with using the build Service
         $this->counter = $this->counter_factory->build($this->counterId, $this->counterName, $this->counterValue, 'active', 'passwordplaceholder');
 
     }
@@ -238,10 +238,10 @@ class DomainContext implements Context, SnippetAcceptingContext
 //        $request = new \Slim\Http\Request('GET', $uri, $headers, $cookies,
 //            $serverParams, $body);
         $args = ['name' => $name, 'value' => 0];
-// now thest the build service just in case
-        // cant test build service without request
+// now thest the build Service just in case
+        // cant test build Service without request
         //$this->counter = $this->counterBuildService->execute($request, $args);
-        // lets use the factory to create the counter here, but not bother with using the build service
+        // lets use the factory to create the counter here, but not bother with using the build Service
         $this->counterName = new CounterName($name);
         $this->counterId = new CounterId('test');
         $this->counterValue = new CounterValue('0');
@@ -286,8 +286,9 @@ $newCounterId = new CounterId($id);
     public function iRemoveTheCounterWithId($id)
     {
         try {
-            $CounterId = new CounterId($id);
-            $removed = $this->counter_repository->removeCounterById($CounterId);
+            $command = new \OpenCounter\Domain\Service\Counter\CounterRemoveService($this->counter_repository);
+            $command->execute(
+              new \OpenCounter\Domain\Command\Counter\CounterRemoveCommand($id));
         } catch (Exception $e) {
             $this->error = true;
         }
@@ -299,9 +300,11 @@ $newCounterId = new CounterId($id);
      */
     public function iRemoveTheCounterWithName($name)
     {
-// note we are ignoringpassed name and using $this->counterName
         try {
-            $removed = $this->counter_repository->removeCounterById($this->counterName);
+            $command = new \OpenCounter\Domain\Service\Counter\CounterRemoveService($this->counter_repository);
+            $command->execute(
+              new \OpenCounter\Domain\Command\Counter\CounterRemoveCommand($name));
+
         } catch (Exception $e) {
             $this->error = true;
         }
