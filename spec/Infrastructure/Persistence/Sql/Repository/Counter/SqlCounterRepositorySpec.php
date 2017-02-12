@@ -6,7 +6,7 @@ use OpenCounter\Domain\Model\Counter\Counter;
 use OpenCounter\Domain\Model\Counter\CounterId;
 use OpenCounter\Domain\Model\Counter\CounterName;
 use OpenCounter\Domain\Model\Counter\CounterValue;
-use OpenCounter\Domain\Repository\CounterRepositoryInterface;
+use OpenCounter\Domain\Repository\CounterRepository;
 use OpenCounter\Infrastructure\Persistence\Sql\Repository\Counter\SqlCounterRepository;
 
 use OpenCounter\Infrastructure\Persistence\Sql\SqlManager;

@@ -17,7 +17,7 @@ use OpenCounter\Domain\Command\Counter\CounterRemoveCommand;
 use OpenCounter\Domain\Model\Counter\CounterName;
 use OpenCounter\Domain\Model\Counter\CounterValue;
 
-use OpenCounter\Domain\Repository\CounterRepositoryInterface;
+use OpenCounter\Domain\Repository\CounterRepository;
 
 use OpenCounter\Domain\Service\Counter\CounterRemoveService;
 use OpenCounter\Infrastructure\Persistence\StorageInterface;
@@ -42,7 +42,7 @@ class CounterController
     /**
      * CounterRepositoryInterface
      *
-     * @var \OpenCounter\Domain\Repository\CounterRepositoryInterface
+     * @var \OpenCounter\Domain\Repository\CounterRepository
      */
     private $counter_repository;
     /**
@@ -57,14 +57,14 @@ class CounterController
      * @param \Psr\Log\LoggerInterface $logger
      * @param \OpenCounter\Http\CounterBuildService $counterBuildService
      * @param \OpenCounter\Infrastructure\Persistence\StorageInterface $counter_mapper
-     * @param \OpenCounter\Domain\Repository\CounterRepositoryInterface $counter_repository
+     * @param \OpenCounter\Domain\Repository\CounterRepository $counter_repository
      */
 
     public function __construct(
         LoggerInterface $logger,
         CounterBuildService $counterBuildService,
         StorageInterface $counter_mapper,
-        CounterRepositoryInterface $counter_repository
+        CounterRepository $counter_repository
     ) {
 
         $this->logger = $logger;
@@ -87,16 +87,12 @@ class CounterController
         $args
     ) {
 
-        $this->logger->info('try to create new counter', $args);
-
-        // Now we need to instantiate our Counter using a factory
-        // use another service that in turn calls the factory?
         try {
-            $counter = $this->counterBuildService->execute($request, $args);
-            $this->counter_repository->save($counter);
-            $this->logger->info('saved counter', $counter->toArray());
-            $return = json_encode($counter->toArray());
-            $code = 201;
+
+            $command = new \OpenCounter\Domain\Service\Counter\CounterAddService($this->counter_repository);
+            $command->execute(
+              new \OpenCounter\Domain\Command\Counter\CounterAddCommand($request->getParsedBody()));
+
         } catch (\Exception $e) {
             $return = json_encode($e->getMessage());
             $code = 409;

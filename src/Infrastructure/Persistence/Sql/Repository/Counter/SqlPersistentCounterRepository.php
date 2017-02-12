@@ -8,7 +8,7 @@ namespace OpenCounter\Infrastructure\Persistence\Sql\Repository\Counter;
 
 use OpenCounter\Domain\Model\Counter\Counter;
 use OpenCounter\Domain\Model\Counter\CounterName;
-use OpenCounter\Domain\Repository\PersistentCounterRepositoryInterface;
+use OpenCounter\Domain\Repository\PersistentCounterRepository;
 use OpenCounter\Infrastructure\Persistence\Sql\SqlManager;
 
 /**
@@ -16,7 +16,7 @@ use OpenCounter\Infrastructure\Persistence\Sql\SqlManager;
  *
  * @package OpenCounter\Infrastructure\Persistence\Sql\Repository\Counter
  */
-class SqlPersistentCounterRepository extends SqlCounterRepository implements PersistentCounterRepositoryInterface
+class SqlPersistentCounterRepository extends SqlCounterRepository implements PersistentCounterRepository
 {
     /**
      * The manager

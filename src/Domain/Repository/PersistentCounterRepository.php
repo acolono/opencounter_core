@@ -16,7 +16,7 @@ use OpenCounter\Domain\Model\Counter\CounterName;
  *
  * @package OpenCounter\Domain\Repository
  */
-interface PersistentCounterRepositoryInterface extends CounterRepositoryInterface
+interface PersistentCounterRepository extends CounterRepository
 {
     /**
      * Saves the counter given.

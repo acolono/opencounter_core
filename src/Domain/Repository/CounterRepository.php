@@ -23,7 +23,7 @@ use OpenCounter\Domain\Model\Counter\CounterId;
  *
  * @package OpenCounter\Domain\Repository
  */
-interface CounterRepositoryInterface
+interface CounterRepository
 {
 
     /**

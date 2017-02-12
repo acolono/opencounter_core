@@ -12,7 +12,7 @@ use OpenCounter\Domain\Model\Counter\Counter;
 use OpenCounter\Domain\Model\Counter\CounterName;
 use OpenCounter\Domain\Exception\Counter\CounterAlreadyExistsException;
 
-use OpenCounter\Domain\Repository\CounterRepositoryInterface;
+use OpenCounter\Domain\Repository\CounterRepository;
 use OpenCounter\Infrastructure\Factory\Counter\CounterFactory;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Log\LoggerInterface;
@@ -28,7 +28,7 @@ class CounterBuildService
 {
     /**
      * A Counter repository object
-     * @var \OpenCounter\Domain\Repository\CounterRepositoryInterface
+     * @var \OpenCounter\Domain\Repository\CounterRepository
      */
     private $counter_repository;
     /**
@@ -45,12 +45,12 @@ class CounterBuildService
     /**
      * CounterBuildService constructor.
      *
-     * @param \OpenCounter\Domain\Repository\CounterRepositoryInterface $counter_repository
+     * @param \OpenCounter\Domain\Repository\CounterRepository $counter_repository
      * @param \OpenCounter\Infrastructure\Factory\Counter\CounterFactory $counter_factory
      * @param \Psr\Log\LoggerInterface $logger
      */
     public function __construct(
-        CounterRepositoryInterface $counter_repository,
+        CounterRepository $counter_repository,
         CounterFactory $counter_factory,
         LoggerInterface $logger
     ) {

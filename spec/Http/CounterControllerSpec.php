@@ -18,8 +18,8 @@ use OpenCounter\Domain\Service\Counter\CounterRemoveService;
 use OpenCounter\Domain\Model\Counter\CounterId;
 use OpenCounter\Domain\Model\Counter\CounterName;
 use OpenCounter\Domain\Model\Counter\CounterValue;
-use OpenCounter\Domain\Repository\CounterRepositoryInterface;
-use OpenCounter\Domain\Repository\PersistentCounterRepositoryInterface;
+use OpenCounter\Domain\Repository\CounterRepository;
+use OpenCounter\Domain\Repository\PersistentCounterRepository;
 use OpenCounter\Http\CounterBuildService;
 use OpenCounter\Infrastructure\Persistence\StorageInterface;
 
@@ -47,7 +47,7 @@ class CounterControllerSpec extends ObjectBehavior
       LoggerInterface $logger,
       CounterBuildService $counterBuildService,
       StorageInterface $counter_mapper,
-      CounterRepositoryInterface $counter_repository,
+      CounterRepository $counter_repository,
       CounterRemoveService $counter_remove_service
     ) {
         $this->beConstructedWith(

@@ -10,7 +10,7 @@ use OpenCounter\Domain\Model\Counter\Counter;
 use OpenCounter\Domain\Model\Counter\CounterId;
 use OpenCounter\Domain\Model\Counter\CounterName;
 use OpenCounter\Domain\Model\Counter\CounterValue;
-use OpenCounter\Domain\Repository\CounterRepositoryInterface;
+use OpenCounter\Domain\Repository\CounterRepository;
 use OpenCounter\http\CounterBuildService;
 use OpenCounter\Infrastructure\Factory\Counter\CounterFactory;
 use PhpSpec\ObjectBehavior;
@@ -25,7 +25,7 @@ class CounterBuildServiceSpec extends ObjectBehavior
 //        $this->shouldHaveType(CounterBuildService::class);
 //    }
     function let(
-      CounterRepositoryInterface $counter_repository,
+      CounterRepository $counter_repository,
 
       CounterFactory $counter_factory,
       Logger $logger)
@@ -38,13 +38,13 @@ class CounterBuildServiceSpec extends ObjectBehavior
      * calling execute method with certain arguments to get back a counter object built through the counter factory
      *
      * @param ServerRequestInterface $request
-     * @param CounterRepositoryInterface $counter_repository
+     * @param CounterRepository $counter_repository
      * @param CounterFactory $counter_factory
      * @param Logger $logger
      */
     public function it_can_be_used_to_create_new_counters(
         ServerRequestInterface $request,
-        CounterRepositoryInterface $counter_repository,
+        CounterRepository $counter_repository,
         CounterFactory $counter_factory,
         Logger $logger
     )
@@ -77,7 +77,7 @@ class CounterBuildServiceSpec extends ObjectBehavior
 
     public function it_throws_exception_if_counter_to_be_added_already_exists_in_repo(
         ServerRequestInterface $request,
-        CounterRepositoryInterface $counter_repository,
+        CounterRepository $counter_repository,
         CounterFactory $counter_factory,
         Logger $logger
     )

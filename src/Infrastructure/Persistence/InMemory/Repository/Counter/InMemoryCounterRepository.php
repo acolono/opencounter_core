@@ -10,14 +10,14 @@ namespace OpenCounter\Infrastructure\Persistence\InMemory\Repository\Counter;
 use OpenCounter\Domain\Model\Counter\Counter;
 use OpenCounter\Domain\Model\Counter\CounterId;
 use OpenCounter\Domain\Model\Counter\CounterName;
-use OpenCounter\Domain\Repository\CounterRepositoryInterface;
+use OpenCounter\Domain\Repository\CounterRepository;
 
 /**
  * Class InMemoryCounterRepository
  *
  * @package OpenCounter\Infrastructure\Persistence\InMemory\Repository\Counter
  */
-class InMemoryCounterRepository implements CounterRepositoryInterface
+class InMemoryCounterRepository implements CounterRepository
 {
   /**
    * @var $counters
