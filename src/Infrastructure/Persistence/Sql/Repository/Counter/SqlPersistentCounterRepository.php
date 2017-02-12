@@ -42,6 +42,9 @@ class SqlPersistentCounterRepository extends SqlCounterRepository implements Per
 
     private $removeStmt;
 
+
+    private $removeNamedStmt;
+
     /**
      * get Statement.
      *
@@ -70,6 +73,9 @@ class SqlPersistentCounterRepository extends SqlCounterRepository implements Per
         $this->manager = $manager;
         $this->removeStmt = $this->manager->prepare(
             sprintf('DELETE FROM %s WHERE uuid = :uuid', self::TABLE_NAME)
+        );
+        $this->removeNamedStmt = $this->manager->prepare(
+          sprintf('DELETE FROM %s WHERE name = :name', self::TABLE_NAME)
         );
         $this->getStmt = $this->manager->prepare(
             sprintf('SELECT * FROM %s WHERE name = :name', self::TABLE_NAME)
@@ -138,4 +144,11 @@ class SqlPersistentCounterRepository extends SqlCounterRepository implements Per
         );
         return $insert;
     }
+
+
+    public function removeCounterByName(CounterName $aName)
+    {
+        $this->removeNamedStmt->execute(['name' => $aName->name()]);
+    }
+
 }
