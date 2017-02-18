@@ -12,7 +12,6 @@ use OpenCounter\Domain\Exception\Counter\CounterNotFoundException;
 use OpenCounter\Domain\Model\Counter\CounterName;
 use OpenCounter\Domain\Model\Counter\CounterValue;
 use OpenCounter\Domain\Repository\CounterRepository;
-use OpenCounter\Http\CounterBuildService;
 
 class CounterIncrementValueHandler
 {
@@ -37,7 +36,7 @@ class CounterIncrementValueHandler
             throw new CounterNotFoundException();
         }
         $counter->increaseCount(new CounterValue($aCommand->value()));
-        $this->CounterRepository->update($counter);
+        $this->CounterRepository->save($counter);
     }
 
 }

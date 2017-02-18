@@ -1,11 +1,14 @@
 <?php
 /**
- * Used to create new counter objects.
+ * Used to create new counter objects from psr7 request.
  *
- * Calls build method on counter factory for us.
+ * originally the build service was created so that it Calls build method on counter factory for us.
+ * at the moment this is built to work with psr7 request objects containing the
+ * values the counter will be created with as array in the request body
+ *
  */
 
-namespace OpenCounter\Http;
+namespace OpenCounter\Application\Service\Counter;
 
 use OpenCounter\Domain\Model\Counter\CounterValue;
 use OpenCounter\Domain\Model\Counter\Counter;
@@ -72,6 +75,7 @@ class CounterBuildService
     {
 
         // https://leanpub.com/ddd-in-php/read#leanpub-auto-persisting-value-objects
+
 
         $counterId = $this->counter_repository->nextIdentity();
 

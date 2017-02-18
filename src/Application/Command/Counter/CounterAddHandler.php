@@ -8,9 +8,9 @@
 
 namespace OpenCounter\Application\Command\Counter;
 
+use OpenCounter\Application\Service\Counter\CounterBuildService;
 use OpenCounter\Domain\Exception\Counter\CounterAlreadyExistsException;
 use OpenCounter\Domain\Repository\CounterRepository;
-use OpenCounter\Http\CounterBuildService;
 
 class CounterAddHandler
 {

@@ -5,7 +5,6 @@ namespace OpenCounter\Application\Command\Counter;
 use OpenCounter\Domain\Exception\Counter\CounterNotFoundException;
 use OpenCounter\Domain\Model\Counter\CounterName;
 use OpenCounter\Domain\Repository\CounterRepository;
-use OpenCounter\Domain\Repository\PersistentCounterRepository;
 
 class CounterSetStatusHandler
 {
