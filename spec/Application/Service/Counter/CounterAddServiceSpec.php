@@ -1,6 +1,7 @@
 <?php
 
 namespace spec\OpenCounter\Service\Counter;
+use OpenCounter\Application\Service\Counter\ApplicationService;
 
 use OpenCounter\Application\Command\Counter\CounterAddCommand;
 use OpenCounter\Application\Service\Counter\CounterAddService;

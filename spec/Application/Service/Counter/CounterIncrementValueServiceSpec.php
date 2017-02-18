@@ -2,7 +2,7 @@
 
 namespace spec\OpenCounter\Application\Service\Counter;
 
-use Ddd\Application\Service\ApplicationService;
+use OpenCounter\Application\Service\Counter\ApplicationService;
 use PhpSpec\ObjectBehavior;
 use OpenCounter\Application\Command\Counter\CounterIncrementValueCommand;
 use OpenCounter\Application\Command\Counter\CounterIncrementValueHandler;

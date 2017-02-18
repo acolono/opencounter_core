@@ -2,7 +2,7 @@
 
 namespace spec\OpenCounter\Application\Service\Counter;
 
-use Ddd\Application\Service\ApplicationService;
+use OpenCounter\Application\Service\Counter\ApplicationService;
 
 use PhpSpec\ObjectBehavior;
 use OpenCounter\Application\Command\Counter\CounterRemoveCommand;
@@ -25,6 +25,7 @@ class CounterRemoveServiceSpec extends ObjectBehavior
     function it_implements_application_service()
     {
         $this->shouldHaveType(ApplicationService::class);
+
     }
 
     function it_executes(

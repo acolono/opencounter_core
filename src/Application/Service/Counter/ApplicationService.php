@@ -4,7 +4,6 @@ namespace OpenCounter\Application\Service\Counter;
 
 /**
  * Interface ApplicationService
- * @package Ddd\Application\Service
  */
 interface ApplicationService
 {

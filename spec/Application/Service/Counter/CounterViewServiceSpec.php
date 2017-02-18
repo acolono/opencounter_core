@@ -8,7 +8,7 @@
 
 namespace spec\OpenCounter\Application\Service\Counter;
 
-use Ddd\Application\Service\ApplicationService;
+use OpenCounter\Application\Service\Counter\ApplicationService;
 use OpenCounter\Application\Query\Counter\CounterOfNameHandler;
 use OpenCounter\Application\Query\Counter\CounterOfNameQuery;
 use PhpSpec\ObjectBehavior;
