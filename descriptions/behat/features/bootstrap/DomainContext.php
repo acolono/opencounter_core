@@ -1,16 +1,11 @@
 <?php
 
-use Behat\Behat\Tester\Exception\PendingException;
 use Behat\Behat\Context\Context;
 use Behat\Behat\Context\SnippetAcceptingContext;
-use Behat\Gherkin\Node\PyStringNode;
-use Behat\Gherkin\Node\TableNode;
-
+use OpenCounter\Domain\Model\Counter\Counter;
 use OpenCounter\Domain\Model\Counter\CounterId;
 use OpenCounter\Domain\Model\Counter\CounterName;
 use OpenCounter\Domain\Model\Counter\CounterValue;
-use OpenCounter\Domain\Model\Counter\Counter;
-
 use Pavlakis\Slim\Behat\Context\App;
 use Pavlakis\Slim\Behat\Context\KernelAwareContext;
 
@@ -19,7 +14,6 @@ use Pavlakis\Slim\Behat\Context\KernelAwareContext;
  */
 class DomainContext implements Context, SnippetAcceptingContext
 {
-
 
     /**
      * @var bool
@@ -42,45 +36,48 @@ class DomainContext implements Context, SnippetAcceptingContext
         // TODO: figure out a better place for these fixture thingies
         $counters = [];
         $counters[] = new Counter(
-            new CounterId('1CE05088-ED1F-43E9-A415-3B3792655A9B'),
-            new CounterName('onecounter'), new CounterValue(2), 'active',
-            'passwordplaceholder'
+          new CounterId('1CE05088-ED1F-43E9-A415-3B3792655A9B'),
+          new CounterName('onecounter'), new CounterValue(2), 'active',
+          'passwordplaceholder'
         );
         $counters[] = new Counter(
-            new CounterId('8CE05088-ED1F-43E9-A415-3B3792655A9B'),
-            new CounterName('twocounter'), new CounterValue(2), 'active',
-            'passwordplaceholder'
+          new CounterId('8CE05088-ED1F-43E9-A415-3B3792655A9B'),
+          new CounterName('twocounter'), new CounterValue(2), 'active',
+          'passwordplaceholder'
         );
         $counters[] = new Counter(
-            new CounterId('62A0CEB4-0403-4AA6-A6CD-1EE808AD4D23'),
-            new CounterName('test'), new CounterValue(0), 'locked',
-            'passwordplaceholder'
+          new CounterId('62A0CEB4-0403-4AA6-A6CD-1EE808AD4D23'),
+          new CounterName('test'), new CounterValue(0), 'locked',
+          'passwordplaceholder'
         );
         $counters[] = new Counter(
-            new CounterId('62A0CEB4-4575-4AA6-FD76-1EE808AD4D23'),
-            new CounterName('onecounter'), new CounterValue(1), 'disabled',
-            'passwordplaceholder'
+          new CounterId('62A0CEB4-4575-4AA6-FD76-1EE808AD4D23'),
+          new CounterName('onecounter'), new CounterValue(1), 'disabled',
+          'passwordplaceholder'
         );
         $this->counter_repository = new \OpenCounter\Infrastructure\Persistence\InMemory\Repository\Counter\InMemoryCounterRepository($counters);
-        $this->counterBuildService = new \OpenCounter\Http\CounterBuildService($this->counter_repository,
-            $this->counter_factory, $this->logger);
+        $this->counterBuildService = new \OpenCounter\Application\Service\Counter\CounterBuildService(
+          $this->counter_repository,
+          $this->counter_factory,
+          $this->logger
+        );
     }
 
     /**
      * @Given a counter :name with ID :id and a value of :value was added to the collection
      */
     public function aCounterWithIdAndAValueOfWasAddedToTheCollection(
-        $name,
-        $id,
-        $value
-    )
-    {
+      $name,
+      $id,
+      $value
+    ) {
         $this->counterName = new CounterName($name);
         $this->counterId = new CounterId($id);
         $this->counterValue = new CounterValue($value);
         // lets use the factory to create the counter here, but not bother with using the build Service
-        $this->counter = $this->counter_factory->build($this->counterId, $this->counterName, $this->counterValue, 'active', 'passworplaceholder');
-
+        $this->counter = $this->counter_factory->build($this->counterId,
+          $this->counterName, $this->counterValue, 'active',
+          'passworplaceholder');
 
     }
 
@@ -94,9 +91,12 @@ class DomainContext implements Context, SnippetAcceptingContext
         $this->counterValue = new CounterValue(0);
 
         // lets use the factory to create the counter here, but not bother with using the build Service
-        $this->counter = $this->counter_factory->build($this->counterId, $this->counterName, $this->counterValue, 'active', 'passwordplaceholder');
+        $this->counter = $this->counter_factory->build($this->counterId,
+          $this->counterName, $this->counterValue, 'active',
+          'passwordplaceholder');
 
     }
+
     /**
      * @Given a counter( with name) :name has been set
      */
@@ -107,7 +107,9 @@ class DomainContext implements Context, SnippetAcceptingContext
         $this->counterValue = new CounterValue(0);
 
         // lets use the factory to create the counter here, but not bother with using the build Service
-        $this->counter = $this->counter_factory->build($this->counterId, $this->counterName, $this->counterValue, 'active', 'passwordplaceholder');
+        $this->counter = $this->counter_factory->build($this->counterId,
+          $this->counterName, $this->counterValue, 'active',
+          'passwordplaceholder');
 
     }
 
@@ -120,7 +122,9 @@ class DomainContext implements Context, SnippetAcceptingContext
         $this->counterId = new CounterId();
         $this->counterValue = new CounterValue($value);
         // lets use the factory to create the counter here, but not bother with using the build Service
-        $this->counter = $this->counter_factory->build($this->counterId, $this->counterName, $this->counterValue, 'active', 'passwordplaceholder');
+        $this->counter = $this->counter_factory->build($this->counterId,
+          $this->counterName, $this->counterValue, 'active',
+          'passwordplaceholder');
 
     }
 
@@ -130,7 +134,7 @@ class DomainContext implements Context, SnippetAcceptingContext
     public function theValueReturnedShouldBe($arg1)
     {
 // TODO: move the typecasting somewhere else
-        if (! (int) $arg1 === (int) $this->counter->getValue()) {
+        if (!(int)$arg1 === (int)$this->counter->getValue()) {
             throw new \Exception('value not equal');
         }
     }
@@ -189,7 +193,6 @@ class DomainContext implements Context, SnippetAcceptingContext
         }
     }
 
-
     /**
      * @When I (can )get the value of the counter with ID :arg1
      */
@@ -197,7 +200,6 @@ class DomainContext implements Context, SnippetAcceptingContext
     {
         $this->counter->getValue();
     }
-
 
     /**
      * @When I (can )get the value of the counter with Name :name
@@ -245,7 +247,9 @@ class DomainContext implements Context, SnippetAcceptingContext
         $this->counterName = new CounterName($name);
         $this->counterId = new CounterId('test');
         $this->counterValue = new CounterValue('0');
-        $this->counter = $this->counter_factory->build($this->counterId, $this->counterName, $this->counterValue, 'active', 'passworplaceholder');
+        $this->counter = $this->counter_factory->build($this->counterId,
+          $this->counterName, $this->counterValue, 'active',
+          'passworplaceholder');
 
         // cannot save in memory repository since its not persistent, so not testing this?
         $this->counter_repository->save($this->counter);
@@ -256,15 +260,17 @@ class DomainContext implements Context, SnippetAcceptingContext
      */
     public function noCounterWithIdHasBeenSet($id)
     {
-$newCounterId = new CounterId($id);
+        $newCounterId = new CounterId($id);
         try {
             $this->counter = $this->counter_repository->getCounterById($newCounterId);
         } catch (Exception $e) {
             $this->error = true;
         }
+
         return $this->error;
 
     }
+
     /**
      * @Given no counter :name has been set
      */
@@ -276,6 +282,7 @@ $newCounterId = new CounterId($id);
         } catch (Exception $e) {
             $this->error = true;
         }
+
         return $this->error;
 
     }
@@ -291,6 +298,7 @@ $newCounterId = new CounterId($id);
         } catch (Exception $e) {
             $this->error = true;
         }
+
         return $this->error;
     }
 
@@ -304,8 +312,8 @@ $newCounterId = new CounterId($id);
         } catch (Exception $e) {
             $this->error = true;
         }
+
         return $this->error;
     }
-
 
 }

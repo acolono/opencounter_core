@@ -60,7 +60,7 @@ class ApplicationServicesContext implements Context, SnippetAcceptingContext
           'passwordplaceholder'
         );
         $this->counter_repository = new \OpenCounter\Infrastructure\Persistence\InMemory\Repository\Counter\InMemoryCounterRepository($this->counters);
-        $this->counterBuildService = new \OpenCounter\Http\CounterBuildService(
+        $this->counterBuildService = new \OpenCounter\Application\Service\Counter\CounterBuildService(
           $this->counter_repository,
           $this->counter_factory,
           $this->logger
