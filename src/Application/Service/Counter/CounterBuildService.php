@@ -81,7 +81,7 @@ class CounterBuildService
 
         $password = 'passwordplaceholder';
         try {
-            $counter = $this->counter_repository->getCounterByName(New CounterName($request->name()));
+            $counter = $this->counter_repository->getCounterByName( $request->name());
         } catch (\Exception $e) {
             $return = ['message' => $e->getMessage()];
             $code = 409;

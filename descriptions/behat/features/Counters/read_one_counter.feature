@@ -10,10 +10,10 @@ Feature: read one counter
     When I get the value of the counter with Name "onecounter"
     Then the value returned should be 1
 #
-  Scenario: Getting the value for a single counter in the collection
-    Given a counter with id "onecounter-id" has been set
-    When I get the value of the counter with ID "onecounter-id"
-    Then the value returned should be 0
+#  Scenario: Getting the value for a single counter in the collection
+#    Given a counter with id "onecounter-id" has been set
+#    When I get the value of the counter with ID "onecounter-id"
+#    Then the value returned should be 0
 
   #  Scenario: Getting the status for a single counter in the collection
   #    Given a counter "onecounter" with a status of "active" has been set
