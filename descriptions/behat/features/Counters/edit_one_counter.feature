@@ -24,19 +24,6 @@ Feature: edit one counter
     When I get the value of the counter with Name "onecounter"
     And the value returned should be 1
 
-#  Scenario: increment the value for a single counter by id
-#    Given a counter with id "0000000" has been set
-#    When I increment the value of the counter with ID "0000000"
-#    And I get the value of the counter with ID "0000000"
-#    Then the value returned should be 1
-
-  Scenario: lock a single counter by id and try to increment it
-    Given a counter with id "0000000" has been set
-    When I lock the counter with ID "0000000"
-    And I increment the value of the counter with ID "0000000"
-    Then I should see an error "counter is locked"
-    When I get the value of the counter with ID "0000000"
-    Then the value returned should be 0
 
   #Scenario: unlock a single locked counter in the collection and increment it
   #Scenario: unlock a single unlocked counter in the collection and increment it

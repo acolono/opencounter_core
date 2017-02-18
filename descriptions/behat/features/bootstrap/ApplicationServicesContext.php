@@ -66,7 +66,15 @@ class ApplicationServicesContext implements Context, SnippetAcceptingContext
           $this->logger
         );
     }
-
+    /** @BeforeScenario */
+//    public function gatherContexts(\Behat\Behat\Hook\Scope\BeforeScenarioScope $scope)
+//    {
+//        // we wanna reuse some domain context steps for convinience.
+//        $environment = $scope->getEnvironment();
+//
+//        $this->domainContext = $environment->getContext('DomainContext');
+//
+//    }
     /**
      * @Given a counter( with id) :id has been set
      */
@@ -77,7 +85,9 @@ class ApplicationServicesContext implements Context, SnippetAcceptingContext
         $this->counterValue = new CounterValue(0);
 
         // lets use the factory to create the counter here, but not bother with using the build Service
-        // TODO we are not testing here just setting up a convinience function, could use this directly from domaincontext actually
+        // TODO we are not testing here just setting up a convinience function,
+        // could use this directly from domaincontext actually but there we arent saving the counter
+        // $this->domainContext->aCounterWithIdhasBeenSet($id);
 
         $this->counter = $this->counter_factory->build(
           $this->counterId,
@@ -85,7 +95,7 @@ class ApplicationServicesContext implements Context, SnippetAcceptingContext
           $this->counterValue,
           'active',
           'passwordplaceholder');
-
+        $this->counter_repository->save($this->counter);
     }
 
     /**
@@ -106,7 +116,7 @@ class ApplicationServicesContext implements Context, SnippetAcceptingContext
           'active',
           'passwordplaceholder'
         );
-
+        $this->counter_repository->save($this->counter);
     }
 
     /**
@@ -119,7 +129,6 @@ class ApplicationServicesContext implements Context, SnippetAcceptingContext
           new CounterValue($value)
         );
 
-
     }
 
     /**
@@ -129,24 +138,26 @@ class ApplicationServicesContext implements Context, SnippetAcceptingContext
       $name,
       $value
     ) {
+        try {
+            $CounterAddService = new \OpenCounter\Application\Service\Counter\CounterAddService(
+              new \OpenCounter\Application\Command\Counter\CounterAddHandler(
+                $this->counter_repository,
+                $this->counterBuildService
+              )
 
-        $CounterAddService = new \OpenCounter\Application\Service\Counter\CounterAddService(
-          new \OpenCounter\Application\Command\Counter\CounterAddHandler(
-            $this->counter_repository,
-            $this->counterBuildService
-          )
+            );
 
-        );
-
-        $CounterAddService->execute(
-          new \OpenCounter\Application\Command\Counter\CounterAddCommand(
-            $name,
-            $value,
-            'active',
-            'passwordplaceholder'
-          )
-        );
-
+            $CounterAddService->execute(
+              new \OpenCounter\Application\Command\Counter\CounterAddCommand(
+                $name,
+                $value,
+                'active',
+                'passwordplaceholder'
+              )
+            );
+        } catch (Exception $e) {
+            $this->error = true;
+        }
     }
 
     /**
@@ -214,20 +225,22 @@ class ApplicationServicesContext implements Context, SnippetAcceptingContext
      */
     public function iLockTheCounterWithName($name)
     {
+        try {
+            $CounterSetStatusService = new \OpenCounter\Application\Service\Counter\CounterSetStatusService(
+              new \OpenCounter\Application\Command\Counter\CounterSetStatusHandler(
 
-        $CounterSetStatusService = new \OpenCounter\Application\Service\Counter\CounterSetStatusService(
-          new \OpenCounter\Application\Command\Counter\CounterSetStatusHandler(
+                $this->counter_repository
+              ));
 
-          $this->counter_repository
-        ));
-
-        $CounterSetStatusService->execute(
-          new \OpenCounter\Application\Command\Counter\CounterSetStatusCommand(
-            $name,
-            'locked'
-          )
-        );
-
+            $CounterSetStatusService->execute(
+              new \OpenCounter\Application\Command\Counter\CounterSetStatusCommand(
+                $name,
+                'locked'
+              )
+            );
+        } catch (Exception $e) {
+            $this->error = true;
+        }
 //        $this->counter->lock();
     }
 
@@ -244,32 +257,54 @@ class ApplicationServicesContext implements Context, SnippetAcceptingContext
     /**
      * @When I (can )get the value of the counter with ID :arg1
      */
-//    public function iGetTheValueOfTheCounterWithId($arg1)
-//    {
-////        $this->counter->getValue();
-//    }
+    public function iGetTheValueOfTheCounterWithId($id)
+    {
+        try {
+            // first try without command bus dependency
+            $CounterViewService = new \OpenCounter\Application\Service\Counter\CounterViewService(
+              new \OpenCounter\Application\Query\Counter\CounterOfIdHandler(
+                $this->counter_repository,
+                $this->counterBuildService
+              )
+
+            );
+
+            $this->counter = $CounterViewService->execute(
+              new \OpenCounter\Application\Query\Counter\CounterOfIdQuery(
+                $id
+              )
+
+            );
+        } catch (Exception $e) {
+            $this->error = true;
+        }
+        $this->counter->getValue();
+    }
 
     /**
      * @When I (can )get the value of the counter with Name :name
      */
     public function iGetTheValueOfTheCounterWithName($name)
     {
-        // first try without command bus dependency
-        $CounterViewService = new \OpenCounter\Application\Service\Counter\CounterViewService(
-          new \OpenCounter\Application\Query\Counter\CounterOfNameHandler(
-            $this->counter_repository,
-            $this->counterBuildService
-          )
+        try {
+            // first try without command bus dependency
+            $CounterViewService = new \OpenCounter\Application\Service\Counter\CounterViewService(
+              new \OpenCounter\Application\Query\Counter\CounterOfNameHandler(
+                $this->counter_repository,
+                $this->counterBuildService
+              )
 
-        );
+            );
 
-        $this->counter = $CounterViewService->execute(
-          new \OpenCounter\Application\Query\Counter\CounterOfNameQuery(
-            $name
-          )
+            $this->counter = $CounterViewService->execute(
+              new \OpenCounter\Application\Query\Counter\CounterOfNameQuery(
+                $name
+              )
 
-        );
-
+            );
+        } catch (Exception $e) {
+            $this->error = true;
+        }
         $this->counter->getValue();
 
     }
@@ -279,22 +314,26 @@ class ApplicationServicesContext implements Context, SnippetAcceptingContext
      */
     public function iResetTheCounterWithName($name)
     {
+        try {
 
-        // first try without command bus dependency
-        $CounterResetValueService = new \OpenCounter\Application\Service\Counter\CounterResetValueService(
-          new \OpenCounter\Application\Command\Counter\CounterResetValueHandler(
-            $this->counter_repository
-          )
+            // first try without command bus dependency
+            $CounterResetValueService = new \OpenCounter\Application\Service\Counter\CounterResetValueService(
+              new \OpenCounter\Application\Command\Counter\CounterResetValueHandler(
+                $this->counter_repository
+              )
 
-        );
+            );
 
-        $CounterResetValueService->execute(
-          new \OpenCounter\Application\Command\Counter\CounterResetValueCommand(
-            $name
+            $CounterResetValueService->execute(
+              new \OpenCounter\Application\Command\Counter\CounterResetValueCommand(
+                $name
 
-          )
-        );
+              )
+            );
 
+        } catch (Exception $e) {
+            $this->error = true;
+        }
     }
 
     /**
@@ -302,24 +341,30 @@ class ApplicationServicesContext implements Context, SnippetAcceptingContext
      */
     public function iSetACounterWithName($name)
     {
+        try {
+            // first try without command bus dependency
+            $CounterAddService = new \OpenCounter\Application\Service\Counter\CounterAddService(
+              new \OpenCounter\Application\Command\Counter\CounterAddHandler(
+                $this->counter_repository,
+                $this->counterBuildService
+              )
 
-        // first try without command bus dependency
-        $CounterAddService = new \OpenCounter\Application\Service\Counter\CounterAddService(
-          new \OpenCounter\Application\Command\Counter\CounterAddHandler(
-            $this->counter_repository,
-            $this->counterBuildService
-          )
+            );
 
-        );
+            $CounterAddService->execute(
+              new \OpenCounter\Application\Command\Counter\CounterAddCommand(
+                new CounterName($name),
+                new CounterValue(0),
+                'active',
+                'passwordplaceholder'
+              )
+            );
+        } catch (Exception $e) {
+            $this->error = true;
+            return $this->error;
+        }
 
-        $CounterAddService->execute(
-          new \OpenCounter\Application\Command\Counter\CounterAddCommand(
-            new CounterName($name),
-            new CounterValue(0),
-            'active',
-            'passwordplaceholder'
-          )
-        );
+
 
     }
 
@@ -333,9 +378,10 @@ class ApplicationServicesContext implements Context, SnippetAcceptingContext
             $this->counter = $this->counter_repository->getCounterById($newCounterId);
         } catch (Exception $e) {
             $this->error = true;
+            return $this->error;
         }
 
-        return $this->error;
+
 
     }
 
@@ -349,9 +395,10 @@ class ApplicationServicesContext implements Context, SnippetAcceptingContext
             $this->counter = $this->counter_repository->getCounterByName($this->counterName);
         } catch (Exception $e) {
             $this->error = true;
+            return $this->error;
         }
 
-        return $this->error;
+
 
     }
 
@@ -370,9 +417,10 @@ class ApplicationServicesContext implements Context, SnippetAcceptingContext
 
         } catch (Exception $e) {
             $this->error = true;
+            return $this->error;
         }
 
-        return $this->error;
+
     }
 
     /**
@@ -391,9 +439,10 @@ class ApplicationServicesContext implements Context, SnippetAcceptingContext
 //            $removed = $this->counter_repository->removeCounterByName($this->counterName);
         } catch (Exception $e) {
             $this->error = true;
+            return $this->error;
         }
 
-        return $this->error;
+
     }
 
 }

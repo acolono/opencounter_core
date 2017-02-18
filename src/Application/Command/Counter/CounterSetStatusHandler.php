@@ -34,7 +34,7 @@ class CounterSetStatusHandler
         if ($aCommand->status() == 'active') {
             $counter->enable();
         }
-        $this->CounterRepository->update($counter);
+        $this->CounterRepository->save($counter);
     }
 
 }

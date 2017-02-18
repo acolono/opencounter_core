@@ -33,7 +33,7 @@ class CounterResetValueHandler
     public function __invoke(CounterResetValueCommand $aCommand)
     {
         if (!$counter = $this->CounterRepository->getCounterByName(new CounterName($aCommand->name()))) {
-            throw new CounterNotFoundException();
+            throw new CounterNotFoundException('Counter not found. You can not reset a counter that doesnt exist.');
         }
         $counter->resetValueTo(new CounterValue(0));
         $this->CounterRepository->save($counter);

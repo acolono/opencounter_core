@@ -67,15 +67,6 @@ interface CounterRepository
     public function getCounterByName(CounterName $aName);
 
 
-    /**
-     * Gets the counter/counters that match with the given criteria.
-     *
-     * @param mixed $specification The specification criteria
-     *   a specification criteria
-     *
-     * @return mixed
-     */
-    public function query($specification);
 
     /**
      * Returns the next available id.

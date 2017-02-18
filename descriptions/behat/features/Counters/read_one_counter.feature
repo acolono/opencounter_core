@@ -5,15 +5,11 @@ Feature: read one counter
 
   GET /counters/1/value
 
-  Scenario: Getting the value for a single counter in the collection
-    Given a counter "onecounter" with a value of "1" has been set
+  Scenario: Getting the value for a single counter in the collection by name
+    Given a counter "onecounter" with a value of "11" has been set
     When I get the value of the counter with Name "onecounter"
-    Then the value returned should be 1
-#
-#  Scenario: Getting the value for a single counter in the collection
-#    Given a counter with id "onecounter-id" has been set
-#    When I get the value of the counter with ID "onecounter-id"
-#    Then the value returned should be 0
+    Then the value returned should be 11
+
 
   #  Scenario: Getting the status for a single counter in the collection
   #    Given a counter "onecounter" with a status of "active" has been set

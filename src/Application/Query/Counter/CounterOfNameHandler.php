@@ -6,7 +6,7 @@ use OpenCounter\Domain\Exception\Counter\CounterNotFoundException;
 use OpenCounter\Domain\Model\Counter\CounterName;
 use OpenCounter\Domain\Repository\CounterRepository;
 
-class CounterOfNameHandler
+class CounterOfNameHandler implements CounterQueryHandler
 {
     public function __construct(
       CounterRepository $CounterRepository
@@ -14,7 +14,7 @@ class CounterOfNameHandler
         $this->CounterRepository = $CounterRepository;
     }
 
-    public function __invoke(CounterOfNameQuery $aQuery)
+    public function __invoke(CounterQuery $aQuery)
     {
         $CounterName = $aQuery->name();
 

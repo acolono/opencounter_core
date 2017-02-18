@@ -2,7 +2,7 @@
 
 namespace OpenCounter\Application\Query\Counter;
 
-class CounterOfNameQuery
+class CounterOfNameQuery implements CounterQuery
 {
 
     protected $name;

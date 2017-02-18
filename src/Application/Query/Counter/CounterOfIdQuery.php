@@ -2,7 +2,7 @@
 
 namespace OpenCounter\Application\Query\Counter;
 
-class CounterOfIdQuery
+class CounterOfIdQuery implements CounterQuery
 {
     protected $id;
 

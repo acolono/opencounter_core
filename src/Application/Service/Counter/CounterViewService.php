@@ -2,8 +2,9 @@
 
 namespace OpenCounter\Application\Service\Counter;
 
-use OpenCounter\Application\Command\Counter\CounterViewHandler;
 use OpenCounter\Application\Query\Counter\CounterOfNameHandler;
+use OpenCounter\Application\Query\Counter\CounterOfIdHandler;
+use OpenCounter\Application\Query\Counter\CounterQueryHandler;
 
 class CounterViewService extends CounterService
 {
@@ -14,7 +15,7 @@ class CounterViewService extends CounterService
      */
     private $handler;
 
-    public function __construct(CounterOfNameHandler $aHandler)
+    public function __construct(CounterQueryHandler $aHandler)
     {
         $this->handler = $aHandler;
     }

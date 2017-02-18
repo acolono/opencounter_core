@@ -62,7 +62,7 @@ class InMemoryCounterRepository implements CounterRepository
      */
     public function remove(Counter $counter)
     {
-        //unset($this->counters[$counter->getId()]);
+        unset($this->counters[$counter->getId()]);
     }
 
     /**
@@ -89,22 +89,22 @@ class InMemoryCounterRepository implements CounterRepository
             }
         }
     }
-
-    /**
-     * @inheritDoc
-     */
-    public function getCounterByUuid(CounterId $anId)
-    {
-        // TODO: Implement getCounterByUuid() method. unset($this->counters[$anId]);
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function query($specification)
-    {
-        // TODO: Implement query() method.
-    }
+//
+//    /**
+//     * @inheritDoc
+//     */
+//    public function getCounterByUuid(CounterId $anId)
+//    {
+//        // TODO: Implement getCounterByUuid() method. unset($this->counters[$anId]);
+//    }
+//
+//    /**
+//     * @inheritDoc
+//     */
+//    public function query($specification)
+//    {
+//        // TODO: Implement query() method.
+//    }
 
     /**
      * @inheritDoc
@@ -115,21 +115,22 @@ class InMemoryCounterRepository implements CounterRepository
         return new CounterId();
     }
 
+
     /**
-     * @inheritDoc
+     * {@inheritdoc}
      */
     public function size()
     {
-        // TODO: Implement size() method.
+        return count($this->counters);
     }
 
-    /**
-     * @inheritDoc
-     */
-    public function counterOfId(CounterId $anId)
-    {
-        // TODO: Implement counterOfId() method.
-    }
+//    /**
+//     * @inheritDoc
+//     */
+//    public function counterOfId(CounterId $anId)
+//    {
+//        // TODO: Implement counterOfId() method.
+//    }
 
     /**
      * removeCounterByName
@@ -172,13 +173,13 @@ class InMemoryCounterRepository implements CounterRepository
         return array_key_exists($id, $this->counters);
     }
 
-    public function update(Counter $aCounter)
-    {
-        // TODO: implement inmemory
-    }
+//    public function update(Counter $aCounter)
+//    {
+//        // TODO: implement inmemory
+//    }
 
-    public function insert(Counter $aCounter)
-    {
-    }
+//    public function insert(Counter $aCounter)
+//    {
+//    }
 
 }

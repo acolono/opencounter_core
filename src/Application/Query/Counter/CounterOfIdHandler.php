@@ -6,7 +6,7 @@ use OpenCounter\Domain\Exception\Counter\CounterNotFoundException;
 use OpenCounter\Domain\Model\Counter\CounterId;
 use OpenCounter\Domain\Repository\CounterRepository;
 
-class CounterOfIdHandler
+class CounterOfIdHandler implements CounterQueryHandler
 {
     protected $CounterRepository;
 
@@ -16,11 +16,13 @@ class CounterOfIdHandler
         $this->CounterRepository = $CounterRepository;
     }
 
-    public function __invoke(CounterOfIdQuery $aQuery)
+    public function __invoke(CounterQuery $aQuery)
     {
         //        $userId = $request->userId();
-        $CounterId = $aQuery->id();
 
+        if (!$CounterId = $aQuery->id()) {
+            throw new \InvalidArgumentException('ID cannot be null');
+        }
 //        $user = $this->userRepository->ofId(new UserId($userId));
 //        if (null === $user) {
 //            throw new UserDoesNotExistException();

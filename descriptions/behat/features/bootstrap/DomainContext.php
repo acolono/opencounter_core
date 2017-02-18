@@ -6,8 +6,7 @@ use OpenCounter\Domain\Model\Counter\Counter;
 use OpenCounter\Domain\Model\Counter\CounterId;
 use OpenCounter\Domain\Model\Counter\CounterName;
 use OpenCounter\Domain\Model\Counter\CounterValue;
-use Pavlakis\Slim\Behat\Context\App;
-use Pavlakis\Slim\Behat\Context\KernelAwareContext;
+
 
 /**
  * Defines application features from the specific context.
@@ -37,7 +36,7 @@ class DomainContext implements Context, SnippetAcceptingContext
         $counters = [];
         $counters[] = new Counter(
           new CounterId('1CE05088-ED1F-43E9-A415-3B3792655A9B'),
-          new CounterName('onecounter'), new CounterValue(2), 'active',
+          new CounterName('acounter'), new CounterValue(2), 'active',
           'passwordplaceholder'
         );
         $counters[] = new Counter(
@@ -52,7 +51,7 @@ class DomainContext implements Context, SnippetAcceptingContext
         );
         $counters[] = new Counter(
           new CounterId('62A0CEB4-4575-4AA6-FD76-1EE808AD4D23'),
-          new CounterName('onecounter'), new CounterValue(1), 'disabled',
+          new CounterName('bcounter'), new CounterValue(1), 'disabled',
           'passwordplaceholder'
         );
         $this->counter_repository = new \OpenCounter\Infrastructure\Persistence\InMemory\Repository\Counter\InMemoryCounterRepository($counters);
@@ -78,6 +77,8 @@ class DomainContext implements Context, SnippetAcceptingContext
         $this->counter = $this->counter_factory->build($this->counterId,
           $this->counterName, $this->counterValue, 'active',
           'passworplaceholder');
+        $this->counter_repository->save($this->counter);
+
 
     }
 
@@ -94,6 +95,8 @@ class DomainContext implements Context, SnippetAcceptingContext
         $this->counter = $this->counter_factory->build($this->counterId,
           $this->counterName, $this->counterValue, 'active',
           'passwordplaceholder');
+        $this->counter_repository->save($this->counter);
+
 
     }
 
@@ -110,6 +113,7 @@ class DomainContext implements Context, SnippetAcceptingContext
         $this->counter = $this->counter_factory->build($this->counterId,
           $this->counterName, $this->counterValue, 'active',
           'passwordplaceholder');
+        $this->counter_repository->save($this->counter);
 
     }
 
@@ -125,6 +129,8 @@ class DomainContext implements Context, SnippetAcceptingContext
         $this->counter = $this->counter_factory->build($this->counterId,
           $this->counterName, $this->counterValue, 'active',
           'passwordplaceholder');
+        $this->counter_repository->save($this->counter);
+
 
     }
 
@@ -145,10 +151,12 @@ class DomainContext implements Context, SnippetAcceptingContext
     public function iIncrementTheValueOfTheCounterWithId($id)
     {
         try {
-            $incremented = $this->counter->incrementValue();
+            $incremented = $this->counter->increaseCount(new CounterValue(1));
         } catch (Exception $e) {
             $this->error = true;
         }
+        $this->counter_repository->save($this->counter);
+
 
     }
 
@@ -164,6 +172,7 @@ class DomainContext implements Context, SnippetAcceptingContext
         } catch (Exception $e) {
             $this->error = true;
         }
+        $this->counter_repository->save($this->counter);
 
     }
 
@@ -206,6 +215,8 @@ class DomainContext implements Context, SnippetAcceptingContext
      */
     public function iGetTheValueOfTheCounterWithName($name)
     {
+        // TODO: this should fail in case the counter wasnt set
+
         $this->counter->getValue();
     }
 
@@ -214,6 +225,7 @@ class DomainContext implements Context, SnippetAcceptingContext
      */
     public function iResetTheCounterWithId($arg1)
     {
+        // TODO: this should fail in case the counter wasnt set
         $this->counter->reset();
     }
 
@@ -222,8 +234,20 @@ class DomainContext implements Context, SnippetAcceptingContext
      */
     public function iResetTheCounterWithName($name)
     {
-        $newValue = new CounterValue(0);
-        $this->counter->resetValueTo($newValue);
+        try {
+            if (!$this->counter) {
+                throw new \OpenCounter\Domain\Exception\Counter\CounterNotFoundException();
+            }
+            $newValue = new CounterValue(0);
+            $this->counter->resetValueTo($newValue);
+
+        } catch (Exception $e) {
+            $this->error = true;
+            return $this->error;
+        }
+
+
+
     }
 
     /**
@@ -231,28 +255,31 @@ class DomainContext implements Context, SnippetAcceptingContext
      */
     public function iSetACounterWithName($name)
     {
-
-//        $uri = \Slim\Http\Uri::createFromString('http://slimapi.opencounter.docker');
-//        $headers = new \Slim\Http\Headers();
-//        $cookies = [];
-//        $serverParams = [];
-//        $body = new \Slim\Http\Body(fopen('php://temp', 'r+'));
-//        $request = new \Slim\Http\Request('GET', $uri, $headers, $cookies,
-//            $serverParams, $body);
-        $args = ['name' => $name, 'value' => 0];
-// now thest the build Service just in case
-        // cant test build Service without request
-        //$this->counter = $this->counterBuildService->execute($request, $args);
-        // lets use the factory to create the counter here, but not bother with using the build Service
+        // this should fail if counter with that name already exists
+        // TODO: make sure Creating counter name object fails for invalid characters (validate value object creation!)
         $this->counterName = new CounterName($name);
+        $this->noCounterWithNameHasBeenSet($name);
+//
+//        if ($this->counter = $this->counter_repository->getCounterByName($this->counterName)) {
+//            throw new \OpenCounter\Domain\Exception\Counter\CounterAlreadyExistsException();
+//        }
+
+
+
         $this->counterId = new CounterId('test');
         $this->counterValue = new CounterValue('0');
-        $this->counter = $this->counter_factory->build($this->counterId,
-          $this->counterName, $this->counterValue, 'active',
-          'passworplaceholder');
+        $this->counter = $this->counter_factory->build(
+          $this->counterId,
+          $this->counterName,
+          $this->counterValue,
+          'active',
+          'passworplaceholder'
+        );
 
         // cannot save in memory repository since its not persistent, so not testing this?
         $this->counter_repository->save($this->counter);
+
+
     }
 
     /**
@@ -262,12 +289,16 @@ class DomainContext implements Context, SnippetAcceptingContext
     {
         $newCounterId = new CounterId($id);
         try {
-            $this->counter = $this->counter_repository->getCounterById($newCounterId);
+            if ($this->counter = $this->counter_repository->getCounterByName($newCounterId)) {
+                throw new \OpenCounter\Domain\Exception\Counter\CounterAlreadyExistsException();
+            }
+
         } catch (Exception $e) {
             $this->error = true;
+            return $this->error;
         }
 
-        return $this->error;
+
 
     }
 
@@ -278,12 +309,16 @@ class DomainContext implements Context, SnippetAcceptingContext
     {
         $this->counterName = new CounterName($name);
         try {
-            $this->counter = $this->counter_repository->getCounterByName($this->counterName);
+            if ($this->counter = $this->counter_repository->getCounterByName($this->counterName)) {
+                throw new \OpenCounter\Domain\Exception\Counter\CounterAlreadyExistsException();
+            }
+            // TODO: we need to throw an error if we have a result
         } catch (Exception $e) {
             $this->error = true;
+            return $this->error;
         }
 
-        return $this->error;
+
 
     }
 

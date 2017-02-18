@@ -83,8 +83,9 @@ class CounterBuildService
         try {
             $counter = $this->counter_repository->getCounterByName( $request->name());
         } catch (\Exception $e) {
-            $return = ['message' => $e->getMessage()];
+            $error = ['message' => $e->getMessage()];
             $code = 409;
+            return $error;
         }
 
         if (isset($counter) && $counter instanceof Counter) {
