@@ -9,6 +9,6 @@ Feature: remove counter
     Then no counter with id "1CE05088-ED1F-43E9-A415-3B3792655A9B" has been set
 
   Scenario: remove existing counter by name
-    Given I set a counter with name "onecounter"
+    Given a counter with name "onecounter" has been set
     When I remove the counter with name "onecounter"
     Then no counter "onecounter" has been set
