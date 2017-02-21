@@ -21,7 +21,7 @@ class CounterSetStatusHandler
      * Handles the given command.
      *
      *
-     * @throws CounterAlreadyExistException when the counter id is already exists
+     * @throws CounterNotFoundException when the counter name isnt found in the repo
      */
     public function __invoke(CounterSetStatusCommand $aCommand)
     {

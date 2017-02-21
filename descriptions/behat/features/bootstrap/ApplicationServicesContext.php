@@ -161,16 +161,26 @@ class ApplicationServicesContext implements Context, SnippetAcceptingContext
     }
 
     /**
-     * @Then the value returned should be :arg1
+     * @Then the value returned should be :value
      */
-    public function theValueReturnedShouldBe($arg1)
+    public function theValueReturnedShouldBe($value)
     {
 // TODO: move the typecasting somewhere else
-        if (!(int)$arg1 === (int)$this->counter->getValue()) {
+        if (!(int)$value === (int)$this->counter->getValue()) {
             throw new \Exception('value not equal');
         }
     }
 
+    /**
+     * @Then the Id returned should be :id
+     */
+    public function theIdReturnedShouldBe($id)
+    {
+// TODO: move the typecasting somewhere else
+        if (!(int)$id === (int)$this->counter->getId()) {
+            throw new \Exception('Id not equal');
+        }
+    }
     /**
      * @When I increment the value of the counter with ID :id
      */
@@ -252,6 +262,34 @@ class ApplicationServicesContext implements Context, SnippetAcceptingContext
         if ($this->error !== true) {
             throw new \Exception('Error not found');
         }
+    }
+
+    /**
+     * @When I (can )get the Id of the counter with Name :name
+     */
+    public function iGetTheIdOfTheCounterWithName($name)
+    {
+        try {
+            // first try without command bus dependency
+            $CounterViewService = new \OpenCounter\Application\Service\Counter\CounterViewService(
+              new \OpenCounter\Application\Query\Counter\CounterOfNameHandler(
+                $this->counter_repository,
+                $this->counterBuildService
+              )
+
+            );
+
+            $this->counter = $CounterViewService->execute(
+              new \OpenCounter\Application\Query\Counter\CounterOfNameQuery(
+                $name
+              )
+
+            );
+        } catch (Exception $e) {
+            $this->error = true;
+        }
+        $this->counter->getId();
+
     }
 
     /**
