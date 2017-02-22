@@ -7,9 +7,9 @@ Feature: reset one counter
   given a Counter, it is possible to replace its value with 0.
 
   Scenario: Resetting the first counter
-    Given I set a counter with name "onecounter" and value 8
-    When I reset the counter with Name "onecounter"
-    And I get the value of the counter with Name "onecounter"
+    Given a counter "excounter" with a value of "8" has been set
+    When I reset the counter with Name "excounter"
+    And I get the value of the counter with Name "excounter"
     Then the value returned should be "0"
 
   Scenario: Resetting counter that doesn't exist

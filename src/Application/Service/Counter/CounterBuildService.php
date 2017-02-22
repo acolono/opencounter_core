@@ -86,7 +86,6 @@ class CounterBuildService
             $counter = $this->counter_repository->getCounterByName($CounterName);
         } catch (\Exception $e) {
             $error = ['message' => $e->getMessage()];
-            $code = 409;
             return $error;
         }
 
