@@ -8,9 +8,9 @@ class CounterSetStatusCommand
 
     private $status;
 
-    public function __construct($name, $status)
+    public function __construct($id, $status)
     {
-        $this->name = $name;
+        $this->id = $id;
         $this->status = $status;
     }
 
@@ -19,7 +19,7 @@ class CounterSetStatusCommand
         return $this->status;
     }
 
-    public function name()
+    public function id()
     {
         return $this->name;
     }

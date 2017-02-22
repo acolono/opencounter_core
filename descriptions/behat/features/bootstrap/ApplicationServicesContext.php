@@ -308,10 +308,11 @@ class ApplicationServicesContext implements Context, SnippetAcceptingContext
                 )
 
             );
+            return $this->counter->getId();
         } catch (Exception $e) {
             $this->error = true;
         }
-        $this->counter->getId();
+
 
     }
 
@@ -376,6 +377,7 @@ class ApplicationServicesContext implements Context, SnippetAcceptingContext
     public function iResetTheCounterWithName($name)
     {
         try {
+            $id = $this->iGetTheIdOfTheCounterWithName($name);
 
             // first try without command bus dependency
             $CounterResetValueService = new \OpenCounter\Application\Service\Counter\CounterResetValueService(
@@ -387,7 +389,7 @@ class ApplicationServicesContext implements Context, SnippetAcceptingContext
 
             $CounterResetValueService->execute(
                 new \OpenCounter\Application\Command\Counter\CounterResetValueCommand(
-                    $name
+                  $id
 
                 )
             );

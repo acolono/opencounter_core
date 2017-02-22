@@ -5,15 +5,15 @@ namespace OpenCounter\Application\Command\Counter;
 class CounterIncrementValueCommand
 {
 
-    public function __construct($name, $value)
+    public function __construct($id, $value)
     {
-        $this->name = $name;
+        $this->id = $id;
         $this->value = $value;
     }
 
-    public function name()
+    public function id()
     {
-        return $this->name;
+        return $this->id;
     }
 
     public function value()

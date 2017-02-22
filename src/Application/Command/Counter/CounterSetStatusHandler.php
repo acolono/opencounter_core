@@ -3,6 +3,7 @@
 namespace OpenCounter\Application\Command\Counter;
 
 use OpenCounter\Domain\Exception\Counter\CounterNotFoundException;
+use OpenCounter\Domain\Model\Counter\CounterId;
 use OpenCounter\Domain\Model\Counter\CounterName;
 use OpenCounter\Domain\Repository\CounterRepository;
 
@@ -25,7 +26,7 @@ class CounterSetStatusHandler
      */
     public function __invoke(CounterSetStatusCommand $aCommand)
     {
-        if (!$counter = $this->CounterRepository->getCounterByName(new CounterName($aCommand->name()))) {
+        if (!$counter = $this->CounterRepository->getCounterById(new CounterId($aCommand->id()))) {
             throw new CounterNotFoundException('Counter not found');
         }
         if ($aCommand->status() == 'locked') {

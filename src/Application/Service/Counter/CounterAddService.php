@@ -35,6 +35,6 @@ class CounterAddService extends CounterService
      */
     public function execute($request = null)
     {
-        $this->handler->__invoke($request);
+        return $this->handler->__invoke($request);
     }
 }

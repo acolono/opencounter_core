@@ -5,14 +5,14 @@ namespace OpenCounter\Application\Command\Counter;
 class CounterResetValueCommand
 {
 
-    public function __construct($name)
+    public function __construct($id)
     {
-        $this->name = $name;
+        $this->id = $id;
     }
 
-    public function name()
+    public function id()
     {
-        return $this->name;
+        return $this->id;
     }
 
 }

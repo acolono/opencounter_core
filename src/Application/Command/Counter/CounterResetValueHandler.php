@@ -9,6 +9,7 @@
 namespace OpenCounter\Application\Command\Counter;
 
 use OpenCounter\Domain\Exception\Counter\CounterNotFoundException;
+use OpenCounter\Domain\Model\Counter\CounterId;
 use OpenCounter\Domain\Model\Counter\CounterName;
 use OpenCounter\Domain\Model\Counter\CounterValue;
 use OpenCounter\Domain\Repository\CounterRepository;
@@ -32,7 +33,7 @@ class CounterResetValueHandler
      */
     public function __invoke(CounterResetValueCommand $aCommand)
     {
-        if (!$counter = $this->CounterRepository->getCounterByName(new CounterName($aCommand->name()))) {
+        if (!$counter = $this->CounterRepository->getCounterById(new CounterId($aCommand->id()))) {
             throw new CounterNotFoundException('Counter not found. You can not reset a counter that doesnt exist.');
         }
         $counter->resetValueTo(new CounterValue(0));
