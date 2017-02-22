@@ -80,8 +80,10 @@ class CounterBuildService
         $counterId = $this->counter_repository->nextIdentity();
 
         $password = 'passwordplaceholder';
+        $CounterName = new CounterName($request->name());
+        $CounterValue = new CounterValue($request->value());
         try {
-            $counter = $this->counter_repository->getCounterByName( $request->name());
+            $counter = $this->counter_repository->getCounterByName($CounterName);
         } catch (\Exception $e) {
             $error = ['message' => $e->getMessage()];
             $code = 409;
@@ -89,15 +91,15 @@ class CounterBuildService
         }
 
         if (isset($counter) && $counter instanceof Counter) {
-            throw new CounterAlreadyExistsException();
+            throw new CounterAlreadyExistsException('A counter by that name already exists');
         }
 
         // Only the build service calls the factory to create counter objects.
 
         $counter = $this->counter_factory->build(
           $counterId,
-          $request->name(),
-          $request->value(),
+          $CounterName,
+          $CounterValue,
           'active',
           $password
         );

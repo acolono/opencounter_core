@@ -147,8 +147,8 @@ class ApplicationServicesContext implements Context, SnippetAcceptingContext
     public function aCounterWithAValueOfWasAddedToTheCollection($name, $value)
     {
         $this->aCounterWithValueOfWasAddedToTheCollection(
-            new CounterName($name),
-            new CounterValue($value)
+            $name,
+            $value
         );
 
     }
@@ -339,7 +339,6 @@ class ApplicationServicesContext implements Context, SnippetAcceptingContext
         } catch (Exception $e) {
             $this->error = true;
         }
-        $this->counter->getValue();
     }
 
     /**
@@ -365,8 +364,9 @@ class ApplicationServicesContext implements Context, SnippetAcceptingContext
             );
         } catch (Exception $e) {
             $this->error = true;
+            return $this->error;
         }
-        $this->counter->getValue();
+
 
     }
 
@@ -414,8 +414,8 @@ class ApplicationServicesContext implements Context, SnippetAcceptingContext
 
             $CounterAddService->execute(
                 new \OpenCounter\Application\Command\Counter\CounterAddCommand(
-                    new CounterName($name),
-                    new CounterValue(0),
+                    $name,
+                    0,
                     'active',
                     'passwordplaceholder'
                 )
