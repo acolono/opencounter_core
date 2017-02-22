@@ -31,7 +31,7 @@ class CounterRemoveHandler
 
         $counter = $this->CounterRepository->getCounterById(new CounterId($counterId));
         if (!$counter) {
-            throw new CounterNotFoundException();
+            throw new CounterNotFoundException('Counter not found');
         }
 
 //        if (!$counter->userId()->equals(new UserId($userId))) {

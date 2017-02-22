@@ -19,7 +19,7 @@ class CounterOfNameHandler implements CounterQueryHandler
         $CounterName = $aQuery->name();
 
         if (!$Counter = $this->CounterRepository->GetCounterByName(new CounterName($CounterName))) {
-            throw new CounterNotFoundException();
+            throw new CounterNotFoundException('Counter not found');
         }
 
         return $Counter;

@@ -33,7 +33,7 @@ class CounterIncrementValueHandler
     public function __invoke(CounterIncrementValueCommand $aCommand)
     {
         if (!$counter = $this->CounterRepository->getCounterByName(new CounterName($aCommand->name()))) {
-            throw new CounterNotFoundException();
+            throw new CounterNotFoundException('Counter not found');
         }
         $counter->increaseCount(new CounterValue($aCommand->value()));
         $this->CounterRepository->save($counter);

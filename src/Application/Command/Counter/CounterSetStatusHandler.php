@@ -26,7 +26,7 @@ class CounterSetStatusHandler
     public function __invoke(CounterSetStatusCommand $aCommand)
     {
         if (!$counter = $this->CounterRepository->getCounterByName(new CounterName($aCommand->name()))) {
-            throw new CounterNotFoundException();
+            throw new CounterNotFoundException('Counter not found');
         }
         if ($aCommand->status() == 'locked') {
             $counter->lock();

@@ -36,7 +36,7 @@ class CounterAddHandler
     {
 
         if (!$counter = $this->counterBuildService->execute($aCommand)) {
-            throw new CounterAlreadyExistsException();
+            throw new CounterAlreadyExistsException('Counter Already Exists');
         }
 
         $this->CounterRepository->save($counter);
