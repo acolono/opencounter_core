@@ -21,12 +21,15 @@ use OpenCounter\Domain\Repository\CounterRepository;
 class CounterIncrementValueHandler
 {
     /**
+     * CounterRepository
+     *
      * @var \OpenCounter\Domain\Repository\CounterRepository
      */
     protected $CounterRepository;
 
     /**
      * CounterIncrementValueHandler constructor.
+     *
      * @param \OpenCounter\Domain\Repository\CounterRepository $CounterRepository
      */
     public function __construct(

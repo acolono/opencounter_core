@@ -16,17 +16,21 @@ use OpenCounter\Domain\Repository\CounterRepository;
 
 /**
  * Class CounterResetValueHandler
+ *
  * @package OpenCounter\Application\Command\Counter
  */
 class CounterResetValueHandler
 {
     /**
+     * CounterRepository
+     *
      * @var \OpenCounter\Domain\Repository\CounterRepository
      */
     protected $CounterRepository;
 
     /**
      * CounterResetValueHandler constructor.
+     *
      * @param \OpenCounter\Domain\Repository\CounterRepository $CounterRepository
      */
     public function __construct(

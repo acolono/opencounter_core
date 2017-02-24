@@ -15,8 +15,9 @@ class CounterRemoveService extends CounterService
 {
 
     /**
-     * The command handler.
+     * WithConfirmationSignUpUserHandler
      *
+     * @var \OpenCounter\Application\Command\Counter\CounterRemoveHandler|\OpenCounter\Application\Service\Counter\WithConfirmationSignUpUserHandler
      */
     private $handler;
 

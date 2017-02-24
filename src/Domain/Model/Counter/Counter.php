@@ -74,16 +74,7 @@ class Counter
      * @param $aStatus
      * @param $aPassword
      *
-     * @SWG\Parameter(
-     * parameter="CounterName",
-     * description="name of counter to fetch",
-     * in="path",
-     * name="name",
-     * required=true,
-     * type="string",
-     * default="onecounter"
-     * )
-     *
+
      */
     public function __construct(
         CounterId $CounterId,

@@ -12,12 +12,23 @@ use OpenCounter\Domain\Repository\CounterRepository;
 
 /**
  * Class CounterOfIdHandler
+ *
  * @package OpenCounter\Application\Query\Counter
  */
 class CounterOfIdHandler implements CounterQueryHandler
 {
+    /**
+     * CounterRepository
+     *
+     * @var \OpenCounter\Domain\Repository\CounterRepository
+     */
     protected $CounterRepository;
 
+    /**
+     * CounterOfIdHandler constructor.
+     *
+     * @param \OpenCounter\Domain\Repository\CounterRepository $CounterRepository
+     */
     public function __construct(
         CounterRepository $CounterRepository
     ) {

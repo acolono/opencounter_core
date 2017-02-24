@@ -8,14 +8,16 @@ use OpenCounter\Application\Query\Counter\CounterQueryHandler;
 
 /**
  * Class CounterViewService
+ *
  * @package OpenCounter\Application\Service\Counter
  */
 class CounterViewService extends CounterService
 {
 
     /**
-     * The command handler.
+     * Query handler
      *
+     * @var \OpenCounter\Application\Query\Counter\CounterQueryHandler
      */
     private $handler;
 

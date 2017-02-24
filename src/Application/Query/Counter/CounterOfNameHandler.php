@@ -10,8 +10,18 @@ use OpenCounter\Domain\Exception\Counter\CounterNotFoundException;
 use OpenCounter\Domain\Model\Counter\CounterName;
 use OpenCounter\Domain\Repository\CounterRepository;
 
+/**
+ * Class CounterOfNameHandler
+ *
+ * @package OpenCounter\Application\Query\Counter
+ */
 class CounterOfNameHandler implements CounterQueryHandler
 {
+    /**
+     * CounterOfNameHandler constructor.
+     *
+     * @param \OpenCounter\Domain\Repository\CounterRepository $CounterRepository
+     */
     public function __construct(
         CounterRepository $CounterRepository
     ) {

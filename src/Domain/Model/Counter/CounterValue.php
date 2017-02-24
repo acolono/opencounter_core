@@ -30,7 +30,7 @@ class CounterValue
     /**
      * The counter value.
      *
-     * @var                        int
+     * @var int
      * @SWG\Property(example="+1")
      */
     private $value;

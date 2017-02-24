@@ -30,16 +30,19 @@ class CounterBuildService
 {
     /**
      * A Counter repository object
+     *
      * @var \OpenCounter\Domain\Repository\CounterRepository
      */
     private $counter_repository;
     /**
      * A Counter repository factory
+     *
      * @var \OpenCounter\Infrastructure\Factory\Counter\CounterFactory
      */
     private $counter_factory;
     /**
      * a logger.
+     *
      * @var \Psr\Log\LoggerInterface
      */
     private $logger;

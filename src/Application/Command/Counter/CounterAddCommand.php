@@ -4,29 +4,52 @@ namespace OpenCounter\Application\Command\Counter;
 
 /**
  * Class CounterAddCommand
+ * @SWG\Definition(
+ *   required={"id"},
+ *
+ * @SWG\ExternalDocumentation(
+ *     description="find more info here",
+ *     url="https://swagger.io/about"
+ *   )
+ * )
  * @package OpenCounter\Application\Command\Counter
  */
 class CounterAddCommand
 {
     /**
-     * @var
+     * Name of counter to add
+     *
+     * @var string
+     * @SWG\Property(example="onecounter")
      */
     private $name;
     /**
-     * @var
+     * Value to Initialize counter with
+     *
+     * @var int
+     * @SWG\Property(example=0)
      */
     private $value;
     /**
-     * @var
+     * Status to initialize new counter with
+     *
+     * @var string
+     *
+     * @SWG\Property(example="active")
+     *
      */
     private $status;
     /**
-     * @var
+     * Password to protect counter with.
+     *
+     * @var string
+     * @SWG\Property(example="active")
      */
     private $password;
 
     /**
      * CounterAddCommand constructor.
+     *
      * @param $name
      * @param $value
      * @param $status
