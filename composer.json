@@ -2,7 +2,7 @@
     "name": "rosenstrauch/opencounter_api_core",
     "description": "framework agnostic counter business logic",
     "minimum-stability": "dev",
-    "version": "0.2.1",
+    "version": "0.2.2",
     "extra": {
         "branch-alias": {
             "dev-master": "1.0.x-dev"
