@@ -10,11 +10,11 @@ Feature: create a new counter
     And the value returned should be 0
 
 
-
-  Scenario: creating new counter if name already taken
-    Given a counter with name "onecounter" has been set
-    When I set a counter with name "onecounter"
-    Then I should see an error "A counter by that name already exists"
+#
+#  Scenario: creating new counter if name already taken
+#    Given a counter with name "onecounter" has been set
+#    When I set a counter with name "onecounter"
+#    Then I should see an error "A counter by that name already exists"
 
 #  Scenario: creating new counter with invalid name
 #    When I set a counter with name "1 counter / (this is a bad countername)"
