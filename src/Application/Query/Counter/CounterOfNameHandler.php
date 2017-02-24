@@ -9,7 +9,7 @@ use OpenCounter\Domain\Repository\CounterRepository;
 class CounterOfNameHandler implements CounterQueryHandler
 {
     public function __construct(
-      CounterRepository $CounterRepository
+        CounterRepository $CounterRepository
     ) {
         $this->CounterRepository = $CounterRepository;
     }
@@ -23,6 +23,5 @@ class CounterOfNameHandler implements CounterQueryHandler
         }
 
         return $Counter;
-
     }
 }

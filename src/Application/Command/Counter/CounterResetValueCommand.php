@@ -14,5 +14,4 @@ class CounterResetValueCommand
     {
         return $this->id;
     }
-
 }

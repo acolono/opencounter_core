@@ -89,7 +89,4 @@ interface CounterRepository
      * @return mixed
      */
     public function save(Counter $anCounter);
-
-
-
 }

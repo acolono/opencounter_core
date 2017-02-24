@@ -61,5 +61,4 @@ class CounterName
     {
         return $this->name();
     }
-
 }

@@ -19,8 +19,8 @@ class CounterAddHandler
     protected $counterBuildService;
 
     public function __construct(
-      CounterRepository $CounterRepository,
-      CounterBuildService $counterBuildService
+        CounterRepository $CounterRepository,
+        CounterBuildService $counterBuildService
     ) {
         $this->CounterRepository = $CounterRepository;
         $this->counterBuildService = $counterBuildService;
@@ -43,5 +43,4 @@ class CounterAddHandler
 
         return $counter->toArray();
     }
-
 }

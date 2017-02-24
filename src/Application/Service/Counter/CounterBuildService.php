@@ -52,9 +52,9 @@ class CounterBuildService
      * @param \Psr\Log\LoggerInterface $logger
      */
     public function __construct(
-      CounterRepository $counter_repository,
-      CounterFactory $counter_factory,
-      LoggerInterface $logger
+        CounterRepository $counter_repository,
+        CounterFactory $counter_factory,
+        LoggerInterface $logger
     ) {
 
         $this->counter_repository = $counter_repository;
@@ -96,11 +96,11 @@ class CounterBuildService
         // Only the build service calls the factory to create counter objects.
 
         $counter = $this->counter_factory->build(
-          $counterId,
-          $CounterName,
-          $CounterValue,
-          'active',
-          $password
+            $counterId,
+            $CounterName,
+            $CounterValue,
+            'active',
+            $password
         );
 
         return $counter;

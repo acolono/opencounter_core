@@ -20,7 +20,7 @@ class CounterIncrementValueHandler
     protected $CounterRepository;
 
     public function __construct(
-      CounterRepository $CounterRepository
+        CounterRepository $CounterRepository
     ) {
         $this->CounterRepository = $CounterRepository;
     }
@@ -39,5 +39,4 @@ class CounterIncrementValueHandler
         $counter->increaseCount(new CounterValue($aCommand->value()));
         $this->CounterRepository->save($counter);
     }
-
 }

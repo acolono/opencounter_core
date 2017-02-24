@@ -24,4 +24,3 @@ class CounterSetStatusCommand
         return $this->name;
     }
 }
-

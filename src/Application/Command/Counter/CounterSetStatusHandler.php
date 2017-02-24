@@ -13,7 +13,7 @@ class CounterSetStatusHandler
     protected $CounterRepository;
 
     public function __construct(
-      CounterRepository $CounterRepository
+        CounterRepository $CounterRepository
     ) {
         $this->CounterRepository = $CounterRepository;
     }
@@ -37,5 +37,4 @@ class CounterSetStatusHandler
         }
         $this->CounterRepository->save($counter);
     }
-
 }

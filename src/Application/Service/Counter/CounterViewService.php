@@ -27,6 +27,5 @@ class CounterViewService extends CounterService
     {
         // this service executes a query and therefore returns something
         return $this->handler->__invoke($request);
-
     }
 }

@@ -52,9 +52,9 @@ class CounterHttpBuildService
      * @param \Psr\Log\LoggerInterface $logger
      */
     public function __construct(
-      CounterRepository $counter_repository,
-      CounterFactory $counter_factory,
-      LoggerInterface $logger
+        CounterRepository $counter_repository,
+        CounterFactory $counter_factory,
+        LoggerInterface $logger
     ) {
 
         $this->counter_repository = $counter_repository;
@@ -80,7 +80,7 @@ class CounterHttpBuildService
 
         $password = 'passwordplaceholder';
         try {
-            $counter = $this->counter_repository->getCounterByName(New CounterName($request->name()));
+            $counter = $this->counter_repository->getCounterByName(new CounterName($request->name()));
         } catch (\Exception $e) {
             $return = ['message' => $e->getMessage()];
             $code = 409;
@@ -93,11 +93,11 @@ class CounterHttpBuildService
         // Only the build service calls the factory to create counter objects.
 
         $counter = $this->counter_factory->build(
-          $counterId,
-          $request->name(),
-          $request->value(),
-          'active',
-          $password
+            $counterId,
+            $request->name(),
+            $request->value(),
+            'active',
+            $password
         );
 
         return $counter;

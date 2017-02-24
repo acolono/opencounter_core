@@ -11,7 +11,7 @@ class CounterOfIdHandler implements CounterQueryHandler
     protected $CounterRepository;
 
     public function __construct(
-      CounterRepository $CounterRepository
+        CounterRepository $CounterRepository
     ) {
         $this->CounterRepository = $CounterRepository;
     }

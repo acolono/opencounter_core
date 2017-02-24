@@ -33,5 +33,4 @@ class CounterRemoveService extends CounterService
     {
         $this->handler->__invoke($request);
     }
-
 }

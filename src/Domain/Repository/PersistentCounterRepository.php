@@ -70,5 +70,4 @@ interface PersistentCounterRepository extends CounterRepository
      * @return mixed
      */
     public function query($specification);
-
 }

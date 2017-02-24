@@ -181,5 +181,4 @@ class InMemoryCounterRepository implements CounterRepository
 //    public function insert(Counter $aCounter)
 //    {
 //    }
-
 }
