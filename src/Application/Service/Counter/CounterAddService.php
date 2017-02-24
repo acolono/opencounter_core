@@ -10,6 +10,10 @@ namespace OpenCounter\Application\Service\Counter;
 
 use OpenCounter\Application\Command\Counter\CounterAddHandler;
 
+/**
+ * Class CounterAddService
+ * @package OpenCounter\Application\Service\Counter
+ */
 class CounterAddService extends CounterService
 {
 

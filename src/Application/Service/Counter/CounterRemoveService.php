@@ -7,6 +7,10 @@ use OpenCounter\Domain\Repository\CounterRepository;
 use OpenCounter\Application\Command\Counter\CounterRemoveCommand;
 use OpenCounter\Application\Command\Counter\CounterRemoveHandler;
 
+/**
+ * Class CounterRemoveService
+ * @package OpenCounter\Application\Service\Counter
+ */
 class CounterRemoveService extends CounterService
 {
 

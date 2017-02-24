@@ -7,11 +7,21 @@ use OpenCounter\Domain\Model\Counter\CounterId;
 use OpenCounter\Domain\Model\Counter\CounterName;
 use OpenCounter\Domain\Repository\CounterRepository;
 
+/**
+ * Class CounterSetStatusHandler
+ * @package OpenCounter\Application\Command\Counter
+ */
 class CounterSetStatusHandler
 {
-
+    /**
+     * @var \OpenCounter\Domain\Repository\CounterRepository
+     */
     protected $CounterRepository;
 
+    /**
+     * CounterSetStatusHandler constructor.
+     * @param \OpenCounter\Domain\Repository\CounterRepository $CounterRepository
+     */
     public function __construct(
         CounterRepository $CounterRepository
     ) {

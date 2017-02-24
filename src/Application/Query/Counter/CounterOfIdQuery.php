@@ -1,7 +1,15 @@
 <?php
-
+/**
+ * CounterOfIdQuery
+ *
+ * represents a query for a counter by id
+ */
 namespace OpenCounter\Application\Query\Counter;
 
+/**
+ * Class CounterOfIdQuery
+ * @package OpenCounter\Application\Query\Counter
+ */
 class CounterOfIdQuery implements CounterQuery
 {
     protected $id;

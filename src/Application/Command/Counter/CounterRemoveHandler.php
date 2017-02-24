@@ -8,9 +8,15 @@ use OpenCounter\Domain\Repository\CounterRepository;
 
 class CounterRemoveHandler
 {
-
+    /**
+     * @var \OpenCounter\Domain\Repository\CounterRepository
+     */
     protected $CounterRepository;
 
+    /**
+     * CounterRemoveHandler constructor.
+     * @param \OpenCounter\Domain\Repository\CounterRepository $CounterRepository
+     */
     public function __construct(
         CounterRepository $CounterRepository
     ) {

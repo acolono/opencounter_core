@@ -1,11 +1,19 @@
 <?php
-
+/**
+ * CounterOfIdHandler
+ *
+ * Handles counter of id queries.
+ */
 namespace OpenCounter\Application\Query\Counter;
 
 use OpenCounter\Domain\Exception\Counter\CounterNotFoundException;
 use OpenCounter\Domain\Model\Counter\CounterId;
 use OpenCounter\Domain\Repository\CounterRepository;
 
+/**
+ * Class CounterOfIdHandler
+ * @package OpenCounter\Application\Query\Counter
+ */
 class CounterOfIdHandler implements CounterQueryHandler
 {
     protected $CounterRepository;

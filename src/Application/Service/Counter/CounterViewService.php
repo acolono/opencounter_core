@@ -6,6 +6,10 @@ use OpenCounter\Application\Query\Counter\CounterOfNameHandler;
 use OpenCounter\Application\Query\Counter\CounterOfIdHandler;
 use OpenCounter\Application\Query\Counter\CounterQueryHandler;
 
+/**
+ * Class CounterViewService
+ * @package OpenCounter\Application\Service\Counter
+ */
 class CounterViewService extends CounterService
 {
 

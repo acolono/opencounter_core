@@ -2,11 +2,21 @@
 
 namespace OpenCounter\Application\Query\Counter;
 
+/**
+ * Class CounterOfNameQuery
+ * @package OpenCounter\Application\Query\Counter
+ */
 class CounterOfNameQuery implements CounterQuery
 {
-
+    /**
+     * @var
+     */
     protected $name;
 
+    /**
+     * CounterOfNameQuery constructor.
+     * @param $name
+     */
     public function __construct($name)
     {
         if (null === $name) {
@@ -15,6 +25,9 @@ class CounterOfNameQuery implements CounterQuery
         $this->name = $name;
     }
 
+    /**
+     * @return mixed
+     */
     public function name()
     {
         return $this->name;

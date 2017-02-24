@@ -10,8 +10,8 @@ use League\Container\ServiceProvider\AbstractServiceProvider;
 use League\Container\ServiceProvider\BootableServiceProviderInterface;
 use OpenCounter\Http\CounterBuildService;
 use OpenCounter\Infrastructure\Factory\Counter\CounterFactory;
+use OpenCounter\Infrastructure\Persistence\Sql\Repository\Counter\SqlCounterRepository;
 use OpenCounter\Infrastructure\Persistence\Sql\SqlManager;
-use OpenCounter\Infrastructure\Persistence\Sql\Repository\Counter\SqlPersistentCounterRepository;
 
 /**
  * Class OpenCounterServiceProvider
@@ -34,10 +34,7 @@ class OpenCounterServiceProvider extends AbstractServiceProvider implements Boot
     'counter_build_service'
     ];
 
-    public function boot()
-    {
-        $this->getContainer();
-    }
+
 
   /**
    * This is where the magic happens, within the method you can
@@ -63,7 +60,7 @@ class OpenCounterServiceProvider extends AbstractServiceProvider implements Boot
             function () {
                 $counter_mapper = $this->getContainer()
                 ->get('OpenCounter\Infrastructure\Persistence\StorageInterface');
-                $counter_repository = new SqlPersistentCounterRepository(
+                $counter_repository = new SqlCounterRepository(
                     $counter_mapper
                 );
                 return $counter_repository;

@@ -8,6 +8,10 @@
 
 namespace OpenCounter\Application\Query\Counter;
 
+/**
+ * Interface CounterQueryHandler
+ * @package OpenCounter\Application\Query\Counter
+ */
 interface CounterQueryHandler
 {
 

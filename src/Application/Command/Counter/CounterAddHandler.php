@@ -12,12 +12,26 @@ use OpenCounter\Application\Service\Counter\CounterBuildService;
 use OpenCounter\Domain\Exception\Counter\CounterAlreadyExistsException;
 use OpenCounter\Domain\Repository\CounterRepository;
 
+/**
+ * Class CounterAddHandler
+ * @package OpenCounter\Application\Command\Counter
+ */
 class CounterAddHandler
 {
-
+    /**
+     * @var \OpenCounter\Domain\Repository\CounterRepository
+     */
     protected $CounterRepository;
+    /**
+     * @var \OpenCounter\Application\Service\Counter\CounterBuildService
+     */
     protected $counterBuildService;
 
+    /**
+     * CounterAddHandler constructor.
+     * @param \OpenCounter\Domain\Repository\CounterRepository $CounterRepository
+     * @param \OpenCounter\Application\Service\Counter\CounterBuildService $counterBuildService
+     */
     public function __construct(
         CounterRepository $CounterRepository,
         CounterBuildService $counterBuildService

@@ -14,11 +14,21 @@ use OpenCounter\Domain\Model\Counter\CounterName;
 use OpenCounter\Domain\Model\Counter\CounterValue;
 use OpenCounter\Domain\Repository\CounterRepository;
 
+/**
+ * Class CounterResetValueHandler
+ * @package OpenCounter\Application\Command\Counter
+ */
 class CounterResetValueHandler
 {
-
+    /**
+     * @var \OpenCounter\Domain\Repository\CounterRepository
+     */
     protected $CounterRepository;
 
+    /**
+     * CounterResetValueHandler constructor.
+     * @param \OpenCounter\Domain\Repository\CounterRepository $CounterRepository
+     */
     public function __construct(
         CounterRepository $CounterRepository
     ) {

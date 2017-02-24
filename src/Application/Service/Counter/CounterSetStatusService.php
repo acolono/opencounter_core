@@ -4,6 +4,10 @@ namespace OpenCounter\Application\Service\Counter;
 
 use OpenCounter\Application\Command\Counter\CounterSetStatusHandler;
 
+/**
+ * Class CounterSetStatusService
+ * @package OpenCounter\Application\Service\Counter
+ */
 class CounterSetStatusService extends CounterService
 {
 

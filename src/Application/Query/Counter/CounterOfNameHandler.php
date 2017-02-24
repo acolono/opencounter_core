@@ -1,5 +1,9 @@
 <?php
-
+/**
+ * CounterOfNameHandler.php
+ *
+ * Handles Queries for counter by name
+ */
 namespace OpenCounter\Application\Query\Counter;
 
 use OpenCounter\Domain\Exception\Counter\CounterNotFoundException;

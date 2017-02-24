@@ -4,6 +4,10 @@ namespace OpenCounter\Application\Service\Counter;
 
 use OpenCounter\Application\Command\Counter\CounterResetValueHandler;
 
+/**
+ * Class CounterResetValueService
+ * @package OpenCounter\Application\Service\Counter
+ */
 class CounterResetValueService extends CounterService
 {
 
