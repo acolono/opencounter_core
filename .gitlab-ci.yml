@@ -4,9 +4,9 @@
 # gitlab-ci-multi-runner exec docker --docker-privileged --env CI_PROJECT_NAME=anything --cache-dir=/tmp/gitlabrunner --docker-volumes /tmp/gitlabrunner:/tmp/gitlabrunner occ_test
 
 # Select image from https://hub.docker.com/_/php/
-image: php:5.6
 # Select what we should cache
 
+image: php:7.0
 
 
 
@@ -23,6 +23,7 @@ stages:
 # if this job succeeds then we know install works and we have vendor and bin directory created and cached
 occ_build:
   stage: build
+  image: php:7.0
   before_script:
     # Install git and zip since the php image doesn't have installed
     - apt-get update -yqq
@@ -45,6 +46,18 @@ occ_build:
 # run behat tests in php 5.6
 occ_test:php5:
   stage: test
+  image: php:5.6
+
+  script:
+    - bin/behat
+
+  allow_failure: true
+
+
+# We test behat in PHP7, but we allow it to fail
+occ_test:php7:
+  stage: test
+  image: php:7.0
   before_script:
     # Install git and zip since the php image doesn't have installed
     - apt-get update -yqq
@@ -62,20 +75,12 @@ occ_test:php5:
     - bin/behat
   # Store resulting behat html report as artifact
   artifacts:
-    name: "$CI_BUILD_REF"
-    untracked: true
-    paths:
-      - descriptions/behat/reports/html/behat/
-    expire_in: 1 week
+      name: "$CI_BUILD_REF"
+      untracked: true
+      paths:
+        - descriptions/behat/reports/html/behat/
+      expire_in: 1 week
 
-
-# We test behat in PHP7, but we allow it to fail
-occ_test:php7:
-  stage: test
-  image: php:7.0
-  script:
-    - bin/behat
-  allow_failure: true
 
 # todo Release stage and job For Master Branch
 # when I merge a Pull request that adds a new feature (feature branch)
@@ -90,6 +95,7 @@ occ_changelog:
   only:
     - master
   image: ruby:2.3
+
   script:
     # make sure we have the gem to generate changelog
     - gem install github_changelog_generator
