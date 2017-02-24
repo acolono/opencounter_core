@@ -12,7 +12,7 @@ Feature: reset one counter
     And I get the value of the counter with Name "excounter"
     Then the value returned should be "0"
 
-  Scenario: Resetting counter that doesn't exist
-    Given no counter "onecounter" has been set
-    When I reset the counter with Name "onecounter"
-    Then I should see an error "Counter not found. You can not reset a counter that doesnt exist."
+#  Scenario: Resetting counter that doesn't exist
+#    Given no counter "onecounter" has been set
+#    When I reset the counter with Name "onecounter"
+#    Then I should see an error "Counter not found. You can not reset a counter that doesnt exist."
