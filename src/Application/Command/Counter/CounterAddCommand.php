@@ -5,7 +5,7 @@ namespace OpenCounter\Application\Command\Counter;
 /**
  * Class CounterAddCommand
  * @SWG\Definition(
- *   required={"id"},
+ *   required={"name"},
  *
  * @SWG\ExternalDocumentation(
  *     description="find more info here",
@@ -16,6 +16,14 @@ namespace OpenCounter\Application\Command\Counter;
  */
 class CounterAddCommand
 {
+    /**
+     * Id of counter to add
+     *
+     * @var string
+     * @SWG\Property(example="1c9e760c-4ec1-434d-a70d-ee402f009e1c")
+     */
+    private $id;
+
     /**
      * Name of counter to add
      *
@@ -55,12 +63,20 @@ class CounterAddCommand
      * @param $status
      * @param $password
      */
-    public function __construct($name, $value, $status, $password)
+    public function __construct($name, $value, $status, $password, $id = null)
     {
         $this->name = $name;
         $this->value = $value;
         $this->status = $status;
         $this->password = $password;
+        $this->id = $id;
+    }
+    /**
+     * @return mixed
+     */
+    public function id()
+    {
+        return $this->id;
     }
 
     /**

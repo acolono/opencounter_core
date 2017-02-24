@@ -78,9 +78,10 @@ class CounterBuildService
     {
 
         // https://leanpub.com/ddd-in-php/read#leanpub-auto-persisting-value-objects
+        // TODO: if an id was provided by the client then use that instead of setting a new one
 
 
-        $counterId = $this->counter_repository->nextIdentity();
+        $counterId = $this->counter_repository->nextIdentity($request->id());
 
         $password = 'passwordplaceholder';
         $CounterName = new CounterName($request->name());
