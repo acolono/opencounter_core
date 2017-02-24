@@ -129,9 +129,9 @@ class SqlCounterRepository implements CounterRepository
     /**
      * {@inheritdoc}
      */
-    public function nextIdentity()
+    public function nextIdentity($uuid = null)
     {
-        return new CounterId();
+        return new CounterId($uuid);
     }
 
     /**

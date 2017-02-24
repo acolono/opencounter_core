@@ -19,16 +19,21 @@ use OpenCounter\Domain\Repository\CounterRepository;
 class CounterAddHandler
 {
     /**
+     * CounterRepository
+     *
      * @var \OpenCounter\Domain\Repository\CounterRepository
      */
     protected $CounterRepository;
     /**
+     * counterBuildService
+     *
      * @var \OpenCounter\Application\Service\Counter\CounterBuildService
      */
     protected $counterBuildService;
 
     /**
      * CounterAddHandler constructor.
+     *
      * @param \OpenCounter\Domain\Repository\CounterRepository $CounterRepository
      * @param \OpenCounter\Application\Service\Counter\CounterBuildService $counterBuildService
      */

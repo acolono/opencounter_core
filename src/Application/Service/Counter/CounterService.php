@@ -11,12 +11,15 @@ use OpenCounter\Domain\Model\Counter\CounterRepository;
 abstract class CounterService implements ApplicationService
 {
     /**
+     * CounterRepository
+     *
      * @var \OpenCounter\Domain\Model\Counter\CounterRepository
      */
     protected $CounterRepository;
 
     /**
      * CounterService constructor.
+     *
      * @param \OpenCounter\Domain\Model\Counter\CounterRepository $CounterRepository
      */
     public function __construct(

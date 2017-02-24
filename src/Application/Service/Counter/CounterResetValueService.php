@@ -12,14 +12,16 @@ class CounterResetValueService extends CounterService
 {
 
     /**
-     * The command handler.
+     * The command handler
      *
+     * @var \OpenCounter\Application\Command\Counter\CounterResetValueHandler
      */
     private $handler;
 
     /**
-     * Constructor.
+     * CounterResetValueService constructor.
      *
+     * @param \OpenCounter\Application\Command\Counter\CounterResetValueHandler $aHandler
      */
     public function __construct(CounterResetValueHandler $aHandler)
     {
