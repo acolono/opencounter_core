@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "54c578bd191dbbd40c5e9519d4c8d426",
+    "content-hash": "3d7db27f68ecbbc7bc8802e6417237e3",
     "packages": [
         {
             "name": "monolog/monolog",
@@ -603,12 +603,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/doctrine/annotations.git",
-                "reference": "d116e276bc676c7048e3d6b65daa5e713b4f16e6"
+                "reference": "54cacc9b81758b14e3ce750f205a393d52339e97"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/doctrine/annotations/zipball/d116e276bc676c7048e3d6b65daa5e713b4f16e6",
-                "reference": "d116e276bc676c7048e3d6b65daa5e713b4f16e6",
+                "url": "https://api.github.com/repos/doctrine/annotations/zipball/54cacc9b81758b14e3ce750f205a393d52339e97",
+                "reference": "54cacc9b81758b14e3ce750f205a393d52339e97",
                 "shasum": ""
             },
             "require": {
@@ -663,7 +663,7 @@
                 "docblock",
                 "parser"
             ],
-            "time": "2017-02-10T00:02:43+00:00"
+            "time": "2017-02-24T16:22:25+00:00"
         },
         {
             "name": "doctrine/instantiator",
@@ -1785,12 +1785,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpspec/prophecy.git",
-                "reference": "6b1c0f4dde65880ed7da62387248e5baee576d88"
+                "reference": "a8acfca019c089ccf89cf5e9e2f5ea2856d81b34"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpspec/prophecy/zipball/6b1c0f4dde65880ed7da62387248e5baee576d88",
-                "reference": "6b1c0f4dde65880ed7da62387248e5baee576d88",
+                "url": "https://api.github.com/repos/phpspec/prophecy/zipball/a8acfca019c089ccf89cf5e9e2f5ea2856d81b34",
+                "reference": "a8acfca019c089ccf89cf5e9e2f5ea2856d81b34",
                 "shasum": ""
             },
             "require": {
@@ -1798,10 +1798,10 @@
                 "php": "^5.3|^7.0",
                 "phpdocumentor/reflection-docblock": "^2.0|^3.0.2",
                 "sebastian/comparator": "^1.1|^2.0",
-                "sebastian/recursion-context": "^1.0|^2.0"
+                "sebastian/recursion-context": "^1.0|^2.0|^3.0"
             },
             "require-dev": {
-                "phpspec/phpspec": "^2.0",
+                "phpspec/phpspec": "^2.4.0",
                 "phpunit/phpunit": "^4.8 || ^5.6.5"
             },
             "type": "library",
@@ -1840,7 +1840,7 @@
                 "spy",
                 "stub"
             ],
-            "time": "2017-02-23T12:56:00+00:00"
+            "time": "2017-02-24T13:43:11+00:00"
         },
         {
             "name": "pimple/pimple",
@@ -2039,12 +2039,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/comparator.git",
-                "reference": "09f699d71d048a4e3f546d6f83a4d828d3fdc95e"
+                "reference": "f4626c4dfe80cb7253725600ce0b34170c443a6a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/comparator/zipball/09f699d71d048a4e3f546d6f83a4d828d3fdc95e",
-                "reference": "09f699d71d048a4e3f546d6f83a4d828d3fdc95e",
+                "url": "https://api.github.com/repos/sebastianbergmann/comparator/zipball/f4626c4dfe80cb7253725600ce0b34170c443a6a",
+                "reference": "f4626c4dfe80cb7253725600ce0b34170c443a6a",
                 "shasum": ""
             },
             "require": {
@@ -2095,7 +2095,7 @@
                 "compare",
                 "equality"
             ],
-            "time": "2017-02-23T14:45:22+00:00"
+            "time": "2017-02-24T13:34:02+00:00"
         },
         {
             "name": "sebastian/diff",
@@ -2151,7 +2151,7 @@
         },
         {
             "name": "sebastian/exporter",
-            "version": "dev-master",
+            "version": "2.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/exporter.git",

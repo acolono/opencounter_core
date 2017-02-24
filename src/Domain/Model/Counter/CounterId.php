@@ -23,6 +23,7 @@ class CounterId
     /**
      * uuid Property.
      *
+     * @SWG\Property(example="1ff4debe-6160-4201-93d1-568d5a50a886")
      * @var null|string
      */
     private $uuid;

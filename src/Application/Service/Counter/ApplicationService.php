@@ -8,6 +8,8 @@ namespace OpenCounter\Application\Service\Counter;
 interface ApplicationService
 {
     /**
+     * execute
+     *
      * @param $request
      * @return mixed
      */

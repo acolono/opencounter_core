@@ -14,12 +14,15 @@ use OpenCounter\Domain\Repository\CounterRepository;
 class CounterSetStatusHandler
 {
     /**
+     * CounterRepository
+     *
      * @var \OpenCounter\Domain\Repository\CounterRepository
      */
     protected $CounterRepository;
 
     /**
      * CounterSetStatusHandler constructor.
+     *
      * @param \OpenCounter\Domain\Repository\CounterRepository $CounterRepository
      */
     public function __construct(

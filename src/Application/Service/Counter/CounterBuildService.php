@@ -30,16 +30,19 @@ class CounterBuildService
 {
     /**
      * A Counter repository object
+     *
      * @var \OpenCounter\Domain\Repository\CounterRepository
      */
     private $counter_repository;
     /**
      * A Counter repository factory
+     *
      * @var \OpenCounter\Infrastructure\Factory\Counter\CounterFactory
      */
     private $counter_factory;
     /**
      * a logger.
+     *
      * @var \Psr\Log\LoggerInterface
      */
     private $logger;
@@ -75,9 +78,10 @@ class CounterBuildService
     {
 
         // https://leanpub.com/ddd-in-php/read#leanpub-auto-persisting-value-objects
+        // TODO: if an id was provided by the client then use that instead of setting a new one
 
 
-        $counterId = $this->counter_repository->nextIdentity();
+        $counterId = $this->counter_repository->nextIdentity($request->id());
 
         $password = 'passwordplaceholder';
         $CounterName = new CounterName($request->name());

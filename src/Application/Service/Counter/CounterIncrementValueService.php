@@ -18,12 +18,14 @@ class CounterIncrementValueService extends CounterService
     /**
      * The command handler.
      *
+     * @var \OpenCounter\Application\Command\Counter\CounterIncrementValueHandler
      */
     private $handler;
 
     /**
-     * Constructor.
+     * CounterIncrementValueService constructor.
      *
+     * @param \OpenCounter\Application\Command\Counter\CounterIncrementValueHandler $aHandler
      */
     public function __construct(CounterIncrementValueHandler $aHandler)
     {

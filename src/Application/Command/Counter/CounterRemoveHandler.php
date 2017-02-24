@@ -9,6 +9,8 @@ use OpenCounter\Domain\Repository\CounterRepository;
 class CounterRemoveHandler
 {
     /**
+     * CounterRepository
+     *
      * @var \OpenCounter\Domain\Repository\CounterRepository
      */
     protected $CounterRepository;
@@ -24,7 +26,7 @@ class CounterRemoveHandler
     }
 
     /**
-     * @param CounterRemoveCommand $request
+     * @inheritdoc
      */
     public function __invoke(CounterRemoveCommand $aCommand)
     {
