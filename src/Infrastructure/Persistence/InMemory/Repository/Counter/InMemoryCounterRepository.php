@@ -10,27 +10,27 @@ namespace OpenCounter\Infrastructure\Persistence\InMemory\Repository\Counter;
 use OpenCounter\Domain\Model\Counter\Counter;
 use OpenCounter\Domain\Model\Counter\CounterId;
 use OpenCounter\Domain\Model\Counter\CounterName;
-use OpenCounter\Domain\Repository\CounterRepositoryInterface;
+use OpenCounter\Domain\Repository\CounterRepository;
 
 /**
  * Class InMemoryCounterRepository
  *
  * @package OpenCounter\Infrastructure\Persistence\InMemory\Repository\Counter
  */
-class InMemoryCounterRepository implements CounterRepositoryInterface
+class InMemoryCounterRepository implements CounterRepository
 {
-  /**
-   * @var $counters
-   */
+    /**
+     * @var $counters
+     */
     private $counters = [];
 
-  /**
-   * InMemoryCounterRepository constructor.
-   *
-   * Create a few counters we can use during tests.
-   *
-   * @param array $counters
-   */
+    /**
+     * InMemoryCounterRepository constructor.
+     *
+     * Create a few counters we can use during tests.
+     *
+     * @param array $counters
+     */
     public function __construct(array $counters)
     {
         foreach ($counters as $item) {
@@ -40,103 +40,114 @@ class InMemoryCounterRepository implements CounterRepositoryInterface
 
     public function save(Counter $counter)
     {
-        $id = (string) $counter->getId();
+        $id = (string)$counter->getId();
         $this->counters[$id] = clone $counter;
+
         return clone $counter;
     }
+
 
 
     public function find(CounterId $counterId)
     {
     }
 
-
     public function findAll()
     {
         return $this->counters;
     }
 
-  /**
-   * @inheritDoc
-   */
+    /**
+     * @inheritDoc
+     */
     public function remove(Counter $counter)
     {
-        //unset($this->counters[$counter->getId()]);
+        unset($this->counters[$counter->getId()]);
     }
 
-  /**
-   * @inheritDoc
-   */
+    /**
+     * @inheritDoc
+     */
     public function getCounterById(CounterId $anId)
     {
-        // TODO: Implement getCounterById() method.
+        if (isset($this->counters[$anId->uuid()])) {
+            return $this->counters[$anId->uuid()];
+        }
     }
 
-  /**
-   * @inheritDoc
-   */
+    /**
+     * @inheritDoc
+     */
     public function getCounterByName(CounterName $aName)
     {
-        // TODO: Implement getCounterByName() method.
+//        if (isset($this->counters[$aName->name()])) {
+//            return $this->counters[$aName->name()];
+//        }
+        foreach ($this->counters as $counter) {
+            if ($counter->getName() === $aName->name()) {
+                return $counter;
+            }
+        }
     }
+//
+//    /**
+//     * @inheritDoc
+//     */
+//    public function getCounterByUuid(CounterId $anId)
+//    {
+//        // TODO: Implement getCounterByUuid() method. unset($this->counters[$anId]);
+//    }
+//
+//    /**
+//     * @inheritDoc
+//     */
+//    public function query($specification)
+//    {
+//        // TODO: Implement query() method.
+//    }
 
-  /**
-   * @inheritDoc
-   */
-    public function getCounterByUuid(CounterId $anId)
-    {
-        // TODO: Implement getCounterByUuid() method. unset($this->counters[$anId]);
-    }
-
-  /**
-   * @inheritDoc
-   */
-    public function query($specification)
-    {
-        // TODO: Implement query() method.
-    }
-
-  /**
-   * @inheritDoc
-   */
+    /**
+     * @inheritDoc
+     */
 
     public function nextIdentity()
     {
         return new CounterId();
     }
 
-  /**
-   * @inheritDoc
-   */
+
+    /**
+     * {@inheritdoc}
+     */
     public function size()
     {
-        // TODO: Implement size() method.
+        return count($this->counters);
     }
 
-  /**
-   * @inheritDoc
-   */
-    public function counterOfId(CounterId $anId)
-    {
-        // TODO: Implement counterOfId() method.
-    }
+//    /**
+//     * @inheritDoc
+//     */
+//    public function counterOfId(CounterId $anId)
+//    {
+//        // TODO: Implement counterOfId() method.
+//    }
 
-  /**
-   * removeCounterByName
-   *
-   * @param \OpenCounter\Domain\Model\Counter\CounterName $aName
-   */
+    /**
+     * removeCounterByName
+     *
+     * @param \OpenCounter\Domain\Model\Counter\CounterName $aName
+     */
     public function removeCounterByName(CounterName $aName)
     {
         unset($this->counters[$aName->name()]);
     }
 
-  /**
-   * removeCounterById
-   *
-   * @param \OpenCounter\Domain\Model\Counter\CounterId $anId
-   * @return bool
-   */
+    /**
+     * removeCounterById
+     *
+     * @param \OpenCounter\Domain\Model\Counter\CounterId $anId
+     * @return bool
+     */
     public function removeCounterById(CounterId $anId)
     {
         if (!$this->exists($anId)) {
@@ -149,15 +160,25 @@ class InMemoryCounterRepository implements CounterRepositoryInterface
         return true;
     }
 
-  /**
-   * exists
-   *
-   * @param \OpenCounter\Domain\Model\Counter\CounterId $counterId
-   * @return bool
-   */
+    /**
+     * exists
+     *
+     * @param \OpenCounter\Domain\Model\Counter\CounterId $counterId
+     * @return bool
+     */
     public function exists(CounterId $counterId)
     {
-        $id = (string) $counterId->uuid();
+        $id = (string)$counterId->uuid();
+
         return array_key_exists($id, $this->counters);
     }
+
+//    public function update(Counter $aCounter)
+//    {
+//        // TODO: implement inmemory
+//    }
+
+//    public function insert(Counter $aCounter)
+//    {
+//    }
 }

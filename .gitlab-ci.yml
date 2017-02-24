@@ -132,7 +132,7 @@ deploy:docs:
   stage: deploy
   before_script:
   # install ssh-agent
-  - 'which ssh-agent || (apt-get update && apt-get install bash rsync)'
+  - 'which ssh-agent || (apt-get update && apt-get install bash rsync openssh-client)'
   # run ssh-agent
   - eval $(ssh-agent -s)
   - which bash
