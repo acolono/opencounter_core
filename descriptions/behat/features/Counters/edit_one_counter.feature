@@ -10,19 +10,20 @@ Feature: edit one counter
   /counters/1/state
   change state of counter (active, disabled, locked)
 
-  Scenario: increment the value for a single counter
-    Given a counter "onecounter" with a value of "1" has been set
+  Scenario: increment the value for a single counter by name
+    Given a counter "onecounter" with a value of "2" has been set
     When I increment the value of the counter with name "onecounter"
-    And I get the value of the counter with name "onecounter"
-    Then the value returned should be 2
+    And I get the value of the counter with Name "onecounter"
+    Then the value returned should be 3
+#
+#  Scenario: lock a single counter by name and try to increment it
+#    Given a counter "onecounter" with a value of "1" has been set
+#    When I lock the counter with Name "onecounter"
+#    And I increment the value of the counter with name "onecounter"
+#    Then I should see an error "counter is locked"
+#    When I get the value of the counter with Name "onecounter"
+#    And the value returned should be 1
 
-  Scenario: lock a single counter and try to increment it
-    Given a counter "onecounter" with a value of "1" has been set
-    When I lock the counter with name "onecounter"
-    And I increment the value of the counter with name "onecounter"
-    Then I should see an error "counter is locked"
-    When I get the value of the counter with name "onecounter"
-    And the value returned should be 1
 
   #Scenario: unlock a single locked counter in the collection and increment it
   #Scenario: unlock a single unlocked counter in the collection and increment it
