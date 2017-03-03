@@ -156,6 +156,7 @@ pages:
     # deploy behat report
     - echo "Deploy behat reports to https://ocdocs.artur.acolono.net/"
     - rsync -avuz --rsh="ssh -o StrictHostKeyChecking=no -l $DEPLOY_USER" descriptions/behat/reports/html $DEPLOY_USER@artur.acolono.net:/web
+    - rsync -avuz --rsh="ssh -o StrictHostKeyChecking=no -l $DEPLOY_USER" CHANGELOG.md $DEPLOY_USER@artur.acolono.net:/web
   environment:
     name: docs
     url: https://ocdocs.artur.acolono.net/
@@ -163,5 +164,5 @@ pages:
     name: "$CI_BUILD_REF"
     untracked: true
     paths:
-    - docs/core
+    - public/docs/core
     expire_in: 1 week
