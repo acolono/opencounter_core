@@ -93,7 +93,7 @@ occ_test:php7:
 occ_changelog:
   stage: release
   only:
-    - master
+    - tags
   image: ruby:2.3
 
   script:
@@ -113,7 +113,7 @@ occ_changelog:
 occ_phpdoc:
   stage: release
   only:
-    - master
+    - tags
   image: php:7
   before_script:
     # Install git and zip since the php image doesn't have installed
@@ -124,7 +124,7 @@ occ_phpdoc:
   script:
     # phpdocumentor
     - php composer.phar global require "phpdocumentor/phpdocumentor:2.*"
-    - ~/.composer/vendor/bin/phpdoc -d ./src -t ./docs/core
+    - ~/.composer/vendor/bin/phpdoc -d ./src -t ./public/docs/core
   allow_failure: true
   # Store resulting changelog as artifact
   artifacts:
@@ -134,7 +134,7 @@ occ_phpdoc:
       - docs/core
     expire_in: 1 week
 
-deploy:docs:
+pages:
   stage: deploy
   before_script:
   # install ssh-agent
