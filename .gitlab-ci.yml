@@ -66,7 +66,7 @@ occ_test:php7:
     - curl -sS https://getcomposer.org/installer | php
   script:
     # TODO run phpspec tests
-    #- bin/phpspec run
+    - bin/phpspec run
     # run codestyle checks but dont yet autofix anything
     # get codesniffer in the container
     - php composer.phar global require "squizlabs/php_codesniffer=*"
@@ -145,7 +145,6 @@ pages:
   # add ssh key stored in SSH_PRIVATE_KEY variable to the agent store
   - /bin/bash -c 'ssh-add <(echo "$SSH_PRIVATE_KEY")'
  # we want to use cache to load swagger.json from pages step
-  # TODO: once swagger docs are generated as expected make sure this only happens on the master branch (for new releases)
   only:
     - tags
   script:
@@ -153,7 +152,7 @@ pages:
     - ls ./
     # TODO: should we deploy artifacts differently?
     - echo "Deploy phpdocs to https://ocdocs.artur.acolono.net/"
-    - rsync -avuz --rsh="ssh -o StrictHostKeyChecking=no -l $DEPLOY_USER" docs/core $DEPLOY_USER@artur.acolono.net:/web
+    - rsync -avuz --rsh="ssh -o StrictHostKeyChecking=no -l $DEPLOY_USER" public/docs/core $DEPLOY_USER@artur.acolono.net:/web
     # deploy behat report
     - echo "Deploy behat reports to https://ocdocs.artur.acolono.net/"
     - rsync -avuz --rsh="ssh -o StrictHostKeyChecking=no -l $DEPLOY_USER" descriptions/behat/reports/html $DEPLOY_USER@artur.acolono.net:/web
