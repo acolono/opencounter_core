@@ -46,10 +46,15 @@ class CounterAddHandler
     }
 
     /**
-     * Handles the given command.
+     * Handles the given command
      *
+     * Will check if counter already exists
+     * then save the new counter if it doesnt.
      *
-     * @throws CounterAlreadyExistException when the counter id is already exists
+     * @param \OpenCounter\Application\Command\Counter\CounterAddCommand $aCommand
+     *
+     * @return array
+     * @throws \OpenCounter\Domain\Exception\Counter\CounterAlreadyExistsException
      */
     public function __invoke(CounterAddCommand $aCommand)
     {

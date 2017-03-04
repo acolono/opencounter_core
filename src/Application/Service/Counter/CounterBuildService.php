@@ -65,14 +65,16 @@ class CounterBuildService
         $this->logger = $logger;
     }
 
+
+
     /**
      * Execute Build service.
      *
      * @uses CounterFactory to create new counter objects
+     * @param null $request
      *
-     * @param  $args
-     * @return mixed|Counter
-     * @throws CounterAlreadyExistsException
+     * @return array|mixed|\OpenCounter\Domain\Model\Counter\Counter
+     * @throws \OpenCounter\Domain\Exception\Counter\CounterAlreadyExistsException
      */
     public function execute($request = null)
     {

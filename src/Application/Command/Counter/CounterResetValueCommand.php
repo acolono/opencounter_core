@@ -1,5 +1,10 @@
 <?php
-
+/**
+ * CounterResetValueCommand
+ *
+ * Contains class used to create objects
+ * reperesenting the intent to reset a counter.
+ */
 namespace OpenCounter\Application\Command\Counter;
 
 /**
@@ -35,7 +40,8 @@ class CounterResetValueCommand
     }
 
     /**
-     * @return mixed
+     * Id of counter to reset.
+     * @return string
      */
     public function id()
     {

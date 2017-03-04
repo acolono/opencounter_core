@@ -2,6 +2,7 @@
     "name": "rosenstrauch/opencounter_api_core",
     "description": "framework agnostic counter business logic",
     "minimum-stability": "dev",
+    "license": "GPL-3.0",
     "version": "0.2.3",
     "extra": {
         "branch-alias": {

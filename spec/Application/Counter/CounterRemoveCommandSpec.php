@@ -2,10 +2,13 @@
 
 namespace spec\OpenCounter\Application\Command\Counter;
 
-use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
 use OpenCounter\Application\Command\Counter\CounterRemoveCommand;
+use PhpSpec\ObjectBehavior;
 
+/**
+ * Class CounterRemoveCommandSpec
+ * @package spec\OpenCounter\Application\Command\Counter
+ */
 class CounterRemoveCommandSpec extends ObjectBehavior
 {
     function it_creates_request()

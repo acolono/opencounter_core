@@ -6,7 +6,6 @@
 namespace OpenCounter\Application\Service\Counter;
 
 use OpenCounter\Application\Command\Counter\CounterIncrementValueHandler;
-use OpenCounter\Domain\Model\Counter\CounterName;
 
 /**
  * Class CounterIncrementValueService
@@ -33,7 +32,13 @@ class CounterIncrementValueService extends CounterService
     }
 
     /**
+     * execute()
+     *
      * {@inheritdoc}
+     * invoke CounterIncrementValueHandler
+     * to handle CounterIncrementValueCommand
+     *
+     * @param null $request
      */
     public function execute($request = null)
     {

@@ -7,10 +7,11 @@
 namespace OpenCounter\Infrastructure\Persistence\Sql\Repository\Counter;
 
 use OpenCounter\Domain\Model\Counter\Counter;
+use OpenCounter\Domain\Model\Counter\CounterId;
 use OpenCounter\Domain\Model\Counter\CounterName;
 use OpenCounter\Domain\Model\Counter\CounterValue;
-use OpenCounter\Domain\Model\Counter\CounterId;
 use OpenCounter\Domain\Repository\CounterRepository;
+use OpenCounter\Domain\Repository\PersistentCounterRepository;
 use OpenCounter\Infrastructure\Persistence\Sql\SqlManager;
 
 /**
@@ -18,7 +19,7 @@ use OpenCounter\Infrastructure\Persistence\Sql\SqlManager;
  *
  * @package OpenCounter\Infrastructure\Persistence\Sql\Repository\Counter
  */
-class SqlCounterRepository implements CounterRepository
+class SqlCounterRepository implements CounterRepository, PersistentCounterRepository
 {
 
     const TABLE_NAME = 'counters';
@@ -27,9 +28,36 @@ class SqlCounterRepository implements CounterRepository
      * @var \OpenCounter\Infrastructure\Persistence\Sql\SqlManager
      */
     protected $manager;
+    /**
+     * updateStmt
+     * @var \PDOStatement
+     */
+    private $updateStmt;
+    /**
+     * insertStmt
+     *
+     * @var \PDOStatement
+     */
+    private $insertStmt;
+    /**
+     * removeStmt
+     * @var \PDOStatement
+     */
+    private $removeStmt;
+    /**
+     * removeNamedStmt
+     * @var \PDOStatement
+     */
+    private $removeNamedStmt;
+    /**
+     * get statement
+     * @var \PDOStatement
+     */
+    private $getStmt;
 
     /**
      * SqlCounterRepository constructor.
+     *
      * @param \OpenCounter\Infrastructure\Persistence\Sql\SqlManager $manager
      */
     public function __construct(SqlManager $manager)
@@ -44,22 +72,24 @@ class SqlCounterRepository implements CounterRepository
         $this->removeNamedStmt = $this->manager->prepare(
             sprintf('DELETE FROM %s WHERE name = :name', self::TABLE_NAME)
         );
+        $insert_string = 'INSERT INTO %s (name, uuid, value, status, password) 
+                          VALUES (:name, :uuid, :value, :status, :password)';
         $this->insertStmt = $this->manager->prepare(
-            sprintf(
-                "INSERT INTO %s (name, uuid, value, status, password) VALUES (:name, :uuid, :value, :status, :password)",
-                self::TABLE_NAME
-            )
+
+            sprintf($insert_string, self::TABLE_NAME)
         );
+        $update_string = 'UPDATE %s SET value = :value, status = :status, password = :password 
+                          WHERE uuid = :uuid';
         $this->updateStmt = $this->manager->prepare(
-            sprintf(
-                'UPDATE %s SET value = :value, status = :status, password = :password WHERE uuid = :uuid',
-                self::TABLE_NAME
-            )
+            sprintf($update_string, self::TABLE_NAME)
         );
     }
 
     /**
+     * remove
+     *
      * {@inheritdoc}
+     * @param \OpenCounter\Domain\Model\Counter\Counter $anCounter
      */
     public function remove(Counter $anCounter)
     {
@@ -67,17 +97,30 @@ class SqlCounterRepository implements CounterRepository
     }
 
     /**
+     * removeCounterByName()
+     *
      * {@inheritdoc}
+     * @param \OpenCounter\Domain\Model\Counter\CounterName $aName
      */
     public function removeCounterByName(CounterName $aName)
     {
         $this->removeNamedStmt->execute(['name' => $aName->name()]);
     }
+
+    /**
+     * query
+     *
+     * {@inheritdoc}
+     * @param mixed $specification
+     *
+     * @return array
+     */
     public function query($specification)
     {
         if (!$specification instanceof SqlCounterSpecification) {
             throw new \InvalidArgumentException('This argument must be a SQLCounterSpecification');
         }
+
         return $this->retrieveAll(
             sprintf(
                 'SELECT * FROM %s WHERE %s',
@@ -91,13 +134,14 @@ class SqlCounterRepository implements CounterRepository
      * Executes the sql given and returns the result in array of counters.
      *
      * @param string $sql The sql query
-     * @param array $parameters Array which contains the parameters
+     * @param array  $parameters Array which contains the parameters
      *
      * @return array
      */
     private function retrieveAll($sql, array $parameters = [])
     {
         $statement = $this->manager->execute($sql, $parameters);
+
         return array_map(
             function ($row) {
                 return $this->buildCounter($row);
@@ -127,7 +171,12 @@ class SqlCounterRepository implements CounterRepository
     }
 
     /**
+     * nextIdentity()
+     *
      * {@inheritdoc}
+     * @param null $uuid
+     *
+     * @return \OpenCounter\Domain\Model\Counter\CounterId
      */
     public function nextIdentity($uuid = null)
     {
@@ -156,19 +205,21 @@ class SqlCounterRepository implements CounterRepository
         $stmt = $this->manager->query($sql);
 
         $results = [];
+        // TODO: implement get counters in sql
         while ($row = $stmt->fetch()) {
-            $results[] = new CounterEntity($row);
+            $results[] = new Counter($row->name());
         }
 
         return $results;
     }
 
     /**
+     *
      * Get a specific counter by id.
      *
      * @param \OpenCounter\Domain\Model\Counter\CounterId $anId
      *
-     * @return \OpenCounter\Domain\Model\Counter\Counter
+     * @return bool|\OpenCounter\Domain\Model\Counter\Counter
      */
 
     public function getCounterById(CounterId $anId)
@@ -180,10 +231,9 @@ class SqlCounterRepository implements CounterRepository
         if (!$row = $statement->fetch(\PDO::FETCH_ASSOC)) {
             return false;
         }
+
         return $this->buildCounter($row);
     }
-
-
 
     /**
      * Get a specific counter by name.
@@ -202,11 +252,15 @@ class SqlCounterRepository implements CounterRepository
         if (!$row = $statement->fetch(\PDO::FETCH_ASSOC)) {
             return false;
         }
+
         return $this->buildCounter($row);
     }
 
     /**
+     * save()
+     *
      * {@inheritdoc}
+     * @param \OpenCounter\Domain\Model\Counter\Counter $anCounter
      */
     public function save(Counter $anCounter)
     {
@@ -232,6 +286,14 @@ class SqlCounterRepository implements CounterRepository
         )->fetchColumn() == 1;
     }
 
+    /**
+     * update()
+     *
+     * {@inheritdoc}
+     * @param \OpenCounter\Domain\Model\Counter\Counter $anCounter
+     *
+     * @return bool
+     */
     public function update(Counter $anCounter)
     {
         $update = $this->updateStmt->execute(
@@ -242,9 +304,18 @@ class SqlCounterRepository implements CounterRepository
             'password' => 'passwordplaceholder'
             ]
         );
+
         return $update;
     }
 
+    /**
+     * insert new counter
+     * {@inheritdoc}
+     *
+     * @param \OpenCounter\Domain\Model\Counter\Counter $anCounter
+     *
+     * @return bool
+     */
     public function insert(Counter $anCounter)
     {
         $insert = $this->insertStmt->execute(
@@ -256,6 +327,7 @@ class SqlCounterRepository implements CounterRepository
             'password' => 'passwordplaceholder'
             ]
         );
+
         return $insert;
     }
 }

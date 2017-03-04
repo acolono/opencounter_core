@@ -10,7 +10,6 @@ namespace OpenCounter\Application\Command\Counter;
 
 use OpenCounter\Domain\Exception\Counter\CounterNotFoundException;
 use OpenCounter\Domain\Model\Counter\CounterId;
-use OpenCounter\Domain\Model\Counter\CounterName;
 use OpenCounter\Domain\Model\Counter\CounterValue;
 use OpenCounter\Domain\Repository\CounterRepository;
 
@@ -42,8 +41,11 @@ class CounterResetValueHandler
     /**
      * Handles the given command.
      *
+     * will check if counter already exists before creating.
      *
-     * @throws CounterAlreadyExistException when the counter id is already exists
+     * @param \OpenCounter\Application\Command\Counter\CounterResetValueCommand $aCommand
+     *
+     * @throws \OpenCounter\Domain\Exception\Counter\CounterNotFoundException
      */
     public function __invoke(CounterResetValueCommand $aCommand)
     {

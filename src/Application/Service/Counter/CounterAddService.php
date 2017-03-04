@@ -25,9 +25,9 @@ class CounterAddService extends CounterService
     private $handler;
 
     /**
-     * Constructor.
+     * CounterAddService constructor.
      *
-     * @param CounterAddHandler $aHandler The command handler
+     * @param \OpenCounter\Application\Command\Counter\CounterAddHandler $aHandler
      */
     public function __construct(CounterAddHandler $aHandler)
     {
@@ -35,7 +35,12 @@ class CounterAddService extends CounterService
     }
 
     /**
+     * Execute()
+     *
      * {@inheritdoc}
+     * @param null $request
+     *
+     * @return array
      */
     public function execute($request = null)
     {

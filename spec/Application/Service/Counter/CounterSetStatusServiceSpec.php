@@ -2,14 +2,21 @@
 
 namespace spec\OpenCounter\Application\Service\Counter;
 
-use OpenCounter\Application\Service\Counter\ApplicationService;
-use PhpSpec\ObjectBehavior;
 use OpenCounter\Application\Command\Counter\CounterSetStatusCommand;
 use OpenCounter\Application\Command\Counter\CounterSetStatusHandler;
+use OpenCounter\Application\Service\Counter\ApplicationService;
 use OpenCounter\Application\Service\Counter\CounterSetStatusService;
+use PhpSpec\ObjectBehavior;
 
+/**
+ * Class CounterSetStatusServiceSpec
+ * @package spec\OpenCounter\Application\Service\Counter
+ */
 class CounterSetStatusServiceSpec extends ObjectBehavior
 {
+    /**
+     * @param \OpenCounter\Application\Command\Counter\CounterSetStatusHandler|\PhpSpec\Wrapper\Collaborator $handler
+     */
     function let(CounterSetStatusHandler $handler)
     {
         $this->beConstructedWith($handler);
@@ -25,9 +32,13 @@ class CounterSetStatusServiceSpec extends ObjectBehavior
         $this->shouldHaveType(ApplicationService::class);
     }
 
+    /**
+     * @param \OpenCounter\Application\Command\Counter\CounterSetStatusHandler|\PhpSpec\Wrapper\Collaborator $handler
+     * @param \OpenCounter\Application\Command\Counter\CounterSetStatusCommand|\PhpSpec\Wrapper\Collaborator $aCommand
+     */
     function it_executes(
-      CounterSetStatusHandler $handler,
-      CounterSetStatusCommand $aCommand
+        CounterSetStatusHandler $handler,
+        CounterSetStatusCommand $aCommand
     ) {
         $handler->__invoke($aCommand)->shouldBeCalled();
 
