@@ -1,13 +1,22 @@
 <?php
-
+/**
+ * CounterAddCommandSpec
+ *
+ * Specify behaviour of CounterAddCommand
+ *
+ */
 namespace spec\OpenCounter\Application\Command\Counter;
 
-use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
 use OpenCounter\Application\Command\Counter\CounterAddCommand;
+use PhpSpec\ObjectBehavior;
 
+/**
+ * Class CounterAddCommandSpec
+ * @package spec\OpenCounter\Application\Command\Counter
+ */
 class CounterAddCommandSpec extends ObjectBehavior
 {
+
     function it_creates_a_counter_command()
     {
         $this->beConstructedWith('testcounter', '2', 'active', 'testpassword');

@@ -6,9 +6,6 @@
  */
 namespace OpenCounter\Application\Service\Counter;
 
-use OpenCounter\Domain\Model\Counter\CounterName;
-use OpenCounter\Domain\Repository\CounterRepository;
-use OpenCounter\Application\Command\Counter\CounterRemoveCommand;
 use OpenCounter\Application\Command\Counter\CounterRemoveHandler;
 
 /**

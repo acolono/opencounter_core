@@ -10,7 +10,6 @@
 
 namespace OpenCounter\Http;
 
-use OpenCounter\Domain\Model\Counter\CounterValue;
 use OpenCounter\Domain\Model\Counter\Counter;
 use OpenCounter\Domain\Model\Counter\CounterName;
 use OpenCounter\Domain\Exception\Counter\CounterAlreadyExistsException;
@@ -79,7 +78,7 @@ class CounterHttpBuildService
 
         //
 
-        $counterId = $this->counter_repository->nextIdentity();
+        $counterId = $this->counter_repository->nextIdentity($request->id());
 
         $password = 'passwordplaceholder';
         try {

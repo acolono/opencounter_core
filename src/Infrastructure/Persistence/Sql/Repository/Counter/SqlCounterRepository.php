@@ -28,6 +28,32 @@ class SqlCounterRepository implements CounterRepository, PersistentCounterReposi
      * @var \OpenCounter\Infrastructure\Persistence\Sql\SqlManager
      */
     protected $manager;
+    /**
+     * updateStmt
+     * @var \PDOStatement
+     */
+    private $updateStmt;
+    /**
+     * insertStmt
+     *
+     * @var \PDOStatement
+     */
+    private $insertStmt;
+    /**
+     * removeStmt
+     * @var \PDOStatement
+     */
+    private $removeStmt;
+    /**
+     * removeNamedStmt
+     * @var \PDOStatement
+     */
+    private $removeNamedStmt;
+    /**
+     * get statement
+     * @var \PDOStatement
+     */
+    private $getStmt;
 
     /**
      * SqlCounterRepository constructor.
@@ -46,17 +72,16 @@ class SqlCounterRepository implements CounterRepository, PersistentCounterReposi
         $this->removeNamedStmt = $this->manager->prepare(
             sprintf('DELETE FROM %s WHERE name = :name', self::TABLE_NAME)
         );
+        $insert_string = 'INSERT INTO %s (name, uuid, value, status, password) 
+                          VALUES (:name, :uuid, :value, :status, :password)';
         $this->insertStmt = $this->manager->prepare(
-            sprintf(
-                "INSERT INTO %s (name, uuid, value, status, password) VALUES (:name, :uuid, :value, :status, :password)",
-                self::TABLE_NAME
-            )
+
+            sprintf($insert_string, self::TABLE_NAME)
         );
+        $update_string = 'UPDATE %s SET value = :value, status = :status, password = :password 
+                          WHERE uuid = :uuid';
         $this->updateStmt = $this->manager->prepare(
-            sprintf(
-                'UPDATE %s SET value = :value, status = :status, password = :password WHERE uuid = :uuid',
-                self::TABLE_NAME
-            )
+            sprintf($update_string, self::TABLE_NAME)
         );
     }
 
@@ -180,19 +205,21 @@ class SqlCounterRepository implements CounterRepository, PersistentCounterReposi
         $stmt = $this->manager->query($sql);
 
         $results = [];
+        // TODO: implement get counters in sql
         while ($row = $stmt->fetch()) {
-            $results[] = new CounterEntity($row);
+            $results[] = new Counter($row->name());
         }
 
         return $results;
     }
 
     /**
+     *
      * Get a specific counter by id.
      *
      * @param \OpenCounter\Domain\Model\Counter\CounterId $anId
      *
-     * @return \OpenCounter\Domain\Model\Counter\Counter
+     * @return bool|\OpenCounter\Domain\Model\Counter\Counter
      */
 
     public function getCounterById(CounterId $anId)
@@ -282,7 +309,7 @@ class SqlCounterRepository implements CounterRepository, PersistentCounterReposi
     }
 
     /**
-     * insert()
+     * insert new counter
      * {@inheritdoc}
      *
      * @param \OpenCounter\Domain\Model\Counter\Counter $anCounter

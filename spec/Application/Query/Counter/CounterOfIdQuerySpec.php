@@ -2,11 +2,14 @@
 
 namespace spec\OpenCounter\Application\Query\Counter;
 
-use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
 use OpenCounter\Application\Query\Counter\CounterOfIdQuery;
 use OpenCounter\Application\Query\Counter\CounterQuery;
+use PhpSpec\ObjectBehavior;
 
+/**
+ * Class CounterOfIdQuerySpec
+ * @package spec\OpenCounter\Application\Query\Counter
+ */
 class CounterOfIdQuerySpec extends ObjectBehavior
 {
     function it_creates_a_query()

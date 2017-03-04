@@ -51,4 +51,16 @@ class CounterOfIdQuery implements CounterQuery
     {
         return $this->id;
     }
+
+
+    /**
+     * satisfy interface
+     *
+     * no name required when looking up counter by name
+     * @return null
+     */
+    public function name()
+    {
+        return null;
+    }
 }

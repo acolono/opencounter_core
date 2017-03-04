@@ -5,10 +5,7 @@ namespace spec\OpenCounter\Domain\Model\Counter;
 use OpenCounter\Domain\Model\Counter\CounterId;
 use OpenCounter\Domain\Model\Counter\CounterName;
 use OpenCounter\Domain\Model\Counter\CounterValue;
-
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
-
 
 /**
  * Class CounterSpec
@@ -16,26 +13,41 @@ use Prophecy\Argument;
  */
 class CounterSpec extends ObjectBehavior
 {
+    /**
+     * @param \OpenCounter\Domain\Model\Counter\CounterId|\PhpSpec\Wrapper\Collaborator    $counterId
+     * @param \OpenCounter\Domain\Model\Counter\CounterName|\PhpSpec\Wrapper\Collaborator  $counterName
+     * @param \OpenCounter\Domain\Model\Counter\CounterValue|\PhpSpec\Wrapper\Collaborator $counterValue
+     * @param \PhpSpec\Wrapper\Collaborator                                                $status
+     */
     function let(
-      CounterId $counterId,
-      CounterName $counterName,
-      CounterValue $counterValue,
-      $status
+        CounterId $counterId,
+        CounterName $counterName,
+        CounterValue $counterValue,
+        $status
     ) {
         $counterId = new CounterId('acounteruuid');
         $counterName = new CounterName('counterone');
         $counterValue = new CounterValue(1);
         $status = 'active';
 
-        $this->beConstructedWith($counterId, $counterName, $counterValue,
-          $status, 'password');
-
+        $this->beConstructedWith(
+            $counterId,
+            $counterName,
+            $counterValue,
+            $status,
+            'password'
+        );
     }
 
+    /**
+     * @param \OpenCounter\Domain\Model\Counter\CounterId|\PhpSpec\Wrapper\Collaborator    $counterId
+     * @param \OpenCounter\Domain\Model\Counter\CounterName|\PhpSpec\Wrapper\Collaborator  $counterName
+     * @param \OpenCounter\Domain\Model\Counter\CounterValue|\PhpSpec\Wrapper\Collaborator $counterValue
+     */
     function it_can_be_incremented_if_its_not_locked(
-      CounterId $counterId,
-      CounterName $counterName,
-      CounterValue $counterValue
+        CounterId $counterId,
+        CounterName $counterName,
+        CounterValue $counterValue
     ) {
         $increment = new CounterValue(1);
 
@@ -44,7 +56,6 @@ class CounterSpec extends ObjectBehavior
         $this->increaseCount($increment)->shouldReturn(true);
 
         $this->getValue()->shouldReturn(2);
-
     }
 
     function it_can_not_be_incremented_if_its_locked()
@@ -55,19 +66,27 @@ class CounterSpec extends ObjectBehavior
 
         $this->shouldThrow('OpenCounter\Domain\Exception\Counter\CounterLockedException')
           ->duringIncreaseCount($increment);
-
     }
 
+    /**
+     * @param \OpenCounter\Domain\Model\Counter\CounterId|\PhpSpec\Wrapper\Collaborator $counterId
+     */
     function it_stores_counter_id_as_value_object(CounterId $counterId)
     {
         $this->getId()->shouldReturn("acounteruuid");
     }
 
+    /**
+     * @param \OpenCounter\Domain\Model\Counter\CounterValue|\PhpSpec\Wrapper\Collaborator $value
+     */
     function it_stores_counter_value(CounterValue $value)
     {
         $this->getValue()->shouldReturn(1);
     }
 
+    /**
+     * @param \OpenCounter\Domain\Model\Counter\CounterName|\PhpSpec\Wrapper\Collaborator $counterName
+     */
     function it_returns_the_name_it_is_created_with(CounterName $counterName)
     {
         $this->getName()->shouldReturn('counterone');

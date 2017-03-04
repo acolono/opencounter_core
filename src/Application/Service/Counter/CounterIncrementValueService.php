@@ -6,7 +6,6 @@
 namespace OpenCounter\Application\Service\Counter;
 
 use OpenCounter\Application\Command\Counter\CounterIncrementValueHandler;
-use OpenCounter\Domain\Model\Counter\CounterName;
 
 /**
  * Class CounterIncrementValueService

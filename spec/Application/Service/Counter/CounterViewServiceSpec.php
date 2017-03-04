@@ -8,16 +8,21 @@
 
 namespace spec\OpenCounter\Application\Service\Counter;
 
-use OpenCounter\Application\Service\Counter\ApplicationService;
 use OpenCounter\Application\Query\Counter\CounterOfNameHandler;
 use OpenCounter\Application\Query\Counter\CounterOfNameQuery;
+use OpenCounter\Application\Service\Counter\ApplicationService;
+use OpenCounter\Application\Service\Counter\CounterViewService;
 use PhpSpec\ObjectBehavior;
 
-use OpenCounter\Application\Service\Counter\CounterViewService;
-
+/**
+ * Class CounterViewServiceSpec
+ * @package spec\OpenCounter\Application\Service\Counter
+ */
 class CounterViewServiceSpec extends ObjectBehavior
 {
-
+    /**
+     * @param \OpenCounter\Application\Query\Counter\CounterOfNameHandler|\PhpSpec\Wrapper\Collaborator $handler
+     */
     function let(CounterOfNameHandler $handler)
     {
         $this->beConstructedWith($handler);
@@ -33,9 +38,13 @@ class CounterViewServiceSpec extends ObjectBehavior
         $this->shouldHaveType(ApplicationService::class);
     }
 
+    /**
+     * @param \OpenCounter\Application\Query\Counter\CounterOfNameHandler|\PhpSpec\Wrapper\Collaborator $handler
+     * @param \OpenCounter\Application\Query\Counter\CounterOfNameQuery|\PhpSpec\Wrapper\Collaborator   $aQuery
+     */
     function it_executes(
-      CounterOfNameHandler $handler,
-      CounterOfNameQuery $aQuery
+        CounterOfNameHandler $handler,
+        CounterOfNameQuery $aQuery
     ) {
         $handler->__invoke($aQuery)->shouldBeCalled();
 

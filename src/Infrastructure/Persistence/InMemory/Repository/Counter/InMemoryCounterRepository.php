@@ -113,9 +113,7 @@ class InMemoryCounterRepository implements CounterRepository
      */
     public function getCounterByName(CounterName $aName)
     {
-//        if (isset($this->counters[$aName->name()])) {
-//            return $this->counters[$aName->name()];
-//        }
+
         foreach ($this->counters as $counter) {
             if ($counter->getName() === $aName->name()) {
                 return $counter;
@@ -125,12 +123,13 @@ class InMemoryCounterRepository implements CounterRepository
 
     /**
      * nextIdentity
+     * TODO: use id if we get one
      *
      * {@inheritdoc}
      * @return \OpenCounter\Domain\Model\Counter\CounterId
      */
 
-    public function nextIdentity()
+    public function nextIdentity($id)
     {
         return new CounterId();
     }

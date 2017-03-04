@@ -6,7 +6,7 @@
  */
 namespace OpenCounter\Application\Service\Counter;
 
-use OpenCounter\Domain\Model\Counter\CounterRepository;
+use OpenCounter\Domain\Repository\CounterRepository;
 
 /**
  * Class CounterService
@@ -17,14 +17,14 @@ abstract class CounterService implements ApplicationService
     /**
      * CounterRepository
      *
-     * @var \OpenCounter\Domain\Model\Counter\CounterRepository
+     * @var \OpenCounter\Domain\Repository\CounterRepository
      */
     protected $CounterRepository;
 
     /**
      * CounterService constructor.
      *
-     * @param \OpenCounter\Domain\Model\Counter\CounterRepository $CounterRepository
+     * @param \OpenCounter\Domain\Repository\CounterRepository $CounterRepository
      */
     public function __construct(
         CounterRepository $CounterRepository

@@ -57,7 +57,7 @@ class CounterOfIdHandler implements CounterQueryHandler
 //            throw new UserDoesNotExistException();
 //        }
 
-        if (!$Counter = $this->CounterRepository->GetCounterById(new CounterId($CounterId))) {
+        if (!$Counter = $this->CounterRepository->getCounterById(new CounterId($CounterId))) {
             throw new CounterNotFoundException('Counter not found');
         }
 

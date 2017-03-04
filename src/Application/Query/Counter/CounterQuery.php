@@ -14,5 +14,15 @@ namespace OpenCounter\Application\Query\Counter;
  */
 interface CounterQuery
 {
+    /**
+     * id of counter to query
+     * @return mixed
+     */
+    public function id();
 
+    /**
+     * name of counter to get
+     * @return mixed
+     */
+    public function name();
 }

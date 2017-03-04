@@ -8,10 +8,13 @@
 
 namespace spec\OpenCounter\Application\Command\Counter;
 
-use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
 use OpenCounter\Application\Command\Counter\CounterIncrementValueCommand;
+use PhpSpec\ObjectBehavior;
 
+/**
+ * Class CounterIncrementValueCommandSpec
+ * @package spec\OpenCounter\Application\Command\Counter
+ */
 class CounterIncrementValueCommandSpec extends ObjectBehavior
 {
 

@@ -3,9 +3,11 @@
 contains the OpenCounter classes.
 
 
-<img src="./img/opencounter-logo.png" alt="OpenCounter Logo" width="150">
-<img src="http://acolono.gitlab.net/opencounter_core/project/badges/master/build.svg" alt="OpenCounter master Build status" width="150">
-<img src="http://acolono.gitlab.net/opencounter_core/project/badges/master/coverage.svg" alt="OpenCounter master Coverage" width="150">
+
+[![build status](https://gitlab.acolono.net/Rosenstrauch/OpenCounter_api_core/badges/develop/build.svg)](https://gitlab.acolono.net/Rosenstrauch/OpenCounter_api_core/commits/master)
+
+[![coverage report](https://gitlab.acolono.net/Rosenstrauch/OpenCounter_api_core/badges/develop/coverage.svg)](https://gitlab.acolono.net/Rosenstrauch/OpenCounter_api_core/commits/master)
+
 
 # usage
 
@@ -36,9 +38,3 @@ https://serversforhackers.com/docker-for-gulp-build-tasks
 
 this should allow you to run
 $ gulp
-
-# todo
-
-- include phpspec in continuous tests
-- make sure we can xdebug during test runs (also in spec and behat context) and document
-- look into https://github.com/nicolopignatelli/valueobjects/blob/master/src/Identity/UUID.php

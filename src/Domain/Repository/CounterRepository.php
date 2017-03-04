@@ -7,8 +7,8 @@
 namespace OpenCounter\Domain\Repository;
 
 use OpenCounter\Domain\Model\Counter\Counter;
-use OpenCounter\Domain\Model\Counter\CounterName;
 use OpenCounter\Domain\Model\Counter\CounterId;
+use OpenCounter\Domain\Model\Counter\CounterName;
 
 /**
  * Interface CounterRepositoryInterface
@@ -35,7 +35,6 @@ interface CounterRepository
      * @return mixed
      */
     public function remove(Counter $anCounter);
-
 
     /**
      * remove a counter by name.
@@ -66,14 +65,15 @@ interface CounterRepository
      */
     public function getCounterByName(CounterName $aName);
 
-
-
     /**
      * Returns the next available id.
      *
+     * @param $id
+     *
      * @return mixed
      */
-    public function nextIdentity();
+    public function nextIdentity($id);
+
     /**
      * Counts the number of counters.
      *
@@ -86,6 +86,7 @@ interface CounterRepository
      * Saves the counter given.
      *
      * @param  \OpenCounter\Domain\Model\Counter\Counter $anCounter
+     *
      * @return mixed
      */
     public function save(Counter $anCounter);

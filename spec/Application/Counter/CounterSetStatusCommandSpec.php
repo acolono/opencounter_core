@@ -8,10 +8,13 @@
 
 namespace spec\OpenCounter\Application\Command\Counter;
 
-use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
 use OpenCounter\Application\Command\Counter\CounterSetStatusCommand;
+use PhpSpec\ObjectBehavior;
 
+/**
+ * Class CounterSetStatusCommandSpec
+ * @package spec\OpenCounter\Application\Command\Counter
+ */
 class CounterSetStatusCommandSpec extends ObjectBehavior
 {
 
