@@ -10,7 +10,6 @@ namespace OpenCounter\Application\Command\Counter;
 
 use OpenCounter\Domain\Exception\Counter\CounterNotFoundException;
 use OpenCounter\Domain\Model\Counter\CounterId;
-use OpenCounter\Domain\Model\Counter\CounterName;
 use OpenCounter\Domain\Model\Counter\CounterValue;
 use OpenCounter\Domain\Repository\CounterRepository;
 
@@ -39,10 +38,13 @@ class CounterIncrementValueHandler
     }
 
     /**
-     * Handles the given command.
+     * Handles the given command
      *
+     * Will get the counter and tell it to increment.
      *
-     * @throws CounterAlreadyExistException when the counter id is already exists
+     * @param \OpenCounter\Application\Command\Counter\CounterIncrementValueCommand $aCommand
+     *
+     * @throws \OpenCounter\Domain\Exception\Counter\CounterNotFoundException
      */
     public function __invoke(CounterIncrementValueCommand $aCommand)
     {

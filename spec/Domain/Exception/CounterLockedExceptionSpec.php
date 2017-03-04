@@ -2,10 +2,13 @@
 
 namespace spec\OpenCounter\Domain\Exception\Counter;
 
-use OpenCounter\Domain\Exception\CounterLockedException;
+use OpenCounter\Domain\Exception\Counter\CounterLockedException;
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
 
+/**
+ * Class CounterLockedExceptionSpec
+ * @package spec\OpenCounter\Domain\Exception\Counter
+ */
 class CounterLockedExceptionSpec extends ObjectBehavior
 {
     function it_is_initializable()

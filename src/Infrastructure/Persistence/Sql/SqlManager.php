@@ -97,7 +97,7 @@ class SqlManager implements StorageInterface
     }
 
   /**
-   * Persist item to database.
+   * TODO Persist item to database.
    * @param array $data
    */
     public function persist($data)
@@ -105,7 +105,7 @@ class SqlManager implements StorageInterface
     }
 
   /**
-   * Retrieve item from database.
+   * TODO Retrieve item from database.
    * @param int $id
    */
 
@@ -114,7 +114,7 @@ class SqlManager implements StorageInterface
     }
 
   /**
-   * Remove item from database.
+   * TODO Remove item from database.
    * @param int $id
    */
     public function delete($id)

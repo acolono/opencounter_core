@@ -18,6 +18,11 @@ use OpenCounter\Domain\Repository\CounterRepository;
 class CounterOfNameHandler implements CounterQueryHandler
 {
     /**
+     * CounterRepository
+     * @var \OpenCounter\Domain\Repository\CounterRepository
+     */
+    protected $CounterRepository;
+    /**
      * CounterOfNameHandler constructor.
      *
      * @param \OpenCounter\Domain\Repository\CounterRepository $CounterRepository
@@ -28,11 +33,21 @@ class CounterOfNameHandler implements CounterQueryHandler
         $this->CounterRepository = $CounterRepository;
     }
 
+    /**
+     * Invoke Counter Query
+     *
+     * try to return counter from repository or error.
+     *
+     * @param \OpenCounter\Application\Query\Counter\CounterQuery $aQuery
+     *
+     * @return mixed
+     * @throws \OpenCounter\Domain\Exception\Counter\CounterNotFoundException
+     */
     public function __invoke(CounterQuery $aQuery)
     {
         $CounterName = $aQuery->name();
 
-        if (!$Counter = $this->CounterRepository->GetCounterByName(new CounterName($CounterName))) {
+        if (!$Counter = $this->CounterRepository->getCounterByName(new CounterName($CounterName))) {
             throw new CounterNotFoundException('Counter not found');
         }
 

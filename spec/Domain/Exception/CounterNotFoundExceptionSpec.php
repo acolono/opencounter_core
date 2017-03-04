@@ -2,14 +2,18 @@
 
 namespace spec\OpenCounter\Domain\Exception\Counter;
 
-use OpenCounter\Domain\Exception\CounterLockedException;
+use OpenCounter\Domain\Exception\Counter\CounterNotFoundException;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 
-class CounterLockedExceptionSpec extends ObjectBehavior
+/**
+ * Class CounterNotFoundExceptionSpec
+ * @package spec\OpenCounter\Domain\Exception\Counter
+ */
+class CounterNotFoundExceptionSpec extends ObjectBehavior
 {
     function it_is_initializable()
     {
-        $this->shouldHaveType(CounterLockedException::class);
+        $this->shouldHaveType(CounterNotFoundException::class);
     }
 }

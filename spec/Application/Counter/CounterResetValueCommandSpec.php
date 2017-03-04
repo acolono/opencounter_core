@@ -8,19 +8,22 @@
 
 namespace spec\OpenCounter\Application\Command\Counter;
 
-use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
 use OpenCounter\Application\Command\Counter\CounterResetValueCommand;
+use PhpSpec\ObjectBehavior;
 
+/**
+ * Class CounterResetValueCommandSpec
+ * @package spec\OpenCounter\Application\Command\Counter
+ */
 class CounterResetValueCommandSpec extends ObjectBehavior
 {
 
     function it_resets_a_counter_command()
     {
-        $this->beConstructedWith('testcounter');
+        $this->beConstructedWith('7777777');
         $this->shouldHaveType(CounterResetValueCommand::class);
 
         // TODO: id should exist at this point. $this->id()->shouldNotBe(null);
-        $this->name()->shouldReturn('testcounter');
+        $this->id()->shouldReturn('7777777');
     }
 }

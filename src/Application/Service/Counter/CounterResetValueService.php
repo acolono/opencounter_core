@@ -1,5 +1,9 @@
 <?php
-
+/**
+ * CounterResetValueService
+ *
+ * Application Service for resetting a counters value to 0
+ */
 namespace OpenCounter\Application\Service\Counter;
 
 use OpenCounter\Application\Command\Counter\CounterResetValueHandler;
@@ -29,6 +33,10 @@ class CounterResetValueService extends CounterService
     }
 
     /**
+     * Execute()
+     * handle Counter reset command
+     *
+     * @param null $request
      * {@inheritdoc}
      */
     public function execute($request = null)

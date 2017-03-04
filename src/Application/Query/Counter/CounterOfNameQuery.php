@@ -1,5 +1,10 @@
 <?php
-
+/**
+ * CounterOfNameQuery
+ *
+ * Contains a class to create countercommand objects
+ * representing the intent to get a counter by name.
+ */
 namespace OpenCounter\Application\Query\Counter;
 
 /**
@@ -39,10 +44,23 @@ class CounterOfNameQuery implements CounterQuery
     }
 
     /**
-     * @return mixed
+     * Name of counter to get.
+     *
+     * @return string
      */
     public function name()
     {
         return $this->name;
+    }
+
+    /**
+     * satisfy interface
+     *
+     * no id required when looking up counter by name
+     * @return null
+     */
+    public function id()
+    {
+        return null;
     }
 }

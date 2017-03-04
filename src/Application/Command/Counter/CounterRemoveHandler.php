@@ -1,11 +1,17 @@
 <?php
-
+/**
+ * CounterRemoveHandler
+ */
 namespace OpenCounter\Application\Command\Counter;
 
 use OpenCounter\Domain\Exception\Counter\CounterNotFoundException;
 use OpenCounter\Domain\Model\Counter\CounterId;
 use OpenCounter\Domain\Repository\CounterRepository;
 
+/**
+ * Class CounterRemoveHandler
+ * @package OpenCounter\Application\Command\Counter
+ */
 class CounterRemoveHandler
 {
     /**
@@ -26,7 +32,14 @@ class CounterRemoveHandler
     }
 
     /**
-     * @inheritdoc
+     * Invoke handler
+     *
+     * Handles Counter remove command
+     *
+     * @param \OpenCounter\Application\Command\Counter\CounterRemoveCommand $aCommand
+     *
+     * @throws \OpenCounter\Domain\Exception\Counter\CounterNotFoundException
+     * {@inheritdoc}
      */
     public function __invoke(CounterRemoveCommand $aCommand)
     {

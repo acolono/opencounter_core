@@ -8,20 +8,24 @@
 
 namespace spec\OpenCounter\Application\Command\Counter;
 
-use OpenCounter\Domain\Model\Counter\Counter;
-use OpenCounter\Domain\Model\Counter\CounterId;
-use OpenCounter\Domain\Model\Counter\CounterName;
-use OpenCounter\Domain\Repository\CounterRepository;
-use OpenCounter\Domain\Repository\PersistentCounterRepository;
-use OpenCounter\Http\CounterBuildService;
-use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
 use OpenCounter\Application\Command\Counter\CounterIncrementValueCommand;
 use OpenCounter\Application\Command\Counter\CounterIncrementValueHandler;
 use OpenCounter\Domain\Exception\Counter\CounterNotFoundException;
+use OpenCounter\Domain\Model\Counter\Counter;
+use OpenCounter\Domain\Model\Counter\CounterId;
+use OpenCounter\Domain\Model\Counter\CounterValue;
+use OpenCounter\Domain\Repository\PersistentCounterRepository;
+use PhpSpec\ObjectBehavior;
 
+/**
+ * Class CounterIncrementValueHandlerSpec
+ * @package spec\OpenCounter\Application\Command\Counter
+ */
 class CounterIncrementValueHandlerSpec extends ObjectBehavior
 {
+    /**
+     * @param \OpenCounter\Domain\Repository\PersistentCounterRepository|\PhpSpec\Wrapper\Collaborator $repository
+     */
     function let(PersistentCounterRepository $repository)
     {
         $this->beConstructedWith($repository);
@@ -32,42 +36,48 @@ class CounterIncrementValueHandlerSpec extends ObjectBehavior
         $this->shouldHaveType(CounterIncrementValueHandler::class);
     }
 
+    /**
+     * @param \OpenCounter\Application\Command\Counter\CounterIncrementValueCommand|\PhpSpec\Wrapper\Collaborator $command
+     * @param \OpenCounter\Domain\Repository\PersistentCounterRepository|\PhpSpec\Wrapper\Collaborator            $repository
+     */
     function it_does_not_increment_because_Counter_does_no_exist(
-      CounterIncrementValueCommand $command,
-      PersistentCounterRepository $repository
+        CounterIncrementValueCommand $command,
+        PersistentCounterRepository $repository
     ) {
-        $command->name()
+        $command->id()
           ->shouldBeCalled()
-          ->willReturn('non-exist-Counter-name');
-        $repository->getCounterByName(new CounterName('non-exist-Counter-name'))
+          ->willReturn('non-exist-Counter-id');
+        $repository->getCounterById(new CounterId('non-exist-Counter-id'))
           ->shouldBeCalled()
           ->willReturn(null);
 
         $this->shouldThrow(CounterNotFoundException::class)
           ->during__invoke($command);
-
     }
 
+    /**
+     * @param \OpenCounter\Application\Command\Counter\CounterIncrementValueCommand|\PhpSpec\Wrapper\Collaborator $command
+     * @param \OpenCounter\Domain\Repository\PersistentCounterRepository|\PhpSpec\Wrapper\Collaborator            $repository
+     * @param \OpenCounter\Domain\Model\Counter\Counter|\PhpSpec\Wrapper\Collaborator                             $counter
+     */
     function it_increments_a_counter(
-      CounterIncrementValueCommand $command,
-      PersistentCounterRepository $repository,
-      Counter $counter
+        CounterIncrementValueCommand $command,
+        PersistentCounterRepository $repository,
+        Counter $counter
     ) {
 
-        $command->name()->shouldBeCalled()->willReturn('Counter-name');
+        $command->id()->shouldBeCalled()->willReturn('Counter-id');
         $command->value()->shouldBeCalled()->willReturn('1');
 
-//            $counter = new CounterBuildService($repository,)
-
-        $repository->getCounterByName(new CounterName('Counter-name'))
+        $repository->getCounterById(new CounterId('Counter-id'))
           ->shouldBeCalled()
           ->willReturn($counter);
 
-        $counter->increaseCount($command->value()->shouldBeCalled());
+        $counter->increaseCount(new CounterValue($command->value()
+          ->shouldBeCalled()));
 
         $repository->update($counter)->shouldBeCalled();
 
         $this->__invoke($command);
-
     }
 }

@@ -1,10 +1,13 @@
 <?php
-
+/**
+ * CounterSetStatusHandler
+ *
+ * Handler responsible for commands that lock and unlock counters.
+ */
 namespace OpenCounter\Application\Command\Counter;
 
 use OpenCounter\Domain\Exception\Counter\CounterNotFoundException;
 use OpenCounter\Domain\Model\Counter\CounterId;
-use OpenCounter\Domain\Model\Counter\CounterName;
 use OpenCounter\Domain\Repository\CounterRepository;
 
 /**
@@ -32,10 +35,14 @@ class CounterSetStatusHandler
     }
 
     /**
-     * Handles the given command.
+     * Handles the given command
      *
+     * Will call handler corresponding to CounterSetStatusCommand
+     * checks if it can find the counter and can set its statsu
      *
-     * @throws CounterNotFoundException when the counter name isnt found in the repo
+     * @param \OpenCounter\Application\Command\Counter\CounterSetStatusCommand $aCommand
+     *
+     * @throws \OpenCounter\Domain\Exception\Counter\CounterNotFoundException
      */
     public function __invoke(CounterSetStatusCommand $aCommand)
     {

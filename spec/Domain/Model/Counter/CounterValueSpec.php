@@ -3,13 +3,14 @@
 namespace spec\OpenCounter\Domain\Model\Counter;
 
 use OpenCounter\Domain\Exception\Counter\InvalidNativeArgumentException;
-use OpenCounter\Domain\Model\Counter\CounterValue;
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
 
+/**
+ * Class CounterValueSpec
+ * @package spec\OpenCounter\Domain\Model\Counter
+ */
 class CounterValueSpec extends ObjectBehavior
 {
-
 
     /**
      * pass it an integer and you can get it back
@@ -21,14 +22,13 @@ class CounterValueSpec extends ObjectBehavior
         $this->beConstructedWith($value);
         $this->value()->shouldReturn($value);
         $this->shouldHaveType('OpenCounter\Domain\Model\Counter\CounterValue');
-
     }
 
     function it_borks_if_its_created_with_string()
     {
-        $value = (string) 'string1';
+        $value = (string)'string1';
         $this->beConstructedWith($value);
-        $allowed_types = array('int');
+        $allowed_types = ['int'];
         $this->shouldThrow(new InvalidNativeArgumentException(
             '',
             $allowed_types
@@ -43,8 +43,9 @@ class CounterValueSpec extends ObjectBehavior
 //        $this->shouldThrow(new InvalidNativeArgumentException(array(), $allowed_types))->duringInstantiation();
 //    }
 
-    function it_sets_value_to_zero_by_default(){
-        $this->beConstructedWith(NULL);
+    function it_sets_value_to_zero_by_default()
+    {
+        $this->beConstructedWith(null);
 
         $this->value()->shouldReturn(0);
     }

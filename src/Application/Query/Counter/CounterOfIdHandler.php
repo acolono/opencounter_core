@@ -35,6 +35,16 @@ class CounterOfIdHandler implements CounterQueryHandler
         $this->CounterRepository = $CounterRepository;
     }
 
+    /**
+     * Invoke Method
+     *
+     * Handles Query.
+     *
+     * @param \OpenCounter\Application\Query\Counter\CounterQuery $aQuery
+     *
+     * @return mixed
+     * @throws \OpenCounter\Domain\Exception\Counter\CounterNotFoundException
+     */
     public function __invoke(CounterQuery $aQuery)
     {
         //        $userId = $request->userId();
@@ -47,7 +57,7 @@ class CounterOfIdHandler implements CounterQueryHandler
 //            throw new UserDoesNotExistException();
 //        }
 
-        if (!$Counter = $this->CounterRepository->GetCounterById(new CounterId($CounterId))) {
+        if (!$Counter = $this->CounterRepository->getCounterById(new CounterId($CounterId))) {
             throw new CounterNotFoundException('Counter not found');
         }
 

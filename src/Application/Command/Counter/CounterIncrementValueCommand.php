@@ -1,4 +1,10 @@
 <?php
+/**
+ * CounterIncrementValueCommand
+ *
+ * Contains class used to create objects
+ * representing the intent to increment a counter.
+ */
 
 namespace OpenCounter\Application\Command\Counter;
 
@@ -51,7 +57,9 @@ class CounterIncrementValueCommand
     }
 
     /**
-     * @return mixed
+     * Id of counter to increment.
+     *
+     * @return string
      */
     public function id()
     {
@@ -59,7 +67,9 @@ class CounterIncrementValueCommand
     }
 
     /**
-     * @return mixed
+     * Value to increment by
+     *
+     * @return int
      */
     public function value()
     {

@@ -7,7 +7,6 @@ use OpenCounter\Domain\Model\Counter\CounterId;
 use OpenCounter\Domain\Model\Counter\CounterName;
 use OpenCounter\Domain\Model\Counter\CounterValue;
 
-
 /**
  * Defines application features from the specific context.
  */
@@ -18,6 +17,38 @@ class DomainContext implements Context, SnippetAcceptingContext
      * @var bool
      */
     private $error;
+    /**
+     * @var \Monolog\Logger
+     */
+    private $logger;
+    /**
+     * @var \OpenCounter\Infrastructure\Factory\Counter\CounterFactory
+     */
+    private $counter_factory;
+    /**
+     * @var \OpenCounter\Infrastructure\Persistence\InMemory\Repository\Counter\InMemoryCounterRepository
+     */
+    private $counter_repository;
+    /**
+     * @var \OpenCounter\Application\Service\Counter\CounterBuildService
+     */
+    private $counterBuildService;
+    /**
+     * @var
+     */
+    private $counterValue;
+    /**
+     * @var
+     */
+    private $counterId;
+    /**
+     * @var
+     */
+    private $counterName;
+    /**
+     * @var
+     */
+    private $counter;
 
     /**
      * Initializes context.
@@ -79,7 +110,6 @@ class DomainContext implements Context, SnippetAcceptingContext
           'passworplaceholder');
         $this->counter_repository->save($this->counter);
 
-
     }
 
     /**
@@ -96,7 +126,6 @@ class DomainContext implements Context, SnippetAcceptingContext
           $this->counterName, $this->counterValue, 'active',
           'passwordplaceholder');
         $this->counter_repository->save($this->counter);
-
 
     }
 
@@ -131,7 +160,6 @@ class DomainContext implements Context, SnippetAcceptingContext
           'passwordplaceholder');
         $this->counter_repository->save($this->counter);
 
-
     }
 
     /**
@@ -156,7 +184,6 @@ class DomainContext implements Context, SnippetAcceptingContext
             $this->error = true;
         }
         $this->counter_repository->save($this->counter);
-
 
     }
 
@@ -243,10 +270,9 @@ class DomainContext implements Context, SnippetAcceptingContext
 
         } catch (Exception $e) {
             $this->error = true;
+
             return $this->error;
         }
-
-
 
     }
 
@@ -259,12 +285,6 @@ class DomainContext implements Context, SnippetAcceptingContext
         // TODO: make sure Creating counter name object fails for invalid characters (validate value object creation!)
         $this->counterName = new CounterName($name);
         $this->noCounterWithNameHasBeenSet($name);
-//
-//        if ($this->counter = $this->counter_repository->getCounterByName($this->counterName)) {
-//            throw new \OpenCounter\Domain\Exception\Counter\CounterAlreadyExistsException();
-//        }
-
-
 
         $this->counterId = new CounterId('test');
         $this->counterValue = new CounterValue('0');
@@ -278,27 +298,6 @@ class DomainContext implements Context, SnippetAcceptingContext
 
         // cannot save in memory repository since its not persistent, so not testing this?
         $this->counter_repository->save($this->counter);
-
-
-    }
-
-    /**
-     * @Given no counter with id :id has been set
-     */
-    public function noCounterWithIdHasBeenSet($id)
-    {
-        $newCounterId = new CounterId($id);
-        try {
-            if ($this->counter = $this->counter_repository->getCounterByName($newCounterId)) {
-                throw new \OpenCounter\Domain\Exception\Counter\CounterAlreadyExistsException();
-            }
-
-        } catch (Exception $e) {
-            $this->error = true;
-            return $this->error;
-        }
-
-
 
     }
 
@@ -315,10 +314,28 @@ class DomainContext implements Context, SnippetAcceptingContext
             // TODO: we need to throw an error if we have a result
         } catch (Exception $e) {
             $this->error = true;
+
             return $this->error;
         }
 
+    }
 
+    /**
+     * @Given no counter with id :id has been set
+     */
+    public function noCounterWithIdHasBeenSet($id)
+    {
+        $newCounterId = new CounterId($id);
+        try {
+            if ($this->counter = $this->counter_repository->getCounterById($newCounterId)) {
+                throw new \OpenCounter\Domain\Exception\Counter\CounterAlreadyExistsException();
+            }
+
+        } catch (Exception $e) {
+            $this->error = true;
+
+            return $this->error;
+        }
 
     }
 
