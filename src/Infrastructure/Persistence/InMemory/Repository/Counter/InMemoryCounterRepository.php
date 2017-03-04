@@ -20,6 +20,7 @@ use OpenCounter\Domain\Repository\CounterRepository;
 class InMemoryCounterRepository implements CounterRepository
 {
     /**
+     * Array of in-memory counters
      * @var $counters
      */
     private $counters = [];
@@ -38,6 +39,14 @@ class InMemoryCounterRepository implements CounterRepository
         }
     }
 
+    /**
+     * save()
+     *
+     * {@inheritdoc}
+     * @param \OpenCounter\Domain\Model\Counter\Counter $counter
+     *
+     * @return \OpenCounter\Domain\Model\Counter\Counter
+     */
     public function save(Counter $counter)
     {
         $id = (string)$counter->getId();
@@ -46,19 +55,33 @@ class InMemoryCounterRepository implements CounterRepository
         return clone $counter;
     }
 
-
-
+    /**
+     * find()
+     *
+     * {@inheritdoc}
+     *
+     * @param \OpenCounter\Domain\Model\Counter\CounterId $counterId
+     */
     public function find(CounterId $counterId)
     {
     }
 
+    /**
+     * findAll()
+     *
+     * {@inheritdoc}
+     * @return array
+     */
     public function findAll()
     {
         return $this->counters;
     }
 
     /**
-     * @inheritDoc
+     * remove
+     *
+     * {@inheritdoc}
+     * @param \OpenCounter\Domain\Model\Counter\Counter $counter
      */
     public function remove(Counter $counter)
     {
@@ -66,7 +89,12 @@ class InMemoryCounterRepository implements CounterRepository
     }
 
     /**
-     * @inheritDoc
+     * getCounterById()
+     *
+     * {@inheritdoc}
+     * @param \OpenCounter\Domain\Model\Counter\CounterId $anId
+     *
+     * @return mixed
      */
     public function getCounterById(CounterId $anId)
     {
@@ -76,7 +104,12 @@ class InMemoryCounterRepository implements CounterRepository
     }
 
     /**
-     * @inheritDoc
+     * getCounterByName
+     *
+     * {@inheritdoc}
+     * @param \OpenCounter\Domain\Model\Counter\CounterName $aName
+     *
+     * @return mixed
      */
     public function getCounterByName(CounterName $aName)
     {
@@ -89,25 +122,12 @@ class InMemoryCounterRepository implements CounterRepository
             }
         }
     }
-//
-//    /**
-//     * @inheritDoc
-//     */
-//    public function getCounterByUuid(CounterId $anId)
-//    {
-//        // TODO: Implement getCounterByUuid() method. unset($this->counters[$anId]);
-//    }
-//
-//    /**
-//     * @inheritDoc
-//     */
-//    public function query($specification)
-//    {
-//        // TODO: Implement query() method.
-//    }
 
     /**
-     * @inheritDoc
+     * nextIdentity
+     *
+     * {@inheritdoc}
+     * @return \OpenCounter\Domain\Model\Counter\CounterId
      */
 
     public function nextIdentity()
@@ -115,25 +135,20 @@ class InMemoryCounterRepository implements CounterRepository
         return new CounterId();
     }
 
-
     /**
+     * size()
+     *
      * {@inheritdoc}
+     * @return int
      */
     public function size()
     {
         return count($this->counters);
     }
 
-//    /**
-//     * @inheritDoc
-//     */
-//    public function counterOfId(CounterId $anId)
-//    {
-//        // TODO: Implement counterOfId() method.
-//    }
-
     /**
      * removeCounterByName
+     * {@inheritdoc}
      *
      * @param \OpenCounter\Domain\Model\Counter\CounterName $aName
      */
@@ -144,8 +159,10 @@ class InMemoryCounterRepository implements CounterRepository
 
     /**
      * removeCounterById
+     * {@inheritdoc}
      *
      * @param \OpenCounter\Domain\Model\Counter\CounterId $anId
+     *
      * @return bool
      */
     public function removeCounterById(CounterId $anId)
@@ -162,8 +179,10 @@ class InMemoryCounterRepository implements CounterRepository
 
     /**
      * exists
+     * {@inheritdoc}
      *
      * @param \OpenCounter\Domain\Model\Counter\CounterId $counterId
+     *
      * @return bool
      */
     public function exists(CounterId $counterId)
@@ -172,13 +191,4 @@ class InMemoryCounterRepository implements CounterRepository
 
         return array_key_exists($id, $this->counters);
     }
-
-//    public function update(Counter $aCounter)
-//    {
-//        // TODO: implement inmemory
-//    }
-
-//    public function insert(Counter $aCounter)
-//    {
-//    }
 }

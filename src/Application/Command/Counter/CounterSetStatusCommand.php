@@ -1,5 +1,10 @@
 <?php
-
+/**
+ * CounterSetStatusCommand
+ *
+ * Contains a Class to create objects representing the intent
+ * to change counter status to loced or active.
+ */
 namespace OpenCounter\Application\Command\Counter;
 
 /**

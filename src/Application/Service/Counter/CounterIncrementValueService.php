@@ -33,7 +33,13 @@ class CounterIncrementValueService extends CounterService
     }
 
     /**
+     * execute()
+     *
      * {@inheritdoc}
+     * invoke CounterIncrementValueHandler
+     * to handle CounterIncrementValueCommand
+     *
+     * @param null $request
      */
     public function execute($request = null)
     {

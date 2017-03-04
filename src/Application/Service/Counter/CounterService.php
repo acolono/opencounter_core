@@ -1,5 +1,9 @@
 <?php
-
+/**
+ * Abstract CounterService
+ *
+ * Counter Application services can extend.
+ */
 namespace OpenCounter\Application\Service\Counter;
 
 use OpenCounter\Domain\Model\Counter\CounterRepository;

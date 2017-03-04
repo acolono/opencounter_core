@@ -35,6 +35,16 @@ class CounterOfIdHandler implements CounterQueryHandler
         $this->CounterRepository = $CounterRepository;
     }
 
+    /**
+     * Invoke Method
+     *
+     * Handles Query.
+     *
+     * @param \OpenCounter\Application\Query\Counter\CounterQuery $aQuery
+     *
+     * @return mixed
+     * @throws \OpenCounter\Domain\Exception\Counter\CounterNotFoundException
+     */
     public function __invoke(CounterQuery $aQuery)
     {
         //        $userId = $request->userId();

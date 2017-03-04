@@ -35,7 +35,12 @@ class CounterAddService extends CounterService
     }
 
     /**
+     * Execute()
+     *
      * {@inheritdoc}
+     * @param null $request
+     *
+     * @return array
      */
     public function execute($request = null)
     {

@@ -1,5 +1,9 @@
 <?php
-
+/**
+ * Counter remove service
+ *
+ * Application service that handles counter removal
+ */
 namespace OpenCounter\Application\Service\Counter;
 
 use OpenCounter\Domain\Model\Counter\CounterName;
@@ -15,16 +19,16 @@ class CounterRemoveService extends CounterService
 {
 
     /**
-     * WithConfirmationSignUpUserHandler
+     * CounterRemoveHandler
      *
-     * @var \OpenCounter\Application\Command\Counter\CounterRemoveHandler|\OpenCounter\Application\Service\Counter\WithConfirmationSignUpUserHandler
+     * @var \OpenCounter\Application\Command\Counter\CounterRemoveHandler
      */
     private $handler;
 
     /**
-     * Constructor.
+     * CounterRemoveService constructor.
      *
-     * @param WithConfirmationSignUpUserHandler $aHandler The command handler
+     * @param \OpenCounter\Application\Command\Counter\CounterRemoveHandler $aHandler
      */
     public function __construct(CounterRemoveHandler $aHandler)
     {
@@ -32,7 +36,10 @@ class CounterRemoveService extends CounterService
     }
 
     /**
+     * execute Counter remove command
+     *
      * {@inheritdoc}
+     * @param null $request
      */
     public function execute($request = null)
     {

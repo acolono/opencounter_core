@@ -1,9 +1,11 @@
 <?php
-
+/**
+ * CounterViewService
+ *
+ * Application service for Getting counters.
+ */
 namespace OpenCounter\Application\Service\Counter;
 
-use OpenCounter\Application\Query\Counter\CounterOfNameHandler;
-use OpenCounter\Application\Query\Counter\CounterOfIdHandler;
 use OpenCounter\Application\Query\Counter\CounterQueryHandler;
 
 /**
@@ -21,13 +23,25 @@ class CounterViewService extends CounterService
      */
     private $handler;
 
+    /**
+     * CounterViewService constructor.
+     *
+     * @param \OpenCounter\Application\Query\Counter\CounterQueryHandler $aHandler
+     */
     public function __construct(CounterQueryHandler $aHandler)
     {
         $this->handler = $aHandler;
     }
 
     /**
+     * Execute
+     *
+     * Will handle Counter queries.
      * {@inheritdoc}
+     *
+     * @param null $request
+     *
+     * @return mixed
      */
     public function execute($request = null)
     {

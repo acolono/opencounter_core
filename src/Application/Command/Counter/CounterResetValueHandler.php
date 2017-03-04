@@ -42,8 +42,11 @@ class CounterResetValueHandler
     /**
      * Handles the given command.
      *
+     * will check if counter already exists before creating.
      *
-     * @throws CounterAlreadyExistException when the counter id is already exists
+     * @param \OpenCounter\Application\Command\Counter\CounterResetValueCommand $aCommand
+     *
+     * @throws \OpenCounter\Domain\Exception\Counter\CounterNotFoundException
      */
     public function __invoke(CounterResetValueCommand $aCommand)
     {

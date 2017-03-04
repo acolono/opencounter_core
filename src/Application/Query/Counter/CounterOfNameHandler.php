@@ -28,6 +28,16 @@ class CounterOfNameHandler implements CounterQueryHandler
         $this->CounterRepository = $CounterRepository;
     }
 
+    /**
+     * Invoke Counter Query
+     *
+     * try to return counter from repository or error.
+     *
+     * @param \OpenCounter\Application\Query\Counter\CounterQuery $aQuery
+     *
+     * @return mixed
+     * @throws \OpenCounter\Domain\Exception\Counter\CounterNotFoundException
+     */
     public function __invoke(CounterQuery $aQuery)
     {
         $CounterName = $aQuery->name();

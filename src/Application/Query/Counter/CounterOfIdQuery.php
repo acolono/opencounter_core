@@ -42,6 +42,11 @@ class CounterOfIdQuery implements CounterQuery
         $this->id = $id;
     }
 
+    /**
+     * Id of Counter
+     *
+     * @return string
+     */
     public function id()
     {
         return $this->id;

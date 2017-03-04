@@ -1,5 +1,10 @@
 <?php
-
+/**
+ * Counter Add Command
+ *
+ * This file contains a class that creates objects
+ * representing the intent to create a new counter
+ */
 namespace OpenCounter\Application\Command\Counter;
 
 /**
@@ -58,10 +63,11 @@ class CounterAddCommand
     /**
      * CounterAddCommand constructor.
      *
-     * @param $name
-     * @param $value
-     * @param $status
-     * @param $password
+     * @param      $name
+     * @param      $value
+     * @param      $status
+     * @param      $password
+     * @param null $id
      */
     public function __construct($name, $value, $status, $password, $id = null)
     {
@@ -71,7 +77,10 @@ class CounterAddCommand
         $this->password = $password;
         $this->id = $id;
     }
+
     /**
+     * Id of Counter to create
+     *
      * @return mixed
      */
     public function id()
@@ -80,6 +89,7 @@ class CounterAddCommand
     }
 
     /**
+     * Name of counter to create
      * @return mixed
      */
     public function name()
@@ -88,6 +98,7 @@ class CounterAddCommand
     }
 
     /**
+     * Value of counter to create
      * @return mixed
      */
     public function value()
@@ -96,6 +107,7 @@ class CounterAddCommand
     }
 
     /**
+     * Status to create counter with
      * @return mixed
      */
     public function status()
@@ -104,6 +116,7 @@ class CounterAddCommand
     }
 
     /**
+     * Optional password to protect counter
      * @return mixed
      */
     public function password()

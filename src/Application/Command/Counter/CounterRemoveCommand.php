@@ -1,5 +1,9 @@
 <?php
-
+/**
+ * CounterRemoveCommand
+ *
+ * Represents the intent to remove a counter.
+ */
 namespace OpenCounter\Application\Command\Counter;
 
 /**
@@ -36,7 +40,8 @@ class CounterRemoveCommand
     }
 
     /**
-     * @return mixed
+     * Id Of counter to remove
+     * @return string
      */
 
     public function id()
