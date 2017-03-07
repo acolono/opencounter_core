@@ -1,5 +1,9 @@
 <?php
-
+/**
+ * SqlManagerSpec
+ *
+ * describe sql manager class
+ */
 namespace spec\OpenCounter\Infrastructure\Persistence\Sql;
 
 use PhpSpec\ObjectBehavior;
@@ -11,7 +15,11 @@ use Prophecy\Argument;
  */
 class SqlManagerSpec extends ObjectBehavior
 {
+
     const TABLE_NAME = 'counters';
+    /**
+     * @var \PDO
+     */
     protected $db;
 
     /**
@@ -24,12 +32,14 @@ class SqlManagerSpec extends ObjectBehavior
         $this->beConstructedWith($db);
         $this->db = $db;
     }
-    function it_initializable()
+
+    function it_is_initializable()
     {
         $this->shouldHaveType('OpenCounter\Infrastructure\Persistence\Sql\SqlManager');
         $this->shouldImplement('OpenCounter\Infrastructure\Persistence\StorageInterface');
     }
-    function its_connection()
+
+    function it_establishes_pdo_connection()
     {
         $this->connection()->shouldReturnAnInstanceOf('PDO');
     }
