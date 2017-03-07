@@ -126,7 +126,7 @@ class InMemoryCounterRepository implements CounterRepository
      * Next Identity
      *
      * use given id if available otherwise generate.
-     * 
+     *
      * {@inheritdoc}
      * @param $id
      * @return CounterId
