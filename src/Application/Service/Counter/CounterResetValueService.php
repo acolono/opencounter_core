@@ -29,6 +29,7 @@ class CounterResetValueService extends CounterService
      */
     public function __construct(CounterResetValueHandler $aHandler)
     {
+
         $this->handler = $aHandler;
     }
 

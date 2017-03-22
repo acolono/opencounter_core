@@ -7,7 +7,6 @@
 namespace spec\OpenCounter\Infrastructure\Persistence\Sql;
 
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
 
 /**
  * Class SqlManagerSpec

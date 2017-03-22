@@ -31,6 +31,7 @@ class CounterAddService extends CounterService
      */
     public function __construct(CounterAddHandler $aHandler)
     {
+
         $this->handler = $aHandler;
     }
 

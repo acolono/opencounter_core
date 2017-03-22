@@ -7,7 +7,7 @@ use PhpSpec\ObjectBehavior;
 
 /**
  * Class CounterLockedExceptionSpec
- * @package spec\OpenCounter\Domain\Exception\Counter
+ * @package spec\Domain\Exception\Counter
  */
 class CounterLockedExceptionSpec extends ObjectBehavior
 {

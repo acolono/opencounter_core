@@ -27,6 +27,7 @@ class CounterSetStatusService extends CounterService
      */
     public function __construct(CounterSetStatusHandler $aHandler)
     {
+
         $this->handler = $aHandler;
     }
 

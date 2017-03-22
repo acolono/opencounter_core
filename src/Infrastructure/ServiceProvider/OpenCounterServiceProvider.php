@@ -7,7 +7,6 @@
 namespace OpenCounter\Infrastructure\ServiceProvider;
 
 use League\Container\ServiceProvider\AbstractServiceProvider;
-use League\Container\ServiceProvider\BootableServiceProviderInterface;
 use OpenCounter\Http\CounterBuildService;
 use OpenCounter\Infrastructure\Factory\Counter\CounterFactory;
 use OpenCounter\Infrastructure\Persistence\Sql\Repository\Counter\SqlCounterRepository;
@@ -17,7 +16,7 @@ use OpenCounter\Infrastructure\Persistence\Sql\SqlManager;
  * Class OpenCounterServiceProvider
  * @package OpenCounter\Infrastructure\ServiceProvider
  */
-class OpenCounterServiceProvider extends AbstractServiceProvider implements BootableServiceProviderInterface
+class OpenCounterServiceProvider extends AbstractServiceProvider
 {
   /**
    * The provides array is a way to let the container

@@ -28,6 +28,7 @@ class CounterIncrementValueService extends CounterService
      */
     public function __construct(CounterIncrementValueHandler $aHandler)
     {
+
         $this->handler = $aHandler;
     }
 

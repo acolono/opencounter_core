@@ -48,8 +48,7 @@ class CounterSetStatusHandlerSpec extends ObjectBehavior
     function it_locks_a_counter(
         CounterSetStatusCommand $command,
         PersistentCounterRepository $repository,
-        Counter $counter,
-        CounterBuildService $counterBuildService
+        Counter $counter
     ) {
         $command->status()->shouldBeCalled()->willReturn('locked');
 
@@ -61,7 +60,7 @@ class CounterSetStatusHandlerSpec extends ObjectBehavior
 
         $counter->lock()->shouldBeCalled();
         // TODO: after building a counter object we can have the repository save it.
-        $repository->update($counter)->shouldBeCalled();
+        $repository->save($counter)->shouldBeCalled();
 
         $this->__invoke($command);
     }
@@ -75,20 +74,19 @@ class CounterSetStatusHandlerSpec extends ObjectBehavior
     function it_unlocks_a_counter(
         CounterSetStatusCommand $command,
         PersistentCounterRepository $repository,
-        Counter $counter,
-        CounterBuildService $counterBuildService
+        Counter $counter
     ) {
         $command->status()->shouldBeCalled()->willReturn('active');
 
         $command->id()->shouldBeCalled()->willReturn('Counter-id');
 
-        $repository->getCounterByName(new CounterName('Counter-id'))
+        $repository->getCounterById(new CounterId('Counter-id'))
           ->shouldBeCalled()
           ->willReturn($counter);
 
         $counter->enable()->shouldBeCalled();
         // TODO: after building a counter object we can have the repository save it.
-        $repository->update($counter)->shouldBeCalled();
+        $repository->save($counter)->shouldBeCalled();
 
         $this->__invoke($command);
     }

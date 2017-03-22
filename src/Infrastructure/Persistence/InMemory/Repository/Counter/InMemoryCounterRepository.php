@@ -11,7 +11,6 @@ use OpenCounter\Domain\Model\Counter\Counter;
 use OpenCounter\Domain\Model\Counter\CounterId;
 use OpenCounter\Domain\Model\Counter\CounterName;
 use OpenCounter\Domain\Repository\CounterRepository;
-use Symfony\Component\Validator\Constraints\All;
 
 /**
  * Class InMemoryCounterRepository
@@ -132,9 +131,9 @@ class InMemoryCounterRepository implements CounterRepository
      * @return CounterId
      */
 
-    public function nextIdentity($id)
+    public function nextIdentity($uuid = null)
     {
-        return new CounterId();
+        return new CounterId($uuid);
     }
 
     /**

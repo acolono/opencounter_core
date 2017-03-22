@@ -19,8 +19,10 @@ default:
   suites:
     default:
       paths: [ %paths.base%/descriptions/behat/features/Counters ]
-      contexts: [ DomainContext ]
+      contexts:
+        - OpenCounter\DomainContext
+
     services:
       paths: [ %paths.base%/descriptions/behat/features/Counters ]
       contexts:
-        - ApplicationServicesContext
+        - OpenCounter\ApplicationServicesContext

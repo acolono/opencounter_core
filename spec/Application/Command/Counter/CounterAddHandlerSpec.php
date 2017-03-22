@@ -39,7 +39,6 @@ class CounterAddHandlerSpec extends ObjectBehavior
      */
     function it_builds_and_adds_a_counter(
         CounterAddCommand $command,
-        PersistentCounterRepository $repository,
         Counter $counter,
         CounterBuildService $counterBuildService
     ) {

@@ -90,4 +90,6 @@ interface CounterRepository
      * @return mixed
      */
     public function save(Counter $anCounter);
+
+    public function findAll();
 }

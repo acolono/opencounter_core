@@ -4,7 +4,6 @@ namespace spec\OpenCounter\Domain\Exception\Counter;
 
 use OpenCounter\Domain\Exception\Counter\CounterNotFoundException;
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
 
 /**
  * Class CounterNotFoundExceptionSpec

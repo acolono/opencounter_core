@@ -29,6 +29,7 @@ class CounterRemoveService extends CounterService
      */
     public function __construct(CounterRemoveHandler $aHandler)
     {
+
         $this->handler = $aHandler;
     }
 
