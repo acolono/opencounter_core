@@ -5,7 +5,6 @@
  * Date: 2/16/17
  * Time: 5:36 PM
  */
-
 namespace spec\OpenCounter\Application\Service\Counter;
 
 use OpenCounter\Application\Query\Counter\CounterOfNameHandler;

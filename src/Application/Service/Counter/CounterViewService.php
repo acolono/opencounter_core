@@ -30,6 +30,7 @@ class CounterViewService extends CounterService
      */
     public function __construct(CounterQueryHandler $aHandler)
     {
+
         $this->handler = $aHandler;
     }
 

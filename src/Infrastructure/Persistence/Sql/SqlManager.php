@@ -95,29 +95,4 @@ class SqlManager implements StorageInterface
             throw $exception;
         }
     }
-
-  /**
-   * TODO Persist item to database.
-   * @param array $data
-   */
-    public function persist($data)
-    {
-    }
-
-  /**
-   * TODO Retrieve item from database.
-   * @param int $id
-   */
-
-    public function retrieve($id)
-    {
-    }
-
-  /**
-   * TODO Remove item from database.
-   * @param int $id
-   */
-    public function delete($id)
-    {
-    }
 }

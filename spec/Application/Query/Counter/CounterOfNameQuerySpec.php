@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\OpenCounter\Counter\Application\Query\Counter;
+namespace spec\OpenCounter\Application\Query\Counter;
 
 use OpenCounter\Application\Query\Counter\CounterOfNameQuery;
 use PhpSpec\ObjectBehavior;

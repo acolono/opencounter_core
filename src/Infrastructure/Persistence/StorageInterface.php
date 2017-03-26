@@ -11,38 +11,37 @@ namespace OpenCounter\Infrastructure\Persistence;
 /**
  * Interface Storage.
  *
- * This interface describes methods for accessing storage.
+ * This interface describes methods for accessing storage (not items in storage).
  * Concrete realization could be whatever we want - in memory, relational database, NoSQL database and etc
  */
 interface StorageInterface
 {
-    /**
-   * Method to persist data
-   * Returns new id for just persisted data.
-   *
-   * @param array() $data
-   *
-   * @return int
-   */
-    public function persist($data);
 
     /**
-   * Returns data by specified id.
-   * If there is no such data null is returned.
-   *
-   * @param int $id
-   *
-   * @return array|null
-   */
-    public function retrieve($id);
+     * prepare
+     *
+     * @param $sql
+     *
+     * @return mixed
+     */
+    public function prepare($sql);
 
     /**
-   * Delete data specified by id
-   * If there is no such data - false returns, if data has been successfully deleted - true returns.
-   *
-   * @param int $id
-   *
-   * @return bool
-   */
-    public function delete($id);
+     * execute
+     *
+     * @param            $sql
+     * @param array|null $parameters
+     *
+     * @return mixed
+     */
+    public function execute($sql, array $parameters = null);
+
+    /**
+     * transactional
+     *
+     * @param callable $callable
+     *
+     * @return mixed
+     */
+    public function transactional(callable $callable);
 }

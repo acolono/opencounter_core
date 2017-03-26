@@ -8,8 +8,8 @@
 
 namespace spec\OpenCounter\Application\Command\Counter;
 
-use OpenCounter\Application\Command\Counter\CounterResetValueCommand;
-use OpenCounter\Application\Command\Counter\CounterResetValueHandler;
+use OpenCounter\Application\Command\Counter\CounterIncrementValueCommand;
+use OpenCounter\Application\Command\Counter\CounterIncrementValueHandler;
 use OpenCounter\Domain\Exception\Counter\CounterNotFoundException;
 use OpenCounter\Domain\Model\Counter\Counter;
 use OpenCounter\Domain\Model\Counter\CounterId;
@@ -18,10 +18,10 @@ use OpenCounter\Domain\Repository\PersistentCounterRepository;
 use PhpSpec\ObjectBehavior;
 
 /**
- * Class CounterResetValueHandlerSpec
+ * Class CounterIncrementValueHandlerSpec
  * @package spec\OpenCounter\Application\Command\Counter
  */
-class CounterResetValueHandlerSpec extends ObjectBehavior
+class CounterIncrementValueHandlerSpec extends ObjectBehavior
 {
     /**
      * @param \OpenCounter\Domain\Repository\PersistentCounterRepository|\PhpSpec\Wrapper\Collaborator $repository
@@ -33,15 +33,15 @@ class CounterResetValueHandlerSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType(CounterResetValueHandler::class);
+        $this->shouldHaveType(CounterIncrementValueHandler::class);
     }
 
     /**
-     * @param \OpenCounter\Application\Command\Counter\CounterResetValueCommand|\PhpSpec\Wrapper\Collaborator $command
-     * @param \OpenCounter\Domain\Repository\PersistentCounterRepository|\PhpSpec\Wrapper\Collaborator        $repository
+     * @param \OpenCounter\Application\Command\Counter\CounterIncrementValueCommand|\PhpSpec\Wrapper\Collaborator $command
+     * @param \OpenCounter\Domain\Repository\PersistentCounterRepository|\PhpSpec\Wrapper\Collaborator            $repository
      */
-    function it_does_not_reset_because_Counter_does_no_exist(
-        CounterResetValueCommand $command,
+    function it_does_not_increment_because_Counter_does_no_exist(
+        CounterIncrementValueCommand $command,
         PersistentCounterRepository $repository
     ) {
         $command->id()
@@ -56,25 +56,26 @@ class CounterResetValueHandlerSpec extends ObjectBehavior
     }
 
     /**
-     * @param \OpenCounter\Application\Command\Counter\CounterResetValueCommand|\PhpSpec\Wrapper\Collaborator $command
-     * @param \OpenCounter\Domain\Repository\PersistentCounterRepository|\PhpSpec\Wrapper\Collaborator        $repository
-     * @param \OpenCounter\Domain\Model\Counter\Counter|\PhpSpec\Wrapper\Collaborator                         $counter
+     * @param \OpenCounter\Application\Command\Counter\CounterIncrementValueCommand|\PhpSpec\Wrapper\Collaborator $command
+     * @param \OpenCounter\Domain\Repository\PersistentCounterRepository|\PhpSpec\Wrapper\Collaborator            $repository
+     * @param \OpenCounter\Domain\Model\Counter\Counter|\PhpSpec\Wrapper\Collaborator                             $counter
      */
-    function it_resets_a_counter(
-        CounterResetValueCommand $command,
+    function it_increments_a_counter(
+        CounterIncrementValueCommand $command,
         PersistentCounterRepository $repository,
         Counter $counter
     ) {
 
         $command->id()->shouldBeCalled()->willReturn('Counter-id');
+        $command->value()->shouldBeCalled()->willReturn(1);
 
         $repository->getCounterById(new CounterId('Counter-id'))
           ->shouldBeCalled()
           ->willReturn($counter);
 
-        $counter->resetValueTo(new CounterValue(0))->shouldBeCalled();
+        $counter->increaseCount(new CounterValue(1))->shouldBeCalled();
 
-        $repository->update($counter)->shouldBeCalled();
+        $repository->save($counter)->shouldBeCalled();
 
         $this->__invoke($command);
     }

@@ -122,16 +122,18 @@ class InMemoryCounterRepository implements CounterRepository
     }
 
     /**
-     * nextIdentity
-     * TODO: use id if we get one
+     * Next Identity
+     *
+     * use given id if available otherwise generate.
      *
      * {@inheritdoc}
-     * @return \OpenCounter\Domain\Model\Counter\CounterId
+     * @param $id
+     * @return CounterId
      */
 
-    public function nextIdentity($id)
+    public function nextIdentity($uuid = null)
     {
-        return new CounterId();
+        return new CounterId($uuid);
     }
 
     /**

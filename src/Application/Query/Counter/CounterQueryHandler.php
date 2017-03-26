@@ -15,10 +15,10 @@ namespace OpenCounter\Application\Query\Counter;
 interface CounterQueryHandler
 {
     /**
-     * Invoke a counter query
-     * @param $request
+     * invoke
      *
+     * @param CounterQuery $request
      * @return mixed
      */
-    public function __invoke(CounterQuery $aQuery);
+    public function __invoke(CounterQuery $request);
 }

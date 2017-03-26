@@ -198,7 +198,7 @@ class SqlCounterRepository implements CounterRepository, PersistentCounterReposi
      *
      * @return array
      */
-    public function getCounters()
+    public function findAll()
     {
         $sql = 'SELECT c.uuid, c.name, c.password, c.value
             from counters c';

@@ -1,18 +1,23 @@
 <?php
-
+namespace OpenCounter;
 use Behat\Behat\Context\Context;
 use Behat\Behat\Context\SnippetAcceptingContext;
-use OpenCounter\Domain\Model\Counter\Counter;
+use Behat\Behat\Hook\Scope\BeforeScenarioScope;
+use Monolog\Logger;
+use OpenCounter\Application\Service\Counter\CounterBuildService;
+use OpenCounter\Domain\Exception\Counter\CounterAlreadyExistsException;
 use OpenCounter\Domain\Model\Counter\CounterId;
 use OpenCounter\Domain\Model\Counter\CounterName;
 use OpenCounter\Domain\Model\Counter\CounterValue;
+use OpenCounter\Infrastructure\Factory\Counter\CounterFactory;
+use OpenCounter\Infrastructure\Persistence\InMemory\Repository\Counter\InMemoryCounterRepository;
 
 /**
  * Defines application features from the specific context.
  */
 class DomainContext implements Context, SnippetAcceptingContext
 {
-
+    use ContextUtilities;
     /**
      * @var bool
      */
@@ -49,6 +54,10 @@ class DomainContext implements Context, SnippetAcceptingContext
      * @var
      */
     private $counter;
+    /**
+     * @var
+     */
+    private $allCounters;
 
     /**
      * Initializes context.
@@ -60,37 +69,32 @@ class DomainContext implements Context, SnippetAcceptingContext
     public function __construct()
     {
         // in reality we will get the builder from container
-        $this->logger = new \Monolog\Logger('domaincontext behat');
-        $this->counter_factory = new \OpenCounter\Infrastructure\Factory\Counter\CounterFactory();
+        $this->logger = new Logger('domaincontext behat');
+        $this->counter_factory = new CounterFactory();
         // Note, using inmemory repo for testing domain layer, not actual db.
         // TODO: figure out a better place for these fixture thingies
         $counters = [];
-        $counters[] = new Counter(
-          new CounterId('1CE05088-ED1F-43E9-A415-3B3792655A9B'),
-          new CounterName('acounter'), new CounterValue(2), 'active',
-          'passwordplaceholder'
-        );
-        $counters[] = new Counter(
-          new CounterId('8CE05088-ED1F-43E9-A415-3B3792655A9B'),
-          new CounterName('twocounter'), new CounterValue(2), 'active',
-          'passwordplaceholder'
-        );
-        $counters[] = new Counter(
-          new CounterId('62A0CEB4-0403-4AA6-A6CD-1EE808AD4D23'),
-          new CounterName('test'), new CounterValue(0), 'locked',
-          'passwordplaceholder'
-        );
-        $counters[] = new Counter(
-          new CounterId('62A0CEB4-4575-4AA6-FD76-1EE808AD4D23'),
-          new CounterName('bcounter'), new CounterValue(1), 'disabled',
-          'passwordplaceholder'
-        );
-        $this->counter_repository = new \OpenCounter\Infrastructure\Persistence\InMemory\Repository\Counter\InMemoryCounterRepository($counters);
-        $this->counterBuildService = new \OpenCounter\Application\Service\Counter\CounterBuildService(
+
+        $this->counter_repository = new InMemoryCounterRepository($counters);
+        $this->counterBuildService = new CounterBuildService(
           $this->counter_repository,
           $this->counter_factory,
           $this->logger
         );
+    }
+
+    /** @BeforeScenario */
+    public function gatherContexts(
+      BeforeScenarioScope $scope
+    ) {
+        // we wanna reuse some domain context steps for convinience.
+        // turns out that doesnt work as expected so i guess we
+        // duplicate lower level functionality where we need it instead
+        // of cascading contexts.
+//        $environment = $scope->getEnvironment();
+//
+//        $this->ContextUtilities = $environment->getContext('ContextUtilities');
+
     }
 
     /**
@@ -263,12 +267,12 @@ class DomainContext implements Context, SnippetAcceptingContext
     {
         try {
             if (!$this->counter) {
-                throw new \OpenCounter\Domain\Exception\Counter\CounterNotFoundException();
+                throw new CounterNotFoundException();
             }
             $newValue = new CounterValue(0);
             $this->counter->resetValueTo($newValue);
 
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             $this->error = true;
 
             return $this->error;
@@ -309,10 +313,10 @@ class DomainContext implements Context, SnippetAcceptingContext
         $this->counterName = new CounterName($name);
         try {
             if ($this->counter = $this->counter_repository->getCounterByName($this->counterName)) {
-                throw new \OpenCounter\Domain\Exception\Counter\CounterAlreadyExistsException();
+                throw new CounterAlreadyExistsException();
             }
             // TODO: we need to throw an error if we have a result
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             $this->error = true;
 
             return $this->error;
@@ -328,7 +332,7 @@ class DomainContext implements Context, SnippetAcceptingContext
         $newCounterId = new CounterId($id);
         try {
             if ($this->counter = $this->counter_repository->getCounterById($newCounterId)) {
-                throw new \OpenCounter\Domain\Exception\Counter\CounterAlreadyExistsException();
+                throw new CounterAlreadyExistsException();
             }
 
         } catch (Exception $e) {
@@ -368,4 +372,26 @@ class DomainContext implements Context, SnippetAcceptingContext
         return $this->error;
     }
 
+
+
+    /**
+     * @When I list all counters
+     */
+    public function iListAllCounters()
+    {
+        $this->allCounters = $this->counter_repository->findAll();
+    }
+
+    /**
+     * @Then I should see :amount counters
+     */
+    public function iShouldSeeCounters($amount)
+    {
+        $numberOfCounters = count($this->allCounters);
+        if ($numberOfCounters != $amount) {
+
+            throw new \Exception(sprintf('I expected %d but found %s counters',
+              $amount, $numberOfCounters));
+        }
+    }
 }
