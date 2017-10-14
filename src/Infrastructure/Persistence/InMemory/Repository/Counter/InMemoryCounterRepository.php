@@ -67,12 +67,12 @@ class InMemoryCounterRepository implements CounterRepository
     }
 
     /**
-     * findAll()
+     * getAllCounters()
      *
      * {@inheritdoc}
      * @return array
      */
-    public function findAll()
+    public function getAllCounters()
     {
         return $this->counters;
     }
