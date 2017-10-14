@@ -50,7 +50,7 @@ class CountersListHandlerSpec extends ObjectBehavior
     ) {
 
         $counters = [$this->dummyCounter];
-        $repository->findAll()
+        $repository->getAllCounters()
           ->shouldBeCalled()
           ->willReturn($counters);
         $this->__invoke()->shouldReturn($counters);
