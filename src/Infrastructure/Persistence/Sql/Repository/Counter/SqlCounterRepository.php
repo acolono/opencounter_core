@@ -208,10 +208,7 @@ class SqlCounterRepository implements CounterRepository, PersistentCounterReposi
    */
 
   public function getAllCounters() {
-    $stmt = $this->manager->prepare(sprintf(
-      'SELECT * from %s',
-      self::TABLE_NAME
-    ));
+      $stmt = $this->findAllStatement;
     $stmt->execute();
     return array_map(
       function ($row) {

@@ -379,7 +379,7 @@ class DomainContext implements Context, SnippetAcceptingContext
      */
     public function iListAllCounters()
     {
-        $this->allCounters = $this->counter_repository->findAll();
+        $this->allCounters = $this->counter_repository->getAllCounters();
     }
 
     /**
