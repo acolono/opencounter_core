@@ -1,4 +1,5 @@
 <?php
+
 namespace OpenCounter;
 
 
@@ -12,12 +13,15 @@ use OpenCounter\Domain\Model\Counter\CounterValue;
 trait ContextUtilities
 {
 
+    public $counters;
+
     /**
      * @var \OpenCounter\Infrastructure\Factory\Counter\CounterFactory
      */
     private $counter_factory;
+
     /**
-     * @var \OpenCounter\Infrastructure\Persistence\InMemory\Repository\Counter\InMemoryCounterRepository
+     * @var \OpenCounter\Domain\Repository\CounterRepository
      */
     private $counter_repository;
 
@@ -25,10 +29,12 @@ trait ContextUtilities
      * @var
      */
     private $counterValue;
+
     /**
      * @var
      */
     private $counterId;
+
     /**
      * @var
      */
@@ -42,28 +48,35 @@ trait ContextUtilities
     public function thereAreCounters($amount)
     {
 
-        while ($amount > 0) {
+        $iteration = $amount;
+        while ($iteration > 0) {
             $counter = $this->generateRandomTestCounter();
             $this->counter_repository->save($counter);
-            $amount--;
+            $this->counters[] = $counter;
+            $iteration--;
         }
 
     }
 
     /**
      * Helper function that creates a counter object
-     * TODO: consider using factory muffin instead of seeding manually so seeding can be used for testing higher layers
+     * TODO: consider using factory muffin instead of seeding manually so
+     * seeding can be used for testing higher layers
      */
     public function generateRandomTestCounter()
     {
-        $randomchars = 'aeioungirldst';
+        //$randomchars = uniqid('testcounter');
+        $randomchars = uniqid('aeioungirldst');
+
         $this->counterName = new CounterName(str_shuffle($randomchars));
         $this->counterId = $this->counter_repository->nextIdentity();
         $this->counterValue = new CounterValue(rand(5, 15));
 
+        echo 'generating random counter';
         $aCounter = $this->counter_factory->build($this->counterId,
           $this->counterName, $this->counterValue, 'active',
           'passwordplaceholder');
+        print_r($aCounter);
 
         return $aCounter;
     }
@@ -71,6 +84,7 @@ trait ContextUtilities
     /**
      *
      * Utility since we dont set counters with ids via service layer
+     *
      * @Given a counter( with id) :id has been set
      *
      * @param $id
@@ -89,7 +103,9 @@ trait ContextUtilities
      * instead this is just a utility to
      * create a counter with id for later test steps
      * and uses the domain context for it
-     * @Given a counter :name with ID :id and a value of :value was added to the collection
+     *
+     * @Given a counter :name with ID :id and a value of :value was added to
+     *   the collection
      */
     public function aCounterWithIdAndAValueOfWasAddedToTheCollection(
       $name,
