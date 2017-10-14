@@ -26,70 +26,71 @@ use OpenCounter\Domain\Model\Counter\CounterName;
 interface CounterRepository
 {
 
-    /**
-     * Removes the counter given.
-     *
-     * @param \OpenCounter\Domain\Model\Counter\Counter $anCounter
-     *   Counter object.
-     *
-     * @return mixed
-     */
-    public function remove(Counter $anCounter);
+  /**
+   * Removes the counter given.
+   *
+   * @param \OpenCounter\Domain\Model\Counter\Counter $anCounter
+   *   Counter object.
+   *
+   * @return mixed
+   */
+  public function remove(Counter $anCounter);
 
-    /**
-     * remove a counter by name.
-     *
-     * @param \OpenCounter\Domain\Model\Counter\CounterName $aName
-     *
-     * @return mixed
-     */
-    public function removeCounterByName(CounterName $aName);
+  /**
+   * remove a counter by name.
+   *
+   * @param \OpenCounter\Domain\Model\Counter\CounterName $aName
+   *
+   * @return mixed
+   */
+  public function removeCounterByName(CounterName $aName);
 
-    /**
-     * getCounterById
-     *
-     * @param \OpenCounter\Domain\Model\Counter\CounterId $anId
-     *   Counter id.
-     *
-     * @return mixed
-     */
-    public function getCounterById(CounterId $anId);
+  /**
+   * getCounterById
+   *
+   * @param \OpenCounter\Domain\Model\Counter\CounterId $anId
+   *   Counter id.
+   *
+   * @return mixed
+   */
+  public function getCounterById(CounterId $anId);
 
-    /**
-     * getCounterByName
-     *
-     * @param \OpenCounter\Domain\Model\Counter\CounterName $aName
-     *   Counter name.
-     *
-     * @return mixed
-     */
-    public function getCounterByName(CounterName $aName);
+  /**
+   * getCounterByName
+   *
+   * @param \OpenCounter\Domain\Model\Counter\CounterName $aName
+   *   Counter name.
+   *
+   * @return mixed
+   */
+  public function getCounterByName(CounterName $aName);
 
-    /**
-     * Returns the next available id.
-     *
-     * @param $id
-     *
-     * @return mixed
-     */
-    public function nextIdentity($id);
+  /**
+   * Returns the next available id.
+   *
+   * @param $id
+   *
+   * @return mixed
+   */
+  public function nextIdentity($id);
 
-    /**
-     * Counts the number of counters.
-     *
-     * @return mixed
-     */
-    public function size();
+  /**
+   * Counts the number of counters.
+   *
+   * @return mixed
+   */
+  public function size();
 
-    //  public function find($argument1);
-    /**
-     * Saves the counter given.
-     *
-     * @param  \OpenCounter\Domain\Model\Counter\Counter $anCounter
-     *
-     * @return mixed
-     */
-    public function save(Counter $anCounter);
+  //  public function find($argument1);
 
-    public function findAll();
+  /**
+   * Saves the counter given.
+   *
+   * @param  \OpenCounter\Domain\Model\Counter\Counter $anCounter
+   *
+   * @return mixed
+   */
+  public function save(Counter $anCounter);
+
+  public function getAllCounters();
 }

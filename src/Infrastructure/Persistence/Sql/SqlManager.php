@@ -18,32 +18,32 @@ use OpenCounter\Infrastructure\Persistence\StorageInterface;
  */
 class SqlManager implements StorageInterface
 {
-    const SQL_DATE_FORMAT = 'Y-m-d H:i:s';
+
+  const SQL_DATE_FORMAT = 'Y-m-d H:i:s';
 
   /**
    * Our database pdo object.
    * @var \PDO
    */
-    protected $db;
+  protected $db;
 
-    /**
-     * SqlManager constructor.
-     * @param \PDO $db
-     */
-    public function __construct(\PDO $db)
-    {
-        $this->db = $db;
-    }
+  /**
+   * SqlManager constructor.
+   *
+   * @param \PDO $db
+   */
+  public function __construct(\PDO $db) {
+    $this->db = $db;
+  }
 
   /**
    * Gets connection of database.
    *
    * @return \PDO
    */
-    public function connection()
-    {
-        return $this->db;
-    }
+  public function connection() {
+    return $this->db;
+  }
 
   /**
    * Prepare sql statement.
@@ -52,11 +52,10 @@ class SqlManager implements StorageInterface
    *
    * @return \PDOStatement
    */
-    public function prepare($sql)
-    {
-        $statement = $this->db->prepare($sql);
-        return $statement;
-    }
+  public function prepare($sql) {
+    $statement = $this->db->prepare($sql);
+    return $statement;
+  }
 
   /**
    * Executes the sql given with the parameters given.
@@ -66,12 +65,11 @@ class SqlManager implements StorageInterface
    *
    * @return \PDOStatement
    */
-    public function execute($sql, array $parameters = null)
-    {
-        $statement = $this->db->prepare($sql);
-        $statement->execute($parameters);
-        return $statement;
-    }
+  public function execute($sql, array $parameters = NULL) {
+    $statement = $this->db->prepare($sql);
+    $statement->execute($parameters);
+    return $statement;
+  }
 
   /**
    * Executes a function in a transaction.
@@ -83,16 +81,15 @@ class SqlManager implements StorageInterface
    * @throws \Exception during execution of the function or transaction commit,
    *                    the transaction is rolled back and the exception re-thrown
    */
-    public function transactional(callable $callable)
-    {
-        $this->db->beginTransaction();
-        try {
-            $return = call_user_func($callable, $this);
-            $this->db->commit();
-            return $return ?: true;
-        } catch (\Exception $exception) {
-            $this->db->rollBack();
-            throw $exception;
-        }
+  public function transactional(callable $callable) {
+    $this->db->beginTransaction();
+    try {
+      $return = call_user_func($callable, $this);
+      $this->db->commit();
+      return $return ?: TRUE;
+    } catch (\Exception $exception) {
+      $this->db->rollBack();
+      throw $exception;
     }
+  }
 }
