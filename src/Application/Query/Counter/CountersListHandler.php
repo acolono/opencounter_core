@@ -38,7 +38,7 @@ class CountersListHandler
     public function __invoke()
     {
 
-        if (!$Counters = $this->CounterRepository->findAll()) {
+        if (!$Counters = $this->CounterRepository->getAllCounters()) {
             throw new CounterNotFoundException('No Counters not found');
         }
 
