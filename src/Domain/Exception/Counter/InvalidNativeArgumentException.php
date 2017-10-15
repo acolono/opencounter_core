@@ -4,19 +4,24 @@
  *
  * Thrown when we couldnt validate counter value
  */
+
 namespace OpenCounter\Domain\Exception\Counter;
 
 /**
  * Class InvalidNativeArgumentException
+ *
+ * @SWG\Definition()
  * @package OpenCounter\Domain\Exception\Counter
  */
 class InvalidNativeArgumentException extends \InvalidArgumentException
 {
-  /**
-   * InvalidNativeArgumentException constructor.
-   * @param string $value
-   * @param array $allowed_types
-   */
+
+    /**
+     * InvalidNativeArgumentException constructor.
+     *
+     * @param string $value
+     * @param array $allowed_types
+     */
     public function __construct($value, array $allowed_types)
     {
         $this->message = sprintf(
