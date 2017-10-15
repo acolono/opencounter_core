@@ -12,11 +12,13 @@ use PhpSpec\ObjectBehavior;
 
 /**
  * Class CountersListHandlerSpec
+ *
  * @inheritdoc
  * @package spec\OpenCounter\Application\Query\Counter
  */
 class CountersListHandlerSpec extends ObjectBehavior
 {
+
     /**
      * @var
      */
@@ -28,8 +30,8 @@ class CountersListHandlerSpec extends ObjectBehavior
     function let(CounterRepository $repository)
     {
         $this->dummyCounter = new Counter(new CounterId($repository->nextIdentity()),
-          new CounterName('dummycounter'), new CounterValue('1'), 'active',
-          'passwordplaceholder');
+            new CounterName('dummycounter'), new CounterValue('1'), 'active',
+            'passwordplaceholder');
         $repository->save($this->dummyCounter);
 
         $this->beConstructedWith($repository);
@@ -46,13 +48,13 @@ class CountersListHandlerSpec extends ObjectBehavior
      * @param \OpenCounter\Domain\Repository\CounterRepository $repository
      */
     function it_lists_all_counters(
-      CounterRepository $repository
+        CounterRepository $repository
     ) {
 
         $counters = [$this->dummyCounter];
         $repository->getAllCounters()
-          ->shouldBeCalled()
-          ->willReturn($counters);
+            ->shouldBeCalled()
+            ->willReturn($counters);
         $this->__invoke()->shouldReturn($counters);
     }
 
