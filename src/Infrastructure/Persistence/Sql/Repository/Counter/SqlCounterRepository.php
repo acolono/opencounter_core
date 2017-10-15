@@ -100,8 +100,10 @@ class SqlCounterRepository implements CounterRepository, PersistentCounterReposi
         $this->updateStmt = $this->manager->prepare(
             sprintf($update_string, self::TABLE_NAME)
         );
-        $this->findAllStatement = $this->manager->prepare(sprintf('SELECT * FROM %s',
-            self::TABLE_NAME));
+        $this->findAllStatement = $this->manager->prepare(sprintf(
+            'SELECT * FROM %s',
+            self::TABLE_NAME
+        ));
     }
 
     /**
@@ -227,7 +229,6 @@ class SqlCounterRepository implements CounterRepository, PersistentCounterReposi
             },
             $stmt->fetchAll(\PDO::FETCH_ASSOC)
         );
-
     }
 
     /**
@@ -295,12 +296,12 @@ class SqlCounterRepository implements CounterRepository, PersistentCounterReposi
     {
 
         return $this->manager->execute(
-                sprintf(
-                    'SELECT COUNT(*) FROM %s WHERE uuid = :uuid',
-                    self::TABLE_NAME
-                ),
-                [':uuid' => $anCounter->getId()]
-            )->fetchColumn() == 1;
+            sprintf(
+                'SELECT COUNT(*) FROM %s WHERE uuid = :uuid',
+                self::TABLE_NAME
+            ),
+            [':uuid' => $anCounter->getId()]
+        )->fetchColumn() == 1;
     }
 
     /**
