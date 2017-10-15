@@ -4,6 +4,7 @@
  *
  * basic storage interface for saving and retrieving counters.
  */
+
 namespace OpenCounter\Domain\Repository;
 
 use OpenCounter\Domain\Model\Counter\Counter;
@@ -13,13 +14,15 @@ use OpenCounter\Domain\Model\Counter\CounterName;
 /**
  * Interface CounterRepositoryInterface
  *
- * This class is between Entity layer(class Counter) and access object layer(interface Storage).
+ * This class is between Entity layer(class Counter) and access object
+ * layer(interface Storage).
  *
- * Repository encapsulates the set of objects persisted in a data store and the operations performed over them
- * providing a more object-oriented view of the persistence layer
+ * Repository encapsulates the set of objects persisted in a data store and the
+ * operations performed over them providing a more object-oriented view of the
+ * persistence layer
  *
- * Repository also supports the objective of achieving a clean separation and one-way dependency
- * between the domain and data mapping layers
+ * Repository also supports the objective of achieving a clean separation and
+ * one-way dependency between the domain and data mapping layers
  *
  * @package OpenCounter\Domain\Repository
  */
@@ -82,6 +85,7 @@ interface CounterRepository
     public function size();
 
     //  public function find($argument1);
+
     /**
      * Saves the counter given.
      *
@@ -91,5 +95,5 @@ interface CounterRepository
      */
     public function save(Counter $anCounter);
 
-    public function findAll();
+    public function getAllCounters();
 }

@@ -4,6 +4,7 @@
  *
  * saving counters to sql db.
  */
+
 namespace OpenCounter\Infrastructure\Persistence\Sql\Repository\Counter;
 
 use OpenCounter\Domain\Model\Counter\Counter;
@@ -23,37 +24,53 @@ class SqlCounterRepository implements CounterRepository, PersistentCounterReposi
 {
 
     const TABLE_NAME = 'counters';
+
     /**
      * The sql manager that gives us pdo access
+     *
      * @var \OpenCounter\Infrastructure\Persistence\Sql\SqlManager
      */
     protected $manager;
+
     /**
      * updateStmt
+     *
      * @var \PDOStatement
      */
     private $updateStmt;
+
     /**
      * insertStmt
      *
      * @var \PDOStatement
      */
     private $insertStmt;
+
     /**
      * removeStmt
+     *
      * @var \PDOStatement
      */
     private $removeStmt;
+
     /**
      * removeNamedStmt
+     *
      * @var \PDOStatement
      */
     private $removeNamedStmt;
+
     /**
      * get statement
+     *
      * @var \PDOStatement
      */
     private $getStmt;
+
+    /**
+     * @var \PDOStatement
+     */
+    private $findAllStatement;
 
     /**
      * SqlCounterRepository constructor.
@@ -83,6 +100,10 @@ class SqlCounterRepository implements CounterRepository, PersistentCounterReposi
         $this->updateStmt = $this->manager->prepare(
             sprintf($update_string, self::TABLE_NAME)
         );
+        $this->findAllStatement = $this->manager->prepare(sprintf(
+            'SELECT * FROM %s',
+            self::TABLE_NAME
+        ));
     }
 
     /**
@@ -134,7 +155,7 @@ class SqlCounterRepository implements CounterRepository, PersistentCounterReposi
      * Executes the sql given and returns the result in array of counters.
      *
      * @param string $sql The sql query
-     * @param array  $parameters Array which contains the parameters
+     * @param array $parameters Array which contains the parameters
      *
      * @return array
      */
@@ -159,8 +180,7 @@ class SqlCounterRepository implements CounterRepository, PersistentCounterReposi
      */
     private function buildCounter(array $row)
     {
-        // debug
-        //    print_r($row);
+
         return new Counter(
             new CounterId($row['uuid']),
             new CounterName($row['name']),
@@ -189,8 +209,8 @@ class SqlCounterRepository implements CounterRepository, PersistentCounterReposi
     public function size()
     {
         return $this->manager
-          ->execute(sprintf('SELECT COUNT(*) FROM %s', self::TABLE_NAME))
-          ->fetchColumn();
+            ->execute(sprintf('SELECT COUNT(*) FROM %s', self::TABLE_NAME))
+            ->fetchColumn();
     }
 
     /**
@@ -198,19 +218,17 @@ class SqlCounterRepository implements CounterRepository, PersistentCounterReposi
      *
      * @return array
      */
-    public function findAll()
+
+    public function getAllCounters()
     {
-        $sql = 'SELECT c.uuid, c.name, c.password, c.value
-            from counters c';
-        $stmt = $this->manager->query($sql);
-
-        $results = [];
-        // TODO: implement get counters in sql
-        while ($row = $stmt->fetch()) {
-            $results[] = new Counter($row->name());
-        }
-
-        return $results;
+        $stmt = $this->findAllStatement;
+        $stmt->execute();
+        return array_map(
+            function ($row) {
+                return $this->buildCounter($row);
+            },
+            $stmt->fetchAll(\PDO::FETCH_ASSOC)
+        );
     }
 
     /**
@@ -298,10 +316,10 @@ class SqlCounterRepository implements CounterRepository, PersistentCounterReposi
     {
         $update = $this->updateStmt->execute(
             [
-            'uuid' => $anCounter->getId(),
-            'value' => $anCounter->getValue(),
-            'status' => $anCounter->getStatus(),
-            'password' => 'passwordplaceholder'
+                'uuid' => $anCounter->getId(),
+                'value' => $anCounter->getValue(),
+                'status' => $anCounter->getStatus(),
+                'password' => 'passwordplaceholder',
             ]
         );
 
@@ -320,11 +338,11 @@ class SqlCounterRepository implements CounterRepository, PersistentCounterReposi
     {
         $insert = $this->insertStmt->execute(
             [
-            'name' => $anCounter->getName(),
-            'uuid' => $anCounter->getId(),
-            'value' => $anCounter->getValue(),
-            'status' => $anCounter->getStatus(),
-            'password' => 'passwordplaceholder'
+                'name' => $anCounter->getName(),
+                'uuid' => $anCounter->getId(),
+                'value' => $anCounter->getValue(),
+                'status' => $anCounter->getStatus(),
+                'password' => 'passwordplaceholder',
             ]
         );
 
