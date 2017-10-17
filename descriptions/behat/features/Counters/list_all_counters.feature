@@ -1,5 +1,5 @@
 Feature: List all counters
-  As admin
+  As an admin
   I want to list all counters
   in order to see accessible counter ids.
 
