@@ -9,6 +9,7 @@ namespace OpenCounter\Domain\Exception\Counter;
 /**
  * Class CounterLockedException
  *
+ * @SWG\Definition()
  * @package OpenCounter\Domain\Exception\Counter
  */
 class CounterLockedException extends \Exception
